@@ -1,0 +1,961 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FitPro V4</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Google Fonts - Inter -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    
+    <style>
+        :root {
+            color-scheme: dark;
+        }
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #000000;
+            color: #ffffff;
+            overflow-x: hidden;
+        }
+        .container {
+            max-width: 100vw;
+            min-height: 100vh;
+            padding-bottom: 80px; /* Espaço para a nav bar fixa */
+        }
+        .text-gradient {
+            background-image: linear-gradient(to right, #ffffff, #aaaaaa);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        .card-scroll-container {
+            overflow-x: scroll;
+            scrollbar-width: none; /* Oculta a scrollbar para Firefox */
+            -ms-overflow-style: none; /* Oculta a scrollbar para Internet Explorer e Edge */
+            padding-bottom: 1.5rem; /* Espaço para a sombra */
+        }
+        /* Oculta a scrollbar para navegadores WebKit (Chrome, Safari) */
+        .card-scroll-container::-webkit-scrollbar {
+            display: none;
+        }
+        .frosted-glass {
+            backdrop-filter: blur(20px) saturate(180%);
+            -webkit-backdrop-filter: blur(20px) saturate(180%);
+            background-color: rgba(29, 29, 31, 0.7);
+            border-top: 1px solid rgba(48, 48, 48, 0.5);
+        }
+        .card {
+            min-width: 280px;
+            max-width: 280px;
+            height: 180px;
+            position: relative;
+            transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
+            cursor: pointer;
+        }
+        .card:hover {
+            transform: scale(1.03);
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.3);
+        }
+        .card-overlay {
+            background-image: linear-gradient(to top, rgba(0,0,0,0.8) 0%, rgba(0,0,0,0) 50%);
+        }
+        
+        .circle-progress-card {
+            stroke-dasharray: 251.2;
+            stroke-dashoffset: 0;
+            transition: stroke-dashoffset 0.5s ease-in-out;
+            transform: rotate(-90deg);
+            transform-origin: 50% 50%;
+        }
+
+        .modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: rgba(0, 0, 0, 0.75);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+        }
+        .modal-content {
+            background-color: #1c1c1e;
+            padding: 2rem;
+            border-radius: 12px;
+            text-align: center;
+            max-width: 90%;
+            width: 400px;
+        }
+        .hero-banner {
+            background-image: linear-gradient(to bottom, #1f2937, #000);
+        }
+    </style>
+</head>
+<body class="bg-black text-white">
+    <!-- Onde o conteúdo será renderizado -->
+    <div id="app" class="container mx-auto px-4 py-8 md:py-12"></div>
+    
+    <!-- Ícones SVG (embutidos para funcionamento offline) -->
+    <svg display="none" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <symbol id="icon-home" viewBox="0 0 24 24"><path d="m3 9 9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></symbol>
+        <symbol id="icon-dumbbell" viewBox="0 0 24 24"><path d="m6.5 6.5 11 11"/><path d="m21 21-1-1"/><path d="m3 3 1 1"/><path d="m18 22 4-4"/><path d="m2 6 4-4"/><path d="m12 7 6-6"/><path d="m7 12-6 6"/><path d="M3.5 3.5a2 2 0 1 1 0 2.83A2 2 0 0 1 3.5 3.5Z"/><path d="M20.5 20.5a2 2 0 1 1 0 2.83A2 2 0 0 1 20.5 20.5Z"/></symbol>
+        <symbol id="icon-play" viewBox="0 0 24 24"><polygon points="5 3 19 12 5 21 5 3"/></symbol>
+        <symbol id="icon-book-open" viewBox="0 0 24 24"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/></symbol>
+        <symbol id="icon-heart" viewBox="0 0 24 24"><path d="M19 14c1.49-1.46 3-3.21 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.76 0-3 .5-4.5 2-1.5-1.5-2.74-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.3 1.5 4.05 3 5.5l7 7Z"/></symbol>
+        <symbol id="icon-award" viewBox="0 0 24 24"><circle cx="12" cy="8" r="7"/><path d="M8.21 13.89 7 22l5-3 5 3-1.21-8.12"/></symbol>
+        <symbol id="icon-moon" viewBox="0 0 24 24"><path d="M12 3a6 6 0 0 0 9 9 9 9 0 1 1-9-9Z"/></symbol>
+        <symbol id="icon-walking" viewBox="0 0 24 24"><path d="M13.5 10.5 16 14l-4 6-2-4"/><circle cx="8" cy="7" r="2"/></symbol>
+        <symbol id="icon-zap" viewBox="0 0 24 24"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></symbol>
+        <symbol id="icon-pause" viewBox="0 0 24 24"><rect x="6" y="4" width="4" height="16"/><rect x="14" y="4" width="4" height="16"/></symbol>
+        <symbol id="icon-square" viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"/></symbol>
+        <symbol id="icon-chevron-left" viewBox="0 0 24 24"><polyline points="15 18 9 12 15 6"/></symbol>
+        <symbol id="icon-refresh-cw" viewBox="0 0 24 24"><path d="M21 12a9 9 0 0 0-9-9a9 9 0 0 0-8 4c-.87-.93-2.28-.97-3.22-.09a2.5 2.5 0 0 0-.09 3.22"/><path d="M3 12a9 9 0 0 0 9 9a9 9 0 0 0 8-4c.87.93 2.28.97 3.22.09a2.5 2.5 0 0 0 .09-3.22"/><path d="M2.5 12h2"/><path d="M2.5 12l2.5 2.5"/><path d="M2.5 12l2.5-2.5"/></symbol>
+        <symbol id="icon-user" viewBox="0 0 24 24"><path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></symbol>
+        <symbol id="icon-activity" viewBox="0 0 24 24"><path d="M22 12h-4l-3 9L9 3l-3 9H2"/></symbol>
+        <symbol id="icon-check-circle" viewBox="0 0 24 24"><path d="M22 11.08V12a10 10 0 1 1-5.93-8.66"/><path d="M3 12h18"/><path d="m9 12 2 2 4-4"/></symbol>
+        <symbol id="icon-x-circle" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="m15 9-6 6"/><path d="m9 9 6 6"/></symbol>
+        <symbol id="icon-yoga" viewBox="0 0 24 24"><path d="M12 2L12 6"/><path d="M12 2L12 6"/><path d="M12 6C14.7614 6 17 8.23858 17 11C17 13.7614 14.7614 16 12 16C9.23858 16 7 13.7614 7 11C7 8.23858 9.23858 6 12 6Z"/><path d="M12 16L12 22"/><path d="M12 22L17 22"/><path d="M12 22L7 22"/></symbol>
+        <symbol id="icon-fire" viewBox="0 0 24 24"><path d="M8.5 14.5A2.5 2.5 0 0 0 11 12c0-1.5-1.5-3-3-3s-3 1.5-3 3c0 2.5 2.5 2.5 2.5 2.5z"/><path d="M12 2a10 10 0 0 0-9.28 12.01c-.5.48-1 .99-1.5 1.5-.4.4-.7.7-1 1-.5.5-1 1-1.5 1.5c.5.5 1.5 1.5 2.5 1.5h1.5l.5.5a10 10 0 0 0 18.5-8.5c0-5.5-4.5-10-10-10z"/></symbol>
+        <symbol id="icon-run" viewBox="0 0 24 24"><path d="M18 8c0-2.2-1.8-4-4-4s-4 1.8-4 4c0 1.2.6 2.3 1.5 3H10l-2.5 7.5L3 21"/><path d="M14 14l5-5l1 1"/><path d="M18 19l-4-4"/></symbol>
+        <symbol id="icon-swim" viewBox="0 0 24 24"><path d="M17 16c0 1.1-0.9 2-2 2h-6c-1.1 0-2-0.9-2-2"/><path d="M15 18l-4 4"/><path d="M9 18l-4 4"/><path d="M17 16V6c0-1.1-0.9-2-2-2h-2c-1.1 0-2 0.9-2 2v10"/><path d="M12 4L12 2"/><path d="M12 22L12 20"/><path d="M12 20h2c1.1 0 2-0.9 2-2"/></symbol>
+        <symbol id="icon-soccer" viewBox="0 0 24 24"><path d="M12 22c-5.5 0-10-4.5-10-10S6.5 2 12 2s10 4.5 10 10s-4.5 10-10 10zm0-18c-4.4 0-8 3.6-8 8s3.6 8 8 8s8-3.6 8-8s-3.6-8-8-8z"/><path d="M14 12a2 2 0 1 1-4 0a2 2 0 0 1 4 0z"/><path d="M17.5 7.5l-5.5 5.5l5.5 5.5"/><path d="M6.5 16.5l5.5-5.5l-5.5-5.5"/></symbol>
+    </svg>
+
+    <script>
+        // --- Application Data and State (temporary, not saved) ---
+        // All information is held in memory while the page is open.
+        let todayStats = {
+            progress: 0,
+            calories: 0,
+            distance: 0,
+        };
+
+        let healthMetrics = {
+            heartRate: 0,
+            bloodPressure: "0/0",
+            sleep: "0h 0m",
+        };
+
+        let userProfile = {
+            name: 'Usuário FitPro',
+            dob: '' // Empty by default
+        };
+
+        const categories = {
+            fitness: [
+                {
+                    name: 'Força',
+                    id: 'forca',
+                    icon: 'icon-dumbbell',
+                    color: 'bg-indigo-600'
+                },
+                {
+                    name: 'Cardio',
+                    id: 'cardio',
+                    icon: 'icon-zap',
+                    color: 'bg-rose-600'
+                },
+                {
+                    name: 'Yoga',
+                    id: 'yoga',
+                    icon: 'icon-yoga',
+                    color: 'bg-emerald-600'
+                },
+                {
+                    name: 'Corrida',
+                    id: 'corrida',
+                    icon: 'icon-run',
+                    color: 'bg-orange-600'
+                },
+                {
+                    name: 'Natação',
+                    id: 'natacao',
+                    icon: 'icon-swim',
+                    color: 'bg-cyan-600'
+                },
+                {
+                    name: 'Futebol',
+                    id: 'futebol',
+                    icon: 'icon-soccer',
+                    color: 'bg-lime-600'
+                }
+            ],
+            meditation: [
+                {
+                    name: 'Atenção Plena',
+                    id: 'mindfulness',
+                    icon: 'icon-moon',
+                    color: 'bg-blue-600'
+                },
+                {
+                    name: 'Relaxamento',
+                    id: 'relaxamento',
+                    icon: 'icon-heart',
+                    color: 'bg-purple-600'
+                },
+            ],
+        };
+
+        const workouts = {
+            cardio: [
+                {
+                    id: 'cardio-10min',
+                    title: "Treino Rápido de Cardio",
+                    description: "Queime calorias em 10 minutos com exercícios intensos.",
+                    icon: 'icon-zap',
+                    color: 'bg-rose-600',
+                    trainer: "Coach Ana",
+                    duration: 600,
+                    caloriesBurned: 120,
+                    exercises: [
+                        'Aquecimento: 3 minutos de corrida no lugar',
+                        '30 segundos de polichinelo',
+                        '30 segundos de Mountain Climber',
+                        '30 segundos de descanso',
+                        '30 segundos de Burpee',
+                        '30 segundos de Pular Corda (simulado)',
+                        'Alongamento: 5 minutos de alongamento',
+                    ]
+                },
+            ],
+            yoga: [
+                {
+                    id: 'yoga-iniciantes',
+                    title: "Yoga para Iniciantes",
+                    description: "Melhore sua flexibilidade e foco com posturas básicas.",
+                    icon: 'icon-yoga',
+                    color: 'bg-emerald-600',
+                    trainer: "Instrutor Leo",
+                    duration: 600,
+                    caloriesBurned: 80,
+                    exercises: [
+                        'Posição da Montanha (Tadasana): 1 minuto',
+                        'Cachorro Olhando para Baixo (Adho Mukha Svanasana): 1 minuto',
+                        'Postura da Criança (Balasana): 2 minutos',
+                        'Posição da Árvore (Vrikshasana): 1 minuto por perna',
+                    ]
+                },
+            ],
+            forca: [
+                {
+                    id: 'forca-corpo-inteiro',
+                    title: "Força de Corpo Inteiro",
+                    description: "Treino com halteres para todos os grupos musculares.",
+                    icon: 'icon-dumbbell',
+                    color: 'bg-indigo-600',
+                    trainer: "Treinador Marcos",
+                    duration: 1200,
+                    caloriesBurned: 250,
+                    exercises: [
+                        'Agachamento com halteres: 3x12',
+                        'Supino com halteres: 3x10',
+                        'Remada curvada: 3x10',
+                        'Desenvolvimento de ombros: 3x12',
+                        'Prancha: 3x45 segundos',
+                    ]
+                }
+            ],
+            corrida: [
+                {
+                    id: 'corrida-5km',
+                    title: "Corrida de 5km",
+                    description: "Treino para iniciantes com foco em resistência e técnica.",
+                    icon: 'icon-run',
+                    color: 'bg-orange-600',
+                    trainer: "Treinador Leo",
+                    duration: 1800,
+                    caloriesBurned: 400,
+                    exercises: [
+                        'Aquecimento: 5 minutos de corrida leve e alongamento dinâmico.',
+                        'Corrida de 5km no seu ritmo.',
+                        'Resfriamento: 10 minutos de caminhada e alongamento estático.',
+                    ]
+                }
+            ],
+            natacao: [
+                {
+                    id: 'natacao-estilo-livre',
+                    title: "Natação Estilo Livre",
+                    description: "Treino de natação para melhorar a técnica e a resistência.",
+                    icon: 'icon-swim',
+                    color: 'bg-cyan-600',
+                    trainer: "Coach Patrícia",
+                    duration: 1800,
+                    caloriesBurned: 350,
+                    exercises: [
+                        'Aquecimento: 50m de crawl, 50m de costas.',
+                        '10 x 50m crawl, com 30s de descanso.',
+                        '4 x 100m medley, com 1min de descanso.',
+                        'Resfriamento: 200m de nado leve.',
+                    ]
+                }
+            ],
+            futebol: [
+                {
+                    id: 'futebol-treino-tecnico',
+                    title: "Treino Técnico de Futebol",
+                    description: "Melhore seu controle de bola, passe e chute.",
+                    icon: 'icon-soccer',
+                    color: 'bg-lime-600',
+                    trainer: "Treinador Ricardo",
+                    duration: 2700,
+                    caloriesBurned: 500,
+                    exercises: [
+                        'Aquecimento: 10 minutos de corrida e exercícios com a bola.',
+                        'Série de passes curtos e longos: 20 minutos.',
+                        'Exercícios de drible e condução: 15 minutos.',
+                        'Treino de finalização ao gol: 15 minutos.',
+                        'Resfriamento: 10 minutos de alongamento.',
+                    ]
+                }
+            ],
+            mindfulness: [
+                {
+                    id: 'foco-no-presente',
+                    title: "Foco no Presente",
+                    description: "Meditação guiada para clareza mental e concentração.",
+                    icon: 'icon-moon',
+                    color: 'bg-blue-600',
+                    trainer: "Terapeuta Sofia",
+                    duration: 600,
+                    caloriesBurned: 10,
+                    exercises: [
+                        'Sente-se confortavelmente e feche os olhos',
+                        'Observe sua respiração por 5 minutos',
+                        'Traga a atenção para os sons ao seu redor',
+                        'Retorne a atenção para sua respiração',
+                    ]
+                }
+            ],
+            relaxamento: [
+                {
+                    id: 'meditacao-sono',
+                    title: "Meditação para o Sono",
+                    description: "Relaxe sua mente e prepare-se para uma noite de sono melhor.",
+                    icon: 'icon-heart',
+                    color: 'bg-purple-600',
+                    trainer: "Terapeuta Sofia",
+                    duration: 600,
+                    caloriesBurned: 5,
+                    exercises: [
+                        'Deite-se em uma posição confortável',
+                        'Faça uma contagem regressiva da respiração',
+                        'Escaneie o corpo, relaxando cada parte',
+                        'Deixe-se levar para o sono',
+                    ]
+                }
+            ]
+        };
+        
+        const dailyChallenge = {
+            id: 'corpo-livre-total',
+            title: "Desafio Corpo Livre Total",
+            description: "Um treino sem equipamento para força e condicionamento.",
+            icon: 'icon-fire',
+            color: 'bg-rose-600',
+            trainer: "Coach Ana",
+            duration: 900,
+            caloriesBurned: 200,
+            exercises: [
+                '5 minutos de aquecimento',
+                '20 agachamentos',
+                '15 flexões',
+                '20 lunges (por perna)',
+                '1 minuto de prancha',
+                'Alongamento de 5 minutos',
+            ]
+        };
+
+        const popularPrograms = [
+            workouts.cardio[0],
+            workouts.yoga[0],
+            workouts.forca[0],
+            workouts.mindfulness[0],
+            workouts.relaxamento[0]
+        ];
+
+        const navItems = [
+            { id: 'home', name: 'Início', icon: 'icon-home' },
+            { id: 'fitness', name: 'Fitness', icon: 'icon-dumbbell' },
+            { id: 'meditation', name: 'Meditação', icon: 'icon-book-open' },
+            { id: 'profile', name: 'Perfil', icon: 'icon-user' },
+        ];
+
+        // Global application state variables
+        let activeTab = 'home';
+        let currentPage = 'home';
+        let selectedCategory = '';
+        let selectedProgram = null;
+        let timerInterval = null;
+        let timerSeconds = 0;
+        let isTimerRunning = false;
+        let message = null;
+        let continueWorkout = null;
+        
+        // UI element
+        const appContainer = document.getElementById('app');
+
+        // --- Application Logic (no database) ---
+        function initializeApp() {
+            // Initialize data with default values
+            todayStats = {
+                progress: 0,
+                calories: 0,
+                distance: 0,
+                steps: 0,
+            };
+            healthMetrics = {
+                heartRate: 80,
+                bloodPressure: "120/80",
+                sleep: "7h 30m",
+            };
+            userProfile = {
+                name: 'Usuário FitPro',
+                dob: ''
+            };
+            render();
+        }
+
+        function saveUserProfile() {
+            const name = document.getElementById('user-name').value;
+            const dob = document.getElementById('user-dob').value;
+            
+            if (!name) {
+                message = {
+                    icon: 'icon-x-circle',
+                    color: 'text-red-500',
+                    title: 'Erro!',
+                    text: 'O nome é obrigatório.'
+                };
+                render();
+                return;
+            }
+
+            userProfile.name = name;
+            userProfile.dob = dob;
+            
+            message = {
+                icon: 'icon-check-circle',
+                color: 'text-green-500',
+                title: 'Perfil Salvo!',
+                text: 'Suas informações foram atualizadas temporariamente.'
+            };
+            render();
+        }
+
+        function navigateTo(page, id = null) {
+            currentPage = page;
+            message = null; // Clear message on navigation
+            if (page === 'category-page') {
+                selectedCategory = id;
+            } else if (page === 'program-details') {
+                selectedProgram = Object.values(workouts)
+                    .flatMap(cat => cat)
+                    .find(p => p.id === id);
+            } else {
+                selectedCategory = '';
+                selectedProgram = null;
+            }
+            render();
+        }
+
+        function updateHealthMetrics() {
+            // Simulate new readings
+            healthMetrics.heartRate = Math.floor(Math.random() * (100 - 60 + 1)) + 60;
+            const systolic = Math.floor(Math.random() * (140 - 110 + 1)) + 110;
+            const diastolic = Math.floor(Math.random() * (90 - 70 + 1)) + 70;
+            healthMetrics.bloodPressure = `${systolic}/${diastolic}`;
+            healthMetrics.sleep = `${Math.floor(Math.random() * 2) + 7}h ${Math.floor(Math.random() * 60)}m`;
+            
+            message = {
+                icon: 'icon-check-circle',
+                color: 'text-blue-500',
+                title: 'Dados Atualizados!',
+                text: 'Suas métricas de saúde foram atualizadas.'
+            };
+            render();
+        }
+
+        function startTimer() {
+            if (isTimerRunning) return;
+            isTimerRunning = true;
+            timerInterval = setInterval(() => {
+                timerSeconds++;
+                if (timerSeconds >= selectedProgram.duration) {
+                    completeWorkout();
+                } else {
+                    render();
+                }
+            }, 1000);
+        }
+
+        function pauseTimer() {
+            isTimerRunning = false;
+            clearInterval(timerInterval);
+            render();
+        }
+
+        function stopTimer() {
+            isTimerRunning = false;
+            clearInterval(timerInterval);
+            if (timerSeconds > 0 && timerSeconds < selectedProgram.duration) {
+                message = {
+                    icon: 'icon-x-circle',
+                    color: 'text-red-500',
+                    title: 'Treino Incompleto',
+                    text: 'Você não completou o treino, mas seu esforço conta!'
+                };
+            }
+            timerSeconds = 0;
+            navigateTo('program-details', selectedProgram.id);
+        }
+
+        function completeWorkout() {
+            isTimerRunning = false;
+            clearInterval(timerInterval);
+            
+            // Update user progress locally
+            todayStats.progress += 5;
+            todayStats.calories += selectedProgram.caloriesBurned;
+            todayStats.distance += 0.5;
+            todayStats.steps += 1000;
+
+            message = {
+                icon: 'icon-check-circle',
+                color: 'text-green-500',
+                title: 'Parabéns!',
+                text: `Você completou o treino de ${Math.floor(selectedProgram.duration / 60)} minutos. Seu progresso foi atualizado!`
+            };
+            
+            timerSeconds = 0;
+            navigateTo('program-details', selectedProgram.id);
+        }
+
+        function renderModal() {
+            if (!message) return '';
+            return `
+                <div class="modal-overlay">
+                    <div class="modal-content">
+                        <svg class="w-16 h-16 mx-auto mb-4 ${message.color}"><use href="#${message.icon}"></use></svg>
+                        <h3 class="text-xl font-bold mb-2">${message.title}</h3>
+                        <p class="text-gray-400 mb-6">${message.text}</p>
+                        <button class="bg-blue-600 hover:bg-blue-700 text-white font-bold py-3 px-8 rounded-full" onclick="message = null; render();">
+                            Ok
+                        </button>
+                    </div>
+                </div>
+            `;
+        }
+        
+        // Main rendering function
+        function render() {
+            appContainer.innerHTML = '';
+            let content = '';
+            
+            switch (currentPage) {
+                case 'home':
+                    content = renderHomePage();
+                    break;
+                case 'fitness':
+                    content = renderCategoryListPage('Fitness', 'fitness');
+                    break;
+                case 'meditation':
+                    content = renderCategoryListPage('Meditação', 'meditation');
+                    break;
+                case 'profile':
+                    content = renderProfilePage();
+                    break;
+                case 'category-page':
+                    content = renderCategoryPage();
+                    break;
+                case 'program-details':
+                    selectedProgram = Object.values(workouts)
+                        .flatMap(cat => cat)
+                        .find(p => p.id === selectedProgram.id);
+                    content = renderProgramDetailsPage();
+                    break;
+                case 'workout':
+                    content = renderWorkoutPage();
+                    break;
+            }
+            appContainer.innerHTML = content + renderNavBar() + renderModal();
+            setupEventListeners();
+        }
+
+        // UI rendering functions
+        function renderHomePage() {
+            const now = new Date();
+            const timeString = now.toLocaleTimeString('pt-BR', { hour: '2-digit', minute: '2-digit' });
+            return `
+                <div class="hero-banner rounded-b-[40px] p-6 pb-12">
+                    <div class="flex items-center justify-between mb-8">
+                        <div>
+                            <h1 class="text-2xl font-extrabold tracking-tight">Seu Dia</h1>
+                            <p class="text-xs text-gray-400 mt-1">Olá, ${userProfile.name}!</p>
+                        </div>
+                        <div class="p-2 rounded-full bg-gray-800 border border-gray-700">
+                             <svg class="w-6 h-6 text-white"><use href="#icon-user"></use></svg>
+                        </div>
+                    </div>
+                    ${renderHeroSection()}
+                </div>
+                <div class="px-4 -mt-10">
+                    ${continueWorkout ? renderContinueSection() : ''}
+                    ${renderDailyChallengeSection()}
+                    ${renderPopularProgramsSection()}
+                </div>
+            `;
+        }
+        
+        function renderContinueSection() {
+            return `
+                <h3 class="text-lg md:text-xl font-bold mt-8 mb-4">Continuações</h3>
+                <div 
+                    class="card rounded-xl p-4 shadow-lg bg-[#1c1c1e] flex items-center"
+                    data-program-id="${continueWorkout.id}"
+                >
+                    <div class="p-3 rounded-full ${continueWorkout.color} mr-4">
+                        <svg class="w-6 h-6 text-white"><use href="#${continueWorkout.icon}"></use></svg>
+                    </div>
+                    <div class="flex-1">
+                        <h4 class="font-bold text-lg leading-tight mb-1">Retomar Treino</h4>
+                        <p class="text-xs text-gray-300 leading-snug">${continueWorkout.title}</p>
+                    </div>
+                    <div class="p-2 rounded-full bg-blue-600">
+                        <svg class="w-5 h-5 text-white"><use href="#icon-play"></use></svg>
+                    </div>
+                </div>
+            `;
+        }
+
+        function renderDailyChallengeSection() {
+            return `
+                <h3 class="text-lg md:text-xl font-bold mt-8 mb-4">Desafio da Semana</h3>
+                <div class="card rounded-xl p-6 shadow-lg ${dailyChallenge.color} flex flex-col items-start justify-between">
+                    <div class="flex items-center space-x-2">
+                        <svg class="w-8 h-8 text-white"><use href="#${dailyChallenge.icon}"></use></svg>
+                        <h4 class="font-bold text-xl leading-tight">${dailyChallenge.title}</h4>
+                    </div>
+                    <p class="text-xs text-white opacity-80 mt-2">${dailyChallenge.description}</p>
+                    <button class="bg-white text-black font-bold py-2 px-6 rounded-full mt-4" onclick="navigateTo('program-details', '${dailyChallenge.id}')">
+                        Participar
+                    </button>
+                </div>
+            `;
+        }
+        
+        function renderPopularProgramsSection() {
+            return `
+                <h3 class="text-lg md:text-xl font-bold mt-8 mb-4">Programas Populares</h3>
+                <div class="card-scroll-container flex space-x-4">
+                    ${popularPrograms.map(item => `
+                        <div
+                            class="card rounded-xl p-4 shadow-lg bg-[#1c1c1e] flex flex-col items-start justify-center flex-shrink-0"
+                            data-program-id="${item.id}"
+                        >
+                            <svg class="w-10 h-10 text-white mb-2"><use href="#${item.icon}"></use></svg>
+                            <h4 class="font-bold text-lg leading-tight mb-1">${item.title}</h4>
+                            <p class="text-xs text-gray-300 leading-snug">${item.description}</p>
+                            ${item.trainer ? `<p class="text-xs text-gray-500 mt-1">Com ${item.trainer}</p>` : ''}
+                        </div>
+                    `).join('')}
+                </div>
+            `;
+        }
+
+        function renderCategoryListPage(title, categoryType) {
+            return `
+                <div class="pt-16 md:pt-0">
+                    <h2 class="text-3xl md:text-5xl font-extrabold tracking-tight mb-6">${title}</h2>
+                    <p class="text-gray-400 mb-8">Escolha sua categoria favorita.</p>
+                    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+                        ${categories[categoryType].map(cat => `
+                            <div
+                                class="card rounded-xl p-6 shadow-lg ${cat.color} flex flex-col items-center justify-center aspect-video"
+                                data-category-id="${cat.id}"
+                            >
+                                <svg class="w-16 h-16 text-white mb-2"><use href="#${cat.icon}"></use></svg>
+                                <h4 class="font-bold text-lg leading-tight mb-1">${cat.name}</h4>
+                            </div>
+                        `).join('')}
+                    </div>
+                </div>
+            `;
+        }
+
+        function renderCategoryPage() {
+            const categoryWorkouts = workouts[selectedCategory];
+            if (!categoryWorkouts) return `<div>Categoria não encontrada.</div>`;
+
+            const categoryInfo = categories.fitness.find(c => c.id === selectedCategory) ||
+                                 categories.meditation.find(c => c.id === selectedCategory);
+            const categoryName = categoryInfo?.name;
+            const categoryColor = categoryInfo?.color;
+            const categoryIcon = categoryInfo?.icon;
+
+
+            return `
+                <div class="pt-16 md:pt-0">
+                    <button class="flex items-center text-gray-400 hover:text-white transition-colors mb-6" onclick="navigateTo('${activeTab}')">
+                        <svg class="w-6 h-6 mr-1"><use href="#icon-chevron-left"></use></svg>
+                        Voltar
+                    </button>
+                    <div class="flex items-center space-x-4 mb-8">
+                        <div class="p-4 rounded-full ${categoryColor}">
+                            <svg class="w-12 h-12 text-white"><use href="#${categoryIcon}"></use></svg>
+                        </div>
+                        <div>
+                            <h2 class="text-3xl md:text-5xl font-extrabold tracking-tight">${categoryName}</h2>
+                            <p class="text-gray-400 mt-2">Explore todos os treinos de ${categoryName}.</p>
+                        </div>
+                    </div>
+                    
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        ${categoryWorkouts.map(item => `
+                            <div
+                                class="card rounded-xl p-4 shadow-lg bg-[#1c1c1e] flex flex-col items-start justify-center"
+                                data-program-id="${item.id}"
+                            >
+                                <svg class="w-10 h-10 text-white mb-2"><use href="#${item.icon}"></use></svg>
+                                <h4 class="font-bold text-lg leading-tight mb-1">${item.title}</h4>
+                                <p class="text-xs text-gray-300 leading-snug">${item.description}</p>
+                                ${item.trainer ? `<p class="text-xs text-gray-500 mt-1">Com ${item.trainer}</p>` : ''}
+                            </div>
+                        `).join('')}
+                    </div>
+                </div>
+            `;
+        }
+        
+        function renderProfilePage() {
+            return `
+                <div class="pt-16 md:pt-0">
+                    <h2 class="text-3xl md:text-5xl font-extrabold tracking-tight mb-2">Seu Perfil</h2>
+                    <p class="text-gray-400 mb-8">Suas informações e estatísticas de saúde.</p>
+
+                    <div class="bg-[#1c1c1e] rounded-xl p-6 mb-8">
+                        <h3 class="text-xl font-bold mb-4">Informações Pessoais</h3>
+                        <form id="profile-form" onsubmit="event.preventDefault(); saveUserProfile()">
+                            <div class="mb-4">
+                                <label for="user-name" class="block text-sm font-medium text-gray-400 mb-1">Nome</label>
+                                <input type="text" id="user-name" value="${userProfile.name}" placeholder="Seu nome" required class="w-full p-3 rounded-lg bg-[#2c2c2e] text-white placeholder-gray-500 border border-transparent focus:outline-none focus:ring-2 focus:ring-blue-500">
+                            </div>
+                            <div class="mb-6">
+                                <label for="user-dob" class="block text-sm font-medium text-gray-400 mb-1">Data de Nascimento</label>
+                                <input type="date" id="user-dob" value="${userProfile.dob}" class="w-full p-3 rounded-lg bg-[#2c2c2e] text-white placeholder-gray-500 border border-transparent focus:outline-none focus:ring-2 focus:ring-blue-500">
+                            </div>
+                            <button type="submit" class="w-full bg-blue-600 hover:bg-blue-700 text-white font-bold py-3 px-8 rounded-full transition-colors">
+                                Salvar Perfil (temporário)
+                            </button>
+                        </form>
+                    </div>
+
+                    <div class="bg-[#1c1c1e] rounded-xl p-6 mb-8">
+                        <h3 class="text-xl font-bold mb-4">Métricas de Saúde</h3>
+                        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+                            <div class="bg-[#2c2c2e] rounded-lg p-4">
+                                <span class="block text-sm text-gray-400">Batimentos Cardíacos</span>
+                                <span class="text-3xl font-bold text-rose-500">${healthMetrics.heartRate}</span>
+                                <span class="text-sm text-gray-400"> bpm</span>
+                            </div>
+                            <div class="bg-[#2c2c2e] rounded-lg p-4">
+                                <span class="block text-sm text-gray-400">Pressão Arterial</span>
+                                <span class="text-3xl font-bold text-green-500">${healthMetrics.bloodPressure}</span>
+                                <span class="text-sm text-gray-400"> mmHg</span>
+                            </div>
+                            <div class="bg-[#2c2c2e] rounded-lg p-4">
+                                <span class="block text-sm text-gray-400">Duração do Sono</span>
+                                <span class="text-3xl font-bold text-blue-500">${healthMetrics.sleep}</span>
+                            </div>
+                        </div>
+                        <button class="w-full mt-6 bg-blue-600 hover:bg-blue-700 text-white font-bold py-3 px-8 rounded-full" onclick="updateHealthMetrics()">
+                            Atualizar Métricas
+                        </button>
+                    </div>
+                </div>
+            `;
+        }
+
+        function renderProgramDetailsPage() {
+            if (!selectedProgram) return '<div>Programa não encontrado.</div>';
+            
+            return `
+                <div class="pt-16 md:pt-0">
+                    <button class="flex items-center text-gray-400 hover:text-white transition-colors mb-6" onclick="navigateTo('home')">
+                        <svg class="w-6 h-6 mr-1"><use href="#icon-chevron-left"></use></svg>
+                        Voltar
+                    </button>
+                    <div class="relative w-full h-64 rounded-xl overflow-hidden mb-6 ${selectedProgram.color} flex flex-col items-center justify-center">
+                         <svg class="w-24 h-24 text-white mb-4"><use href="#${selectedProgram.icon}"></use></svg>
+                        <div class="p-4 text-center">
+                            <h1 class="text-3xl md:text-4xl font-extrabold">${selectedProgram.title}</h1>
+                            <p class="text-sm text-white opacity-80 mt-1">${selectedProgram.description}</p>
+                            <p class="text-xs text-white opacity-60 mt-1">Com ${selectedProgram.trainer}</p>
+                        </div>
+                    </div>
+                    <div class="bg-[#1c1c1e] rounded-xl p-6">
+                        <h2 class="text-2xl font-bold mb-4">Exercícios</h2>
+                        <ul class="space-y-3">
+                            ${selectedProgram.exercises.map(ex => `
+                                <li class="text-gray-300">${ex}</li>
+                            `).join('')}
+                        </ul>
+                    </div>
+                    <button class="w-full mt-6 flex items-center justify-center bg-green-500 hover:bg-green-600 text-white font-bold py-4 px-6 rounded-full transition-colors" onclick="navigateTo('workout')">
+                        <svg class="w-6 h-6 mr-2"><use href="#icon-play"></use></svg>
+                        Iniciar Treino
+                    </button>
+                </div>
+            `;
+        }
+
+        function renderWorkoutPage() {
+            if (!selectedProgram) return '<div>Programa não encontrado.</div>';
+
+            const minutes = Math.floor(timerSeconds / 60);
+            const seconds = timerSeconds % 60;
+            const timeString = `${String(minutes).padStart(2, '0')}:${String(seconds).padStart(2, '0')}`;
+            
+            return `
+                <div class="pt-16 md:pt-0 text-center">
+                    <h1 class="text-4xl md:text-5xl font-extrabold mb-2">${selectedProgram.title}</h1>
+                    <p class="text-gray-400 mb-8">Tempo Total: ${Math.floor(selectedProgram.duration / 60)} min</p>
+
+                    <div class="text-7xl md:text-9xl font-extrabold text-white my-10">
+                        ${timeString}
+                    </div>
+                    
+                    <div class="flex justify-center space-x-4">
+                        ${isTimerRunning ?
+                            `<button class="p-4 rounded-full bg-yellow-500 hover:bg-yellow-600 transition-colors" onclick="pauseTimer()">
+                                <svg class="w-8 h-8 text-white"><use href="#icon-pause"></use></svg>
+                            </button>` :
+                            `<button class="p-4 rounded-full bg-green-500 hover:bg-green-600 transition-colors" onclick="startTimer()">
+                                <svg class="w-8 h-8 text-white"><use href="#icon-play"></use></svg>
+                            </button>`
+                        }
+                        <button class="p-4 rounded-full bg-red-500 hover:bg-red-600 transition-colors" onclick="stopTimer()">
+                            <svg class="w-8 h-8 text-white"><use href="#icon-square"></use></svg>
+                        </button>
+                    </div>
+
+                    <div class="mt-12 bg-[#1c1c1e] rounded-xl p-6">
+                        <h3 class="text-2xl font-bold mb-4">Próximos Passos</h3>
+                        <ul class="space-y-3 text-left">
+                            ${selectedProgram.exercises.map((ex, index) => `
+                                <li class="text-gray-300">${index + 1}. ${ex}</li>
+                            `).join('')}
+                        </ul>
+                    </div>
+                </div>
+            `;
+        }
+
+        // Reusable UI rendering functions
+        function renderHeroSection() {
+            const radius = 40;
+            const circumference = 2 * Math.PI * radius;
+            const offset = circumference - (todayStats.progress / 100) * circumference;
+
+            return `
+                <div class="bg-[#1f2937] rounded-xl p-6 mb-8 md:p-8 flex items-center justify-between">
+                    <div class="flex items-center space-x-6">
+                        <div class="relative w-20 h-20 flex-shrink-0">
+                            <svg class="absolute top-0 left-0 w-full h-full" viewBox="0 0 100 100">
+                                <circle cx="50" cy="50" r="${radius}" fill="none" stroke="#374151" stroke-width="8"/>
+                                <circle
+                                    class="circle-progress-card"
+                                    cx="50" cy="50" r="${radius}"
+                                    fill="none"
+                                    stroke="#ec4899"
+                                    stroke-width="8"
+                                    stroke-dasharray="${circumference}"
+                                    stroke-dashoffset="${offset}"
+                                />
+                            </svg>
+                            <div class="absolute inset-0 flex items-center justify-center">
+                                <span class="text-xl font-bold">${todayStats.progress}%</span>
+                            </div>
+                        </div>
+                        <div class="flex-1">
+                            <h2 class="text-lg md:text-xl font-bold">Progresso de Hoje</h2>
+                            <p class="text-sm text-gray-300 mt-1">
+                                ${todayStats.steps} passos | ${todayStats.calories} cal
+                            </p>
+                        </div>
+                    </div>
+                    <button class="bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-6 rounded-full transition-colors hidden md:block" onclick="navigateTo('fitness')">
+                        Iniciar Treino
+                    </button>
+                </div>
+            `;
+        }
+        
+        function renderNavBar() {
+            return `
+                <nav class="fixed bottom-0 left-0 right-0 z-50 frosted-glass shadow-lg">
+                    <ul class="flex justify-around items-center h-16">
+                        ${navItems.map(item => `
+                            <li>
+                                <button
+                                    data-nav-id="${item.id}"
+                                    class="flex flex-col items-center justify-center p-2 text-sm font-medium transition-colors ${
+                                        activeTab === item.id
+                                            ? 'text-white'
+                                            : 'text-gray-400 hover:text-white'
+                                    }"
+                                >
+                                    <svg class="w-6 h-6 mb-1"><use href="#${item.icon}"></use></svg>
+                                    <span>${item.name}</span>
+                                </button>
+                            </li>
+                        `).join('')}
+                    </ul>
+                </nav>
+            `;
+        }
+
+        // Add event listeners
+        function setupEventListeners() {
+            const navButtons = document.querySelectorAll('[data-nav-id]');
+            navButtons.forEach(button => {
+                button.addEventListener('click', (e) => {
+                    const navId = e.currentTarget.dataset.navId;
+                    activeTab = navId;
+                    if (navId === 'profile') {
+                        navigateTo(navId);
+                    } else if (navId === 'activities') {
+                        navigateTo(navId);
+                    } else {
+                        navigateTo(navId);
+                    }
+                });
+            });
+
+            const categoryCards = document.querySelectorAll('[data-category-id]');
+            categoryCards.forEach(card => {
+                card.addEventListener('click', (e) => {
+                    const categoryId = e.currentTarget.dataset.categoryId;
+                    navigateTo('category-page', categoryId);
+                });
+            });
+
+            const programCards = document.querySelectorAll('[data-program-id]');
+            programCards.forEach(card => {
+                card.addEventListener('click', (e) => {
+                    const programId = e.currentTarget.dataset.programId;
+                    navigateTo('program-details', programId);
+                });
+            });
+        }
+
+        // Start the application
+        window.onload = initializeApp;
+    </script>
+</body>
+</html>
