@@ -971,12 +971,19 @@
     <script src="https://cdn.tailwindcss.com"></script>
 
     <!--
-        Esta é a linha que você precisa.
+        Esta é a linha que você precisa para o favicon geral.
         Ela informa ao navegador para carregar o arquivo 'favicon.png'
         como o ícone da aba do navegador.
         Certifique-se de que 'favicon.png' esteja na mesma pasta que este arquivo HTML.
     -->
     <link rel="icon" type="image/png" href="favicon.png">
+
+    <!--
+        Esta é a tag específica que os iPhones e iPads precisam.
+        Ela garante que o ícone apareça quando o site é adicionado
+        à tela inicial (Home Screen).
+    -->
+    <link rel="apple-touch-icon" href="favicon.png">
 
 </head>
 <body class="bg-gray-100 flex items-center justify-center min-h-screen">
