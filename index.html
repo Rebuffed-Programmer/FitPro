@@ -31,354 +31,65 @@
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
         }
-        .card-scroll-container {
-            overflow-x: scroll;
-            scrollbar-width: none; /* Oculta a scrollbar para Firefox */
-            -ms-overflow-style: none; /* Oculta a scrollbar para Internet Explorer e Edge */
-            padding-bottom: 1.5rem; /* Espaço para a sombra */
-        }
-        /* Oculta a scrollbar para navegadores WebKit (Chrome, Safari) */
-        .card-scroll-container::-webkit-scrollbar {
-            display: none;
+        .hero-banner {
+            background-color: #1a1a1a;
+            background-image: linear-gradient(to bottom, #1a1a1a, #2a2a2a);
         }
         .frosted-glass {
-            backdrop-filter: blur(20px) saturate(180%);
-            -webkit-backdrop-filter: blur(20px) saturate(180%);
-            background-color: rgba(29, 29, 31, 0.7);
-            border-top: 1px solid rgba(48, 48, 48, 0.5);
+            backdrop-filter: blur(10px);
+            background-color: rgba(26, 26, 26, 0.7);
         }
-        .card {
-            min-width: 280px;
-            max-width: 280px;
-            height: 180px;
-            position: relative;
-            transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
-            cursor: pointer;
-        }
-        .card:hover {
-            transform: scale(1.03);
-            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.3);
-        }
-        .card-overlay {
-            background-image: linear-gradient(to top, rgba(0,0,0,0.8) 0%, rgba(0,0,0,0) 50%);
-        }
-        
-        .circle-progress-card {
-            stroke-dasharray: 251.2;
-            stroke-dashoffset: 0;
-            transition: stroke-dashoffset 0.5s ease-in-out;
-            transform: rotate(-90deg);
-            transform-origin: 50% 50%;
-        }
-
-        .modal-overlay {
-            position: fixed;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            background-color: rgba(0, 0, 0, 0.75);
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            z-index: 1000;
-        }
-        .modal-content {
-            background-color: #1c1c1e;
-            padding: 2rem;
-            border-radius: 12px;
-            text-align: center;
-            max-width: 90%;
-            width: 400px;
-        }
-        .hero-banner {
-            background-image: linear-gradient(to bottom, #1f2937, #000);
+        .card-scroll-container {
+            -webkit-overflow-scrolling: touch;
         }
     </style>
 </head>
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>FitPro App</title>
-  <!-- Tailwind CSS CDN -->
-  <script src="https://cdn.tailwindcss.com"></script>
-  <!-- Google Fonts - Inter -->
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap" rel="stylesheet">
-  
-  <!--
-      Esta é a tag que faz o favicon aparecer em navegadores desktop.
-      Ela aponta para o seu arquivo 'favicon.png'.
-  -->
-  <link rel="icon" type="image/png" href="favicon.png">
+<body class="bg-black text-white font-sans">
+    <div class="container mx-auto px-4 py-8 md:py-12">
+        <div id="app-container">
+            <!-- As páginas serão renderizadas aqui -->
+        </div>
+    </div>
 
-  <!--
-      Esta é a tag específica para iPhones e iPads.
-      É ela que garante que o ícone apareça na tela de início.
-  -->
-  <link rel="apple-touch-icon" href="favicon.png">
-    <body class="bg-black text-white">
-    <!-- Onde o conteúdo será renderizado -->
-    <div id="app" class="container mx-auto px-4 py-8 md:py-12"></div>
-    
-    <!-- Ícones SVG (embutidos para funcionamento offline) -->
-    <svg display="none" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-        <symbol id="icon-home" viewBox="0 0 24 24"><path d="m3 9 9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></symbol>
-        <symbol id="icon-dumbbell" viewBox="0 0 24 24"><path d="m6.5 6.5 11 11"/><path d="m21 21-1-1"/><path d="m3 3 1 1"/><path d="m18 22 4-4"/><path d="m2 6 4-4"/><path d="m12 7 6-6"/><path d="m7 12-6 6"/><path d="M3.5 3.5a2 2 0 1 1 0 2.83A2 2 0 0 1 3.5 3.5Z"/><path d="M20.5 20.5a2 2 0 1 1 0 2.83A2 2 0 0 1 20.5 20.5Z"/></symbol>
-        <symbol id="icon-play" viewBox="0 0 24 24"><polygon points="5 3 19 12 5 21 5 3"/></symbol>
-        <symbol id="icon-book-open" viewBox="0 0 24 24"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/></symbol>
-        <symbol id="icon-heart" viewBox="0 0 24 24"><path d="M19 14c1.49-1.46 3-3.21 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.76 0-3 .5-4.5 2-1.5-1.5-2.74-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.3 1.5 4.05 3 5.5l7 7Z"/></symbol>
-        <symbol id="icon-award" viewBox="0 0 24 24"><circle cx="12" cy="8" r="7"/><path d="M8.21 13.89 7 22l5-3 5 3-1.21-8.12"/></symbol>
-        <symbol id="icon-moon" viewBox="0 0 24 24"><path d="M12 3a6 6 0 0 0 9 9 9 9 0 1 1-9-9Z"/></symbol>
-        <symbol id="icon-walking" viewBox="0 0 24 24"><path d="M13.5 10.5 16 14l-4 6-2-4"/><circle cx="8" cy="7" r="2"/></symbol>
-        <symbol id="icon-zap" viewBox="0 0 24 24"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></symbol>
-        <symbol id="icon-pause" viewBox="0 0 24 24"><rect x="6" y="4" width="4" height="16"/><rect x="14" y="4" width="4" height="16"/></symbol>
-        <symbol id="icon-square" viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"/></symbol>
-        <symbol id="icon-chevron-left" viewBox="0 0 24 24"><polyline points="15 18 9 12 15 6"/></symbol>
-        <symbol id="icon-refresh-cw" viewBox="0 0 24 24"><path d="M21 12a9 9 0 0 0-9-9a9 9 0 0 0-8 4c-.87-.93-2.28-.97-3.22-.09a2.5 2.5 0 0 0-.09 3.22"/><path d="M3 12a9 9 0 0 0 9 9a9 9 0 0 0 8-4c.87.93 2.28.97 3.22.09a2.5 2.5 0 0 0 .09-3.22"/><path d="M2.5 12h2"/><path d="M2.5 12l2.5 2.5"/><path d="M2.5 12l2.5-2.5"/></symbol>
-        <symbol id="icon-user" viewBox="0 0 24 24"><path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></symbol>
-        <symbol id="icon-activity" viewBox="0 0 24 24"><path d="M22 12h-4l-3 9L9 3l-3 9H2"/></symbol>
-        <symbol id="icon-check-circle" viewBox="0 0 24 24"><path d="M22 11.08V12a10 10 0 1 1-5.93-8.66"/><path d="M3 12h18"/><path d="m9 12 2 2 4-4"/></symbol>
-        <symbol id="icon-x-circle" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="m15 9-6 6"/><path d="m9 9 6 6"/></symbol>
-        <symbol id="icon-yoga" viewBox="0 0 24 24"><path d="M12 2L12 6"/><path d="M12 2L12 6"/><path d="M12 6C14.7614 6 17 8.23858 17 11C17 13.7614 14.7614 16 12 16C9.23858 16 7 13.7614 7 11C7 8.23858 9.23858 6 12 6Z"/><path d="M12 16L12 22"/><path d="M12 22L17 22"/><path d="M12 22L7 22"/></symbol>
-        <symbol id="icon-fire" viewBox="0 0 24 24"><path d="M8.5 14.5A2.5 2.5 0 0 0 11 12c0-1.5-1.5-3-3-3s-3 1.5-3 3c0 2.5 2.5 2.5 2.5 2.5z"/><path d="M12 2a10 10 0 0 0-9.28 12.01c-.5.48-1 .99-1.5 1.5-.4.4-.7.7-1 1-.5.5-1 1-1.5 1.5c.5.5 1.5 1.5 2.5 1.5h1.5l.5.5a10 10 0 0 0 18.5-8.5c0-5.5-4.5-10-10-10z"/></symbol>
-        <symbol id="icon-run" viewBox="0 0 24 24"><path d="M18 8c0-2.2-1.8-4-4-4s-4 1.8-4 4c0 1.2.6 2.3 1.5 3H10l-2.5 7.5L3 21"/><path d="M14 14l5-5l1 1"/><path d="M18 19l-4-4"/></symbol>
-        <symbol id="icon-swim" viewBox="0 0 24 24"><path d="M17 16c0 1.1-0.9 2-2 2h-6c-1.1 0-2-0.9-2-2"/><path d="M15 18l-4 4"/><path d="M9 18l-4 4"/><path d="M17 16V6c0-1.1-0.9-2-2-2h-2c-1.1 0-2 0.9-2 2v10"/><path d="M12 4L12 2"/><path d="M12 22L12 20"/><path d="M12 20h2c1.1 0 2-0.9 2-2"/></symbol>
-        <symbol id="icon-soccer" viewBox="0 0 24 24"><path d="M12 22c-5.5 0-10-4.5-10-10S6.5 2 12 2s10 4.5 10 10s-4.5 10-10 10zm0-18c-4.4 0-8 3.6-8 8s3.6 8 8 8s8-3.6 8-8s-3.6-8-8-8z"/><path d="M14 12a2 2 0 1 1-4 0a2 2 0 0 1 4 0z"/><path d="M17.5 7.5l-5.5 5.5l5.5 5.5"/><path d="M6.5 16.5l5.5-5.5l-5.5-5.5"/></symbol>
-    </svg>
+    <!-- Navegação fixa no rodapé -->
+    <nav class="fixed bottom-0 left-0 right-0 frosted-glass shadow-lg">
+        <ul class="flex justify-around items-center h-16">
+            <li class="flex-1 text-center">
+                <button data-nav-id="home" class="nav-button flex flex-col items-center justify-center text-sm font-medium p-2">
+                    <svg data-icon="home" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-home w-6 h-6 text-blue-500"><path d="m3 9 9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
+                    <span class="text-xs mt-1 text-blue-500">Início</span>
+                </button>
+            </li>
+            <li class="flex-1 text-center">
+                <button data-nav-id="activities" class="nav-button flex flex-col items-center justify-center text-sm font-medium p-2">
+                    <svg data-icon="activity" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-activity w-6 h-6 text-gray-400"><path d="M22 12h-4l-3 9L9 3l-3 9H2"/></svg>
+                    <span class="text-xs mt-1 text-gray-400">Atividades</span>
+                </button>
+            </li>
+            <li class="flex-1 text-center">
+                <button data-nav-id="profile" class="nav-button flex flex-col items-center justify-center text-sm font-medium p-2">
+                    <svg data-icon="user" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-user w-6 h-6 text-gray-400"><path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+                    <span class="text-xs mt-1 text-gray-400">Perfil</span>
+                </button>
+            </li>
+        </ul>
+    </nav>
 
     <script>
-        // --- Application Data and State (temporary, not saved) ---
-        // All information is held in memory while the page is open.
-        let todayStats = {
+        // Data from the application
+        const userProfile = { name: 'Usuário FitPro', dob: '' };
+        const todayStats = {
             progress: 0,
             calories: 0,
             distance: 0,
-        };
-
-        let healthMetrics = {
             heartRate: 0,
-            bloodPressure: "0/0",
-            sleep: "0h 0m",
+            steps: 0,
         };
-
-        let userProfile = {
-            name: 'Usuário FitPro',
-            dob: '' // Empty by default
-        };
-
-        const categories = {
-            fitness: [
-                {
-                    name: 'Força',
-                    id: 'forca',
-                    icon: 'icon-dumbbell',
-                    color: 'bg-indigo-600'
-                },
-                {
-                    name: 'Cardio',
-                    id: 'cardio',
-                    icon: 'icon-zap',
-                    color: 'bg-rose-600'
-                },
-                {
-                    name: 'Yoga',
-                    id: 'yoga',
-                    icon: 'icon-yoga',
-                    color: 'bg-emerald-600'
-                },
-                {
-                    name: 'Corrida',
-                    id: 'corrida',
-                    icon: 'icon-run',
-                    color: 'bg-orange-600'
-                },
-                {
-                    name: 'Natação',
-                    id: 'natacao',
-                    icon: 'icon-swim',
-                    color: 'bg-cyan-600'
-                },
-                {
-                    name: 'Futebol',
-                    id: 'futebol',
-                    icon: 'icon-soccer',
-                    color: 'bg-lime-600'
-                }
-            ],
-            meditation: [
-                {
-                    name: 'Atenção Plena',
-                    id: 'mindfulness',
-                    icon: 'icon-moon',
-                    color: 'bg-blue-600'
-                },
-                {
-                    name: 'Relaxamento',
-                    id: 'relaxamento',
-                    icon: 'icon-heart',
-                    color: 'bg-purple-600'
-                },
-            ],
-        };
-
-        const workouts = {
-            cardio: [
-                {
-                    id: 'cardio-10min',
-                    title: "Treino Rápido de Cardio",
-                    description: "Queime calorias em 10 minutos com exercícios intensos.",
-                    icon: 'icon-zap',
-                    color: 'bg-rose-600',
-                    trainer: "Coach Ana",
-                    duration: 600,
-                    caloriesBurned: 120,
-                    exercises: [
-                        'Aquecimento: 3 minutos de corrida no lugar',
-                        '30 segundos de polichinelo',
-                        '30 segundos de Mountain Climber',
-                        '30 segundos de descanso',
-                        '30 segundos de Burpee',
-                        '30 segundos de Pular Corda (simulado)',
-                        'Alongamento: 5 minutos de alongamento',
-                    ]
-                },
-            ],
-            yoga: [
-                {
-                    id: 'yoga-iniciantes',
-                    title: "Yoga para Iniciantes",
-                    description: "Melhore sua flexibilidade e foco com posturas básicas.",
-                    icon: 'icon-yoga',
-                    color: 'bg-emerald-600',
-                    trainer: "Instrutor Leo",
-                    duration: 600,
-                    caloriesBurned: 80,
-                    exercises: [
-                        'Posição da Montanha (Tadasana): 1 minuto',
-                        'Cachorro Olhando para Baixo (Adho Mukha Svanasana): 1 minuto',
-                        'Postura da Criança (Balasana): 2 minutos',
-                        'Posição da Árvore (Vrikshasana): 1 minuto por perna',
-                    ]
-                },
-            ],
-            forca: [
-                {
-                    id: 'forca-corpo-inteiro',
-                    title: "Força de Corpo Inteiro",
-                    description: "Treino com halteres para todos os grupos musculares.",
-                    icon: 'icon-dumbbell',
-                    color: 'bg-indigo-600',
-                    trainer: "Treinador Marcos",
-                    duration: 1200,
-                    caloriesBurned: 250,
-                    exercises: [
-                        'Agachamento com halteres: 3x12',
-                        'Supino com halteres: 3x10',
-                        'Remada curvada: 3x10',
-                        'Desenvolvimento de ombros: 3x12',
-                        'Prancha: 3x45 segundos',
-                    ]
-                }
-            ],
-            corrida: [
-                {
-                    id: 'corrida-5km',
-                    title: "Corrida de 5km",
-                    description: "Treino para iniciantes com foco em resistência e técnica.",
-                    icon: 'icon-run',
-                    color: 'bg-orange-600',
-                    trainer: "Treinador Leo",
-                    duration: 1800,
-                    caloriesBurned: 400,
-                    exercises: [
-                        'Aquecimento: 5 minutos de corrida leve e alongamento dinâmico.',
-                        'Corrida de 5km no seu ritmo.',
-                        'Resfriamento: 10 minutos de caminhada e alongamento estático.',
-                    ]
-                }
-            ],
-            natacao: [
-                {
-                    id: 'natacao-estilo-livre',
-                    title: "Natação Estilo Livre",
-                    description: "Treino de natação para melhorar a técnica e a resistência.",
-                    icon: 'icon-swim',
-                    color: 'bg-cyan-600',
-                    trainer: "Coach Patrícia",
-                    duration: 1800,
-                    caloriesBurned: 350,
-                    exercises: [
-                        'Aquecimento: 50m de crawl, 50m de costas.',
-                        '10 x 50m crawl, com 30s de descanso.',
-                        '4 x 100m medley, com 1min de descanso.',
-                        'Resfriamento: 200m de nado leve.',
-                    ]
-                }
-            ],
-            futebol: [
-                {
-                    id: 'futebol-treino-tecnico',
-                    title: "Treino Técnico de Futebol",
-                    description: "Melhore seu controle de bola, passe e chute.",
-                    icon: 'icon-soccer',
-                    color: 'bg-lime-600',
-                    trainer: "Treinador Ricardo",
-                    duration: 2700,
-                    caloriesBurned: 500,
-                    exercises: [
-                        'Aquecimento: 10 minutos de corrida e exercícios com a bola.',
-                        'Série de passes curtos e longos: 20 minutos.',
-                        'Exercícios de drible e condução: 15 minutos.',
-                        'Treino de finalização ao gol: 15 minutos.',
-                        'Resfriamento: 10 minutos de alongamento.',
-                    ]
-                }
-            ],
-            mindfulness: [
-                {
-                    id: 'foco-no-presente',
-                    title: "Foco no Presente",
-                    description: "Meditação guiada para clareza mental e concentração.",
-                    icon: 'icon-moon',
-                    color: 'bg-blue-600',
-                    trainer: "Terapeuta Sofia",
-                    duration: 600,
-                    caloriesBurned: 10,
-                    exercises: [
-                        'Sente-se confortavelmente e feche os olhos',
-                        'Observe sua respiração por 5 minutos',
-                        'Traga a atenção para os sons ao seu redor',
-                        'Retorne a atenção para sua respiração',
-                    ]
-                }
-            ],
-            relaxamento: [
-                {
-                    id: 'meditacao-sono',
-                    title: "Meditação para o Sono",
-                    description: "Relaxe sua mente e prepare-se para uma noite de sono melhor.",
-                    icon: 'icon-heart',
-                    color: 'bg-purple-600',
-                    trainer: "Terapeuta Sofia",
-                    duration: 600,
-                    caloriesBurned: 5,
-                    exercises: [
-                        'Deite-se em uma posição confortável',
-                        'Faça uma contagem regressiva da respiração',
-                        'Escaneie o corpo, relaxando cada parte',
-                        'Deixe-se levar para o sono',
-                    ]
-                }
-            ]
-        };
-        
         const dailyChallenge = {
             id: 'corpo-livre-total',
             title: "Desafio Corpo Livre Total",
             description: "Um treino sem equipamento para força e condicionamento.",
-            icon: 'icon-fire',
+            icon: `<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-fire w-6 h-6"><path d="M8.5 14.5A2.5 2.5 0 0 0 11 12c0-1.24-.75-2-2-2-1.24 0-2 .76-2 2s.76 2 2 2zm1-8.5A2.5 2.5 0 0 0 13 4c0-1.24-.75-2-2-2-1.24 0-2 .76-2 2s.76 2 2 2zm-1 9.5a2.5 2.5 0 0 0 4 0 2.5 2.5 0 0 0 4-4 2.5 2.5 0 0 0-4-4 2.5 2.5 0 0 0-4 0 2.5 2.5 0 0 0-4 4z"/></svg>`,
             color: 'bg-rose-600',
             trainer: "Coach Ana",
             duration: 900,
@@ -392,593 +103,878 @@
                 'Alongamento de 5 minutos',
             ]
         };
+        
+        // Dados de treino estáticos
+        let workouts = {
+          cardio: [
+            {
+              id: 'cardio-10min',
+              title: "Treino Rápido de Cardio",
+              description: "Queime calorias em 10 minutos com exercícios intensos.",
+              icon: `<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-zap w-6 h-6"><path d="M13 2L3 14h9l-1 8L21 10h-9l1-8z"/></svg>`,
+              color: 'bg-rose-600',
+              trainer: "Coach Ana",
+              duration: 600,
+              caloriesBurned: 120,
+              exercises: [
+                'Aquecimento: 3 minutos de corrida no lugar',
+                '30 segundos de polichinelo',
+                '30 segundos de Mountain Climber',
+                '30 segundos de descanso',
+                '30 segundos de Burpee',
+                '30 segundos de Pular Corda (simulado)',
+                'Alongamento: 5 minutos de alongamento',
+              ]
+            },
+          ],
+          yoga: [
+            {
+              id: 'yoga-iniciantes',
+              title: "Yoga para Iniciantes",
+              description: "Melhore sua flexibilidade e foco com posturas básicas.",
+              icon: `<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-leaf w-6 h-6"><path d="M11 20A7 7 0 0 1 9.8 6.1C15.5 5 17.5 8 22 11.8 19 15.5 17 17 13.6 18.6a2.5 2.5 0 0 0-3.4.5c-.7.7-.7 1.9 0 2.6C10.7 22.3 12 22 13.3 22H21"/></svg>`,
+              color: 'bg-emerald-600',
+              trainer: "Instrutor Leo",
+              duration: 600,
+              caloriesBurned: 80,
+              exercises: [
+                'Posição da Montanha (Tadasana): 1 minuto',
+                'Cachorro Olhando para Baixo (Adho Mukha Svanasana): 1 minuto',
+                'Postura da Criança (Balasana): 2 minutos',
+                'Posição da Árvore (Vrikshasana): 1 minuto por perna',
+              ]
+            },
+          ],
+          forca: [
+            {
+              id: 'forca-corpo-inteiro',
+              title: "Força de Corpo Inteiro",
+              description: "Treino com halteres para todos os grupos musculares.",
+              icon: `<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-dumbbell w-6 h-6"><path d="m14 17-5-5L11 8l5-5L21 8l-5 5-5 5z"/><path d="M8 18h-4a2 2 0 0 1-2-2v-4a2 2 0 0 1 2-2h4"/><path d="M16 6h4a2 2 0 0 1 2 2v4a2 2 0 0 1-2 2h-4"/></svg>`,
+              color: 'bg-indigo-600',
+              trainer: "Treinador Marcos",
+              duration: 1200,
+              caloriesBurned: 250,
+              exercises: [
+                'Agachamento com halteres: 3x12',
+                'Supino com halteres: 3x10',
+                'Remada curvada: 3x10',
+                'Desenvolvimento de ombros: 3x12',
+                'Prancha: 3x45 segundos',
+              ]
+            }
+          ],
+          corrida: [
+            {
+              id: 'corrida-5km',
+              title: "Corrida de 5km",
+              description: "Treino para iniciantes com foco em resistência e técnica.",
+              icon: `<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-running-shoe w-6 h-6"><path d="M3 12a10 10 0 1 0 20 0 10 10 0 1 0-20 0"/><path d="M12 2v20"/><path d="M12 2a10 10 0 0 0 0 20"/><path d="M12 2a10 10 0 0 0 0 20"/></svg>`,
+              color: 'bg-orange-600',
+              trainer: "Treinador Leo",
+              duration: 1800,
+              caloriesBurned: 400,
+              exercises: [
+                'Aquecimento: 5 minutos de corrida leve e alongamento dinâmico.',
+                'Corrida de 5km no seu ritmo.',
+                'Resfriamento: 10 minutos de caminhada e alongamento estático.',
+              ]
+            }
+          ],
+        };
+
+        const categories = {
+            fitness: [
+                { name: 'Força', id: 'forca', icon: `<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-dumbbell w-6 h-6"><path d="m14 17-5-5L11 8l5-5L21 8l-5 5-5 5z"/><path d="M8 18h-4a2 2 0 0 1-2-2v-4a2 2 0 0 1 2-2h4"/><path d="M16 6h4a2 2 0 0 1 2 2v4a2 2 0 0 1-2 2h-4"/></svg>`, color: 'bg-indigo-600' },
+                { name: 'Cardio', id: 'cardio', icon: `<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-zap w-6 h-6"><path d="M13 2L3 14h9l-1 8L21 10h-9l1-8z"/></svg>`, color: 'bg-rose-600' },
+                { name: 'Yoga', id: 'yoga', icon: `<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-leaf w-6 h-6"><path d="M11 20A7 7 0 0 1 9.8 6.1C15.5 5 17.5 8 22 11.8 19 15.5 17 17 13.6 18.6a2.5 2.5 0 0 0-3.4.5c-.7.7-.7 1.9 0 2.6C10.7 22.3 12 22 13.3 22H21"/></svg>`, color: 'bg-emerald-600' },
+                { name: 'Corrida', id: 'corrida', icon: `<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-running-shoe w-6 h-6"><path d="M3 12a10 10 0 1 0 20 0 10 10 0 1 0-20 0"/><path d="M12 2v20"/><path d="M12 2a10 10 0 0 0 0 20"/><path d="M12 2a10 10 0 0 0 0 20"/></svg>`, color: 'bg-orange-600' },
+                { name: 'Natação', id: 'natacao', icon: `<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-swim w-6 h-6"><path d="M12 22a10 10 0 0 0 10-10c0-5.52-4.48-10-10-10a10 10 0 0 0-10 10"/><path d="M12 12a3 3 0 1 0 0-6 3 3 0 0 0 0 6z"/><path d="M12 12c-4.42 0-8 3.58-8 8s3.58 8 8 8z"/><path d="M12 12a3 3 0 1 0 0-6 3 3 0 0 0 0 6z"/><path d="M12 12c-4.42 0-8 3.58-8 8s3.58 8 8 8z"/></svg>`, color: 'bg-cyan-600' },
+                { name: 'Futebol', id: 'futebol', icon: `<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-soccer-ball w-6 h-6"><circle cx="12" cy="12" r="10"/><path d="M12 2v20"/><path d="M12 2a10 10 0 0 0 0 20"/><path d="M12 2a10 10 0 0 0 0 20"/></svg>`, color: 'bg-lime-600' }
+            ],
+            meditation: [
+                { name: 'Atenção Plena', id: 'mindfulness', icon: `<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-clock w-6 h-6"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg>`, color: 'bg-blue-600' },
+                { name: 'Relaxamento', id: 'relaxamento', icon: `<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-heart w-6 h-6"><path d="M19 14c1.49-1.46 3-3.21 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.6 0-3.1 1-4.5 2-1.4-1-2.9-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.3 1.5 4.04 3 5.5l7 7Z"/></svg>`, color: 'bg-purple-600' },
+            ],
+        };
 
         const popularPrograms = [
             workouts.cardio[0],
             workouts.yoga[0],
             workouts.forca[0],
-            workouts.mindfulness[0],
-            workouts.relaxamento[0]
+            workouts.corrida[0],
         ];
 
-        const navItems = [
-            { id: 'home', name: 'Início', icon: 'icon-home' },
-            { id: 'fitness', name: 'Fitness', icon: 'icon-dumbbell' },
-            { id: 'meditation', name: 'Meditação', icon: 'icon-book-open' },
-            { id: 'profile', name: 'Perfil', icon: 'icon-user' },
-        ];
-
-        // Global application state variables
         let activeTab = 'home';
         let currentPage = 'home';
-        let selectedCategory = '';
+        let selectedCategory = null;
         let selectedProgram = null;
-        let timerInterval = null;
         let timerSeconds = 0;
         let isTimerRunning = false;
-        let message = null;
-        let continueWorkout = null;
-        
-        // UI element
-        const appContainer = document.getElementById('app');
+        let timerInterval = null;
+        let isEditingProfile = false;
+        let tempProfile = { ...userProfile };
+        let workoutGoal = '';
+        let workoutDuration = '';
+        let workoutEquipment = '';
+        let isGeneratingWorkout = false;
+        let isSpeaking = false;
 
-        // --- Application Logic (no database) ---
-        function initializeApp() {
-            // Initialize data with default values
-            todayStats = {
-                progress: 0,
-                calories: 0,
-                distance: 0,
-                steps: 0,
-            };
-            healthMetrics = {
-                heartRate: 80,
-                bloodPressure: "120/80",
-                sleep: "7h 30m",
-            };
-            userProfile = {
-                name: 'Usuário FitPro',
-                dob: ''
-            };
-            render();
+        // Função utilitária para formatar o tempo
+        function formatTime(totalSeconds) {
+            const hours = Math.floor(totalSeconds / 3600);
+            const minutes = Math.floor((totalSeconds % 3600) / 60);
+            const seconds = totalSeconds % 60;
+            return [hours, minutes, seconds]
+                .map(v => v < 10 ? "0" + v : v)
+                .join(":");
         }
 
-        function saveUserProfile() {
-            const name = document.getElementById('user-name').value;
-            const dob = document.getElementById('user-dob').value;
-            
-            if (!name) {
-                message = {
-                    icon: 'icon-x-circle',
-                    color: 'text-red-500',
-                    title: 'Erro!',
-                    text: 'O nome é obrigatório.'
-                };
-                render();
-                return;
-            }
-
-            userProfile.name = name;
-            userProfile.dob = dob;
-            
-            message = {
-                icon: 'icon-check-circle',
-                color: 'text-green-500',
-                title: 'Perfil Salvo!',
-                text: 'Suas informações foram atualizadas temporariamente.'
-            };
-            render();
-        }
-
-        function navigateTo(page, id = null) {
-            currentPage = page;
-            message = null; // Clear message on navigation
-            if (page === 'category-page') {
-                selectedCategory = id;
-            } else if (page === 'program-details') {
-                selectedProgram = Object.values(workouts)
-                    .flatMap(cat => cat)
-                    .find(p => p.id === id);
-            } else {
-                selectedCategory = '';
-                selectedProgram = null;
-            }
-            render();
-        }
-
-        function updateHealthMetrics() {
-            // Simulate new readings
-            healthMetrics.heartRate = Math.floor(Math.random() * (100 - 60 + 1)) + 60;
-            const systolic = Math.floor(Math.random() * (140 - 110 + 1)) + 110;
-            const diastolic = Math.floor(Math.random() * (90 - 70 + 1)) + 70;
-            healthMetrics.bloodPressure = `${systolic}/${diastolic}`;
-            healthMetrics.sleep = `${Math.floor(Math.random() * 2) + 7}h ${Math.floor(Math.random() * 60)}m`;
-            
-            message = {
-                icon: 'icon-check-circle',
-                color: 'text-blue-500',
-                title: 'Dados Atualizados!',
-                text: 'Suas métricas de saúde foram atualizadas.'
-            };
-            render();
-        }
-
+        // Funções de manipulação do cronômetro
         function startTimer() {
-            if (isTimerRunning) return;
-            isTimerRunning = true;
-            timerInterval = setInterval(() => {
-                timerSeconds++;
-                if (timerSeconds >= selectedProgram.duration) {
-                    completeWorkout();
-                } else {
-                    render();
-                }
-            }, 1000);
+            if (!isTimerRunning) {
+                isTimerRunning = true;
+                timerInterval = setInterval(() => {
+                    timerSeconds++;
+                    renderActivitiesPage();
+                }, 1000);
+            }
         }
 
         function pauseTimer() {
-            isTimerRunning = false;
-            clearInterval(timerInterval);
-            render();
-        }
-
-        function stopTimer() {
-            isTimerRunning = false;
-            clearInterval(timerInterval);
-            if (timerSeconds > 0 && timerSeconds < selectedProgram.duration) {
-                message = {
-                    icon: 'icon-x-circle',
-                    color: 'text-red-500',
-                    title: 'Treino Incompleto',
-                    text: 'Você não completou o treino, mas seu esforço conta!'
-                };
+            if (isTimerRunning) {
+                isTimerRunning = false;
+                clearInterval(timerInterval);
             }
-            timerSeconds = 0;
-            navigateTo('program-details', selectedProgram.id);
         }
 
-        function completeWorkout() {
-            isTimerRunning = false;
-            clearInterval(timerInterval);
-            
-            // Update user progress locally
-            todayStats.progress += 5;
-            todayStats.calories += selectedProgram.caloriesBurned;
-            todayStats.distance += 0.5;
-            todayStats.steps += 1000;
+        function resetTimer() {
+            pauseTimer();
+            timerSeconds = 0;
+            renderActivitiesPage();
+        }
 
-            message = {
-                icon: 'icon-check-circle',
-                color: 'text-green-500',
-                title: 'Parabéns!',
-                text: `Você completou o treino de ${Math.floor(selectedProgram.duration / 60)} minutos. Seu progresso foi atualizado!`
+        // Funções para renderizar SVG
+        const iconSVG = {
+            'home': `<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-home w-6 h-6"><path d="m3 9 9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>`,
+            'activity': `<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-activity w-6 h-6"><path d="M22 12h-4l-3 9L9 3l-3 9H2"/></svg>`,
+            'user': `<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-user w-6 h-6"><path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>`,
+            'dumbbell': `<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-dumbbell w-6 h-6"><path d="m14 17-5-5L11 8l5-5L21 8l-5 5-5 5z"/><path d="M8 18h-4a2 2 0 0 1-2-2v-4a2 2 0 0 1 2-2h4"/><path d="M16 6h4a2 2 0 0 1 2 2v4a2 2 0 0 1-2 2h-4"/></svg>`,
+            'zap': `<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-zap w-6 h-6"><path d="M13 2L3 14h9l-1 8L21 10h-9l1-8z"/></svg>`,
+            'leaf': `<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-leaf w-6 h-6"><path d="M11 20A7 7 0 0 1 9.8 6.1C15.5 5 17.5 8 22 11.8 19 15.5 17 17 13.6 18.6a2.5 2.5 0 0 0-3.4.5c-.7.7-.7 1.9 0 2.6C10.7 22.3 12 22 13.3 22H21"/></svg>`,
+            'running-shoe': `<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-running-shoe w-6 h-6"><path d="M3 12a10 10 0 1 0 20 0 10 10 0 1 0-20 0"/><path d="M12 2v20"/><path d="M12 2a10 10 0 0 0 0 20"/><path d="M12 2a10 10 0 0 0 0 20"/></svg>`,
+            'swim': `<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-swim w-6 h-6"><path d="M12 22a10 10 0 0 0 10-10c0-5.52-4.48-10-10-10a10 10 0 0 0-10 10"/><path d="M12 12a3 3 0 1 0 0-6 3 3 0 0 0 0 6z"/><path d="M12 12c-4.42 0-8 3.58-8 8s3.58 8 8 8z"/><path d="M12 12a3 3 0 1 0 0-6 3 3 0 0 0 0 6z"/><path d="M12 12c-4.42 0-8 3.58-8 8s3.58 8 8 8z"/></svg>`,
+            'soccer-ball': `<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-soccer-ball w-6 h-6"><circle cx="12" cy="12" r="10"/><path d="M12 2v20"/><path d="M12 2a10 10 0 0 0 0 20"/><path d="M12 2a10 10 0 0 0 0 20"/></svg>`,
+            'clock': `<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-clock w-6 h-6"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg>`,
+            'heart': `<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-heart w-6 h-6"><path d="M19 14c1.49-1.46 3-3.21 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.6 0-3.1 1-4.5 2-1.4-1-2.9-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.3 1.5 4.04 3 5.5l7 7Z"/></svg>`,
+            'chevron-right': `<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-chevron-right w-6 h-6"><path d="m9 18 6-6-6-6"/></svg>`,
+            'chevron-left': `<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-chevron-left w-6 h-6"><path d="m15 18-6-6 6-6"/></svg>`,
+            'edit': `<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-edit w-6 h-6"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>`,
+            'save': `<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-save w-6 h-6"><path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"/><polyline points="17 21 17 13 7 13 7 21"/><polyline points="7 3 7 8 15 8"/></svg>`,
+            'play': `<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-play w-6 h-6"><polygon points="5 3 19 12 5 21 5 3"/></svg>`,
+            'pause': `<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-pause w-6 h-6"><rect x="6" y="4" width="4" height="16"/><rect x="14" y="4" width="4" height="16"/></svg>`,
+            'refresh-ccw': `<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-refresh-ccw w-6 h-6"><path d="M21.2 12.2A9 9 0 1 1 12 3v-3l-4 4 4 4v-3"/><path d="M21.2 12.2A9 9 0 1 1 12 3v-3l-4 4 4 4v-3"/></svg>`,
+            'check-circle': `<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-check-circle w-6 h-6"><path d="M22 11.08V12a10 10 0 1 1-5.93-8.82"/><path d="M22 4 12 14.01l-3-3"/></svg>`,
+            'x-circle': `<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-x-circle w-6 h-6"><circle cx="12" cy="12" r="10"/><path d="m15 9-6 6"/><path d="m9 9 6 6"/></svg>`,
+            'fire': `<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-fire w-6 h-6"><path d="M8.5 14.5A2.5 2.5 0 0 0 11 12c0-1.24-.75-2-2-2-1.24 0-2 .76-2 2s.76 2 2 2zm1-8.5A2.5 2.5 0 0 0 13 4c0-1.24-.75-2-2-2-1.24 0-2 .76-2 2s.76 2 2 2zm-1 9.5a2.5 2.5 0 0 0 4 0 2.5 2.5 0 0 0 4-4 2.5 2.5 0 0 0-4-4 2.5 2.5 0 0 0-4 0 2.5 2.5 0 0 0-4 4z"/></svg>`,
+            'sparkles': `<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-sparkles w-6 h-6"><path d="M9.9 10.3c.6.6.6 1.5 0 2.1-.6.6-1.5.6-2.1 0L5.3 9.9c-.6-.6-.6-1.5 0-2.1.6-.6 1.5-.6 2.1 0z"/><path d="M12.9 13.3c.6.6.6 1.5 0 2.1-.6.6-1.5.6-2.1 0L7.3 12.9c-.6-.6-.6-1.5 0-2.1.6-.6 1.5-.6 2.1 0z"/><path d="M21 3L12 12l9 9"/><path d="M12 3l-9 9 9 9"/></svg>`,
+            'speaker': `<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-speaker w-6 h-6"><rect width="16" height="20" x="4" y="2" rx="2" ry="2"/><circle cx="12" cy="14" r="4"/><path d="M12 2v2"/><path d="M12 18v4"/><path d="M20 12h-4"/><path d="M8 12h-4"/></svg>`
+        };
+
+        // =========================================================================
+        // FUNÇÕES GEMINI API
+        // =========================================================================
+
+        // Helpers para TTS
+        function pcmToWav(pcmData, sampleRate) {
+            const wavHeader = new ArrayBuffer(44);
+            const view = new DataView(wavHeader);
+            const dataLength = pcmData.length * 2;
+            const channelCount = 1;
+            const bitDepth = 16;
+            const byteRate = (bitDepth / 8) * channelCount * sampleRate;
+            const blockAlign = channelCount * (bitDepth / 8);
+
+            writeString(view, 0, 'RIFF');
+            view.setUint32(4, 36 + dataLength, true);
+            writeString(view, 8, 'WAVE');
+            writeString(view, 12, 'fmt ');
+            view.setUint32(16, 16, true);
+            view.setUint16(20, 1, true);
+            view.setUint16(22, channelCount, true);
+            view.setUint32(24, sampleRate, true);
+            view.setUint32(28, byteRate, true);
+            view.setUint16(32, blockAlign, true);
+            view.setUint16(34, bitDepth, true);
+            writeString(view, 36, 'data');
+            view.setUint32(40, dataLength, true);
+
+            const pcmBuffer = new Int16Array(pcmData);
+            const audioBuffer = new Uint8Array(dataLength);
+
+            for (let i = 0; i < pcmBuffer.length; i++) {
+                const val = pcmBuffer[i];
+                audioBuffer[2 * i] = val & 0xFF;
+                audioBuffer[2 * i + 1] = (val >> 8) & 0xFF;
+            }
+
+            return new Blob([wavHeader, audioBuffer], { type: 'audio/wav' });
+        }
+
+        function base64ToArrayBuffer(base64) {
+            const binaryString = atob(base64);
+            const bytes = new Uint8Array(binaryString.length);
+            for (let i = 0; i < binaryString.length; i++) {
+                bytes[i] = binaryString.charCodeAt(i);
+            }
+            return bytes.buffer;
+        }
+
+        function writeString(view, offset, string) {
+            for (let i = 0; i < string.length; i++) {
+                view.setUint8(offset + i, string.charCodeAt(i));
+            }
+        }
+
+        // 1. Gerador de treinos personalizado
+        async function generateWorkout() {
+            isGeneratingWorkout = true;
+            renderHomePage(); // Atualiza o estado do botão para "Gerando..."
+            const apiKey = "";
+            const prompt = `Crie um plano de treino em português para um programa de 
+            ${workoutDuration} minutos. O objetivo é ${workoutGoal}. Os equipamentos disponíveis são ${workoutEquipment}.
+            Forneça o resultado como um objeto JSON. O objeto deve ter as seguintes propriedades:
+            - "title": O nome do treino (ex: "Treino de Cardio para Iniciantes").
+            - "description": Uma breve descrição do treino.
+            - "duration": A duração total em minutos.
+            - "exercises": Um array de strings, onde cada string é um exercício com suas repetições/duração (ex: "10 flexões", "30 segundos de prancha").
+            - "caloriesBurned": Um valor estimado de calorias queimadas (número).
+            - "trainer": O nome do treinador (pode ser fictício, como "Treinador IA").
+            - "iconName": O nome de um ícone que combine com o treino (ex: "dumbbell", "zap", "leaf", "running-shoe").
+            - "color": Uma cor de fundo Tailwind CSS (ex: "bg-blue-600").`;
+
+            const payload = {
+                contents: [{
+                    parts: [{ text: prompt }]
+                }],
+                generationConfig: {
+                    responseMimeType: "application/json",
+                    responseSchema: {
+                        type: "OBJECT",
+                        properties: {
+                            "title": { "type": "STRING" },
+                            "description": { "type": "STRING" },
+                            "duration": { "type": "NUMBER" },
+                            "exercises": {
+                                "type": "ARRAY",
+                                "items": { "type": "STRING" }
+                            },
+                            "caloriesBurned": { "type": "NUMBER" },
+                            "trainer": { "type": "STRING" },
+                            "iconName": { "type": "STRING" },
+                            "color": { "type": "STRING" }
+                        },
+                        "propertyOrdering": ["title", "description", "duration", "exercises", "caloriesBurned", "trainer", "iconName", "color"]
+                    }
+                }
             };
-            
-            timerSeconds = 0;
-            navigateTo('program-details', selectedProgram.id);
-        }
 
-        function renderModal() {
-            if (!message) return '';
-            return `
-                <div class="modal-overlay">
-                    <div class="modal-content">
-                        <svg class="w-16 h-16 mx-auto mb-4 ${message.color}"><use href="#${message.icon}"></use></svg>
-                        <h3 class="text-xl font-bold mb-2">${message.title}</h3>
-                        <p class="text-gray-400 mb-6">${message.text}</p>
-                        <button class="bg-blue-600 hover:bg-blue-700 text-white font-bold py-3 px-8 rounded-full" onclick="message = null; render();">
-                            Ok
-                        </button>
-                    </div>
-                </div>
-            `;
-        }
-        
-        // Main rendering function
-        function render() {
-            appContainer.innerHTML = '';
-            let content = '';
-            
-            switch (currentPage) {
-                case 'home':
-                    content = renderHomePage();
-                    break;
-                case 'fitness':
-                    content = renderCategoryListPage('Fitness', 'fitness');
-                    break;
-                case 'meditation':
-                    content = renderCategoryListPage('Meditação', 'meditation');
-                    break;
-                case 'profile':
-                    content = renderProfilePage();
-                    break;
-                case 'category-page':
-                    content = renderCategoryPage();
-                    break;
-                case 'program-details':
-                    selectedProgram = Object.values(workouts)
-                        .flatMap(cat => cat)
-                        .find(p => p.id === selectedProgram.id);
-                    content = renderProgramDetailsPage();
-                    break;
-                case 'workout':
-                    content = renderWorkoutPage();
-                    break;
+            try {
+                const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash-preview-05-20:generateContent?key=${apiKey}`;
+                const response = await fetch(apiUrl, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(payload)
+                });
+                const result = await response.json();
+                const newProgram = JSON.parse(result.candidates[0].content.parts[0].text);
+                
+                // Adiciona o novo programa à lista de treinos gerados
+                newProgram.id = `generated-${Date.now()}`;
+                newProgram.icon = iconSVG[newProgram.iconName] || iconSVG.dumbbell;
+
+                if (!workouts.generated) {
+                    workouts.generated = [];
+                }
+                workouts.generated.push(newProgram);
+                
+                // Navega para a página de detalhes do novo treino
+                navigateTo('program-details', newProgram);
+            } catch (error) {
+                console.error("Erro ao gerar treino:", error);
+            } finally {
+                isGeneratingWorkout = false;
+                renderHomePage(); // Atualiza o estado do botão
             }
-            appContainer.innerHTML = content + renderNavBar() + renderModal();
-            setupEventListeners();
         }
 
-        // UI rendering functions
+        // 2. Narrador de exercícios (TTS)
+        async function speakInstructions() {
+            isSpeaking = true;
+            renderProgramDetails(selectedProgram); // Atualiza o estado do botão para "Narrando..."
+            const apiKey = "";
+            const prompt = `Say in Portuguese in a calm and motivating tone: ${selectedProgram.exercises.join('. ')}`;
+
+            const payload = {
+                contents: [{
+                    parts: [{ text: prompt }]
+                }],
+                generationConfig: {
+                    responseModalities: ["AUDIO"],
+                    speechConfig: {
+                        voiceConfig: {
+                            prebuiltVoiceConfig: { voiceName: "Rasalgethi" }
+                        }
+                    }
+                },
+                model: "gemini-2.5-flash-preview-tts"
+            };
+
+            try {
+                const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash-preview-tts:generateContent?key=${apiKey}`;
+                const response = await fetch(apiUrl, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(payload)
+                });
+                const result = await response.json();
+                const part = result?.candidates?.[0]?.content?.parts?.[0];
+                const audioData = part?.inlineData?.data;
+                const mimeType = part?.inlineData?.mimeType;
+
+                if (audioData && mimeType && mimeType.startsWith("audio/")) {
+                    const sampleRate = parseInt(mimeType.match(/rate=(\d+)/)[1], 10);
+                    const pcmData = base64ToArrayBuffer(audioData);
+                    const pcm16 = new Int16Array(pcmData);
+                    const wavBlob = pcmToWav(pcm16, sampleRate);
+                    const audioUrl = URL.createObjectURL(wavBlob);
+                    const audio = new Audio(audioUrl);
+                    audio.play();
+                    audio.onended = () => {
+                        isSpeaking = false;
+                        renderProgramDetails(selectedProgram);
+                        URL.revokeObjectURL(audioUrl);
+                    };
+                } else {
+                    console.error("Dados de áudio inválidos na resposta da API.");
+                    isSpeaking = false;
+                    renderProgramDetails(selectedProgram);
+                }
+            } catch (error) {
+                console.error("Erro ao gerar áudio:", error);
+                isSpeaking = false;
+                renderProgramDetails(selectedProgram);
+            }
+        }
+
+
+        // =========================================================================
+        // FUNÇÕES DE RENDERIZAÇÃO
+        // =========================================================================
+
         function renderHomePage() {
-            const now = new Date();
-            const timeString = now.toLocaleTimeString('pt-BR', { hour: '2-digit', minute: '2-digit' });
-            return `
-                <div class="hero-banner rounded-b-[40px] p-6 pb-12">
-                    <div class="flex items-center justify-between mb-8">
-                        <div>
-                            <h1 class="text-2xl font-extrabold tracking-tight">Seu Dia</h1>
-                            <p class="text-xs text-gray-400 mt-1">Olá, ${userProfile.name}!</p>
-                        </div>
-                        <div class="p-2 rounded-full bg-gray-800 border border-gray-700">
-                             <svg class="w-6 h-6 text-white"><use href="#icon-user"></use></svg>
-                        </div>
-                    </div>
-                    ${renderHeroSection()}
-                </div>
-                <div class="px-4 -mt-10">
-                    ${continueWorkout ? renderContinueSection() : ''}
-                    ${renderDailyChallengeSection()}
-                    ${renderPopularProgramsSection()}
-                </div>
-            `;
-        }
-        
-        function renderContinueSection() {
-            return `
-                <h3 class="text-lg md:text-xl font-bold mt-8 mb-4">Continuações</h3>
-                <div 
-                    class="card rounded-xl p-4 shadow-lg bg-[#1c1c1e] flex items-center"
-                    data-program-id="${continueWorkout.id}"
-                >
-                    <div class="p-3 rounded-full ${continueWorkout.color} mr-4">
-                        <svg class="w-6 h-6 text-white"><use href="#${continueWorkout.icon}"></use></svg>
-                    </div>
-                    <div class="flex-1">
-                        <h4 class="font-bold text-lg leading-tight mb-1">Retomar Treino</h4>
-                        <p class="text-xs text-gray-300 leading-snug">${continueWorkout.title}</p>
-                    </div>
-                    <div class="p-2 rounded-full bg-blue-600">
-                        <svg class="w-5 h-5 text-white"><use href="#icon-play"></use></svg>
-                    </div>
-                </div>
-            `;
-        }
+            const container = document.getElementById('app-container');
+            const popularPrograms = [...workouts.cardio, ...workouts.yoga, ...workouts.forca, ...workouts.corrida];
+            if (workouts.generated) {
+                popularPrograms.unshift(...workouts.generated);
+            }
 
-        function renderDailyChallengeSection() {
-            return `
-                <h3 class="text-lg md:text-xl font-bold mt-8 mb-4">Desafio da Semana</h3>
-                <div class="card rounded-xl p-6 shadow-lg ${dailyChallenge.color} flex flex-col items-start justify-between">
-                    <div class="flex items-center space-x-2">
-                        <svg class="w-8 h-8 text-white"><use href="#${dailyChallenge.icon}"></use></svg>
-                        <h4 class="font-bold text-xl leading-tight">${dailyChallenge.title}</h4>
+            container.innerHTML = `
+                <header class="mb-8 md:hidden">
+                    <div class="flex justify-between items-center mb-4">
+                        <h1 class="text-3xl font-extrabold text-white">
+                            <span class="text-gradient">FitPro</span>
+                        </h1>
+                        <div class="flex items-center space-x-2">
+                            <div class="w-10 h-10 bg-gray-700 rounded-full flex items-center justify-center border-2 border-gray-600">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-user text-gray-400"><path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+                            </div>
+                        </div>
                     </div>
-                    <p class="text-xs text-white opacity-80 mt-2">${dailyChallenge.description}</p>
-                    <button class="bg-white text-black font-bold py-2 px-6 rounded-full mt-4" onclick="navigateTo('program-details', '${dailyChallenge.id}')">
-                        Participar
+                    <p class="text-gray-400">Olá, ${userProfile.name}. Pronto para o treino?</p>
+                </header>
+        
+                <!-- Hero Banner e Estatísticas -->
+                <div class="hero-banner rounded-2xl p-6 mb-8 text-white flex flex-col md:flex-row items-center justify-between">
+                    <div class="flex-1 mb-4 md:mb-0">
+                        <h2 class="text-2xl font-bold mb-2">${dailyChallenge.title}</h2>
+                        <p class="text-sm opacity-80 mb-4">${dailyChallenge.description}</p>
+                        <div class="flex items-center space-x-2 text-sm opacity-90">
+                            ${dailyChallenge.icon}
+                            <span>${dailyChallenge.caloriesBurned} kcal • ${dailyChallenge.duration / 60} min</span>
+                        </div>
+                    </div>
+                    <button data-program-id="${dailyChallenge.id}" class="program-card bg-white text-black font-semibold py-2 px-6 rounded-full shadow-lg transition-transform transform hover:scale-105">
+                        Começar Treino
                     </button>
                 </div>
-            `;
-        }
         
-        function renderPopularProgramsSection() {
-            return `
-                <h3 class="text-lg md:text-xl font-bold mt-8 mb-4">Programas Populares</h3>
-                <div class="card-scroll-container flex space-x-4">
-                    ${popularPrograms.map(item => `
-                        <div
-                            class="card rounded-xl p-4 shadow-lg bg-[#1c1c1e] flex flex-col items-start justify-center flex-shrink-0"
-                            data-program-id="${item.id}"
-                        >
-                            <svg class="w-10 h-10 text-white mb-2"><use href="#${item.icon}"></use></svg>
-                            <h4 class="font-bold text-lg leading-tight mb-1">${item.title}</h4>
-                            <p class="text-xs text-gray-300 leading-snug">${item.description}</p>
-                            ${item.trainer ? `<p class="text-xs text-gray-500 mt-1">Com ${item.trainer}</p>` : ''}
+                <h2 class="text-xl font-bold mt-8 mb-4">Seu Progresso de Hoje</h2>
+                <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
+                    <div class="p-4 bg-gray-800 rounded-xl flex flex-col items-center shadow-md">
+                        <div class="text-indigo-400 mb-2">${iconSVG.dumbbell}</div>
+                        <span class="text-2xl font-bold">${todayStats.steps}</span>
+                        <span class="text-sm text-gray-400">Passos</span>
+                    </div>
+                    <div class="p-4 bg-gray-800 rounded-xl flex flex-col items-center shadow-md">
+                        <div class="text-rose-400 mb-2">${iconSVG.zap}</div>
+                        <span class="text-2xl font-bold">${todayStats.calories}</span>
+                        <span class="text-sm text-gray-400">Calorias</span>
+                    </div>
+                    <div class="p-4 bg-gray-800 rounded-xl flex flex-col items-center shadow-md">
+                        <div class="text-orange-400 mb-2">${iconSVG['running-shoe']}</div>
+                        <span class="text-2xl font-bold">${todayStats.distance}</span>
+                        <span class="text-sm text-gray-400">Distância (km)</span>
+                    </div>
+                    <div class="p-4 bg-gray-800 rounded-xl flex flex-col items-center shadow-md">
+                        <div class="text-red-400 mb-2">${iconSVG.heart}</div>
+                        <span class="text-2xl font-bold">${todayStats.heartRate}</span>
+                        <span class="text-sm text-gray-400">BPM</span>
+                    </div>
+                </div>
+        
+                <h2 class="text-xl font-bold mt-8 mb-4">Treinos em Destaque</h2>
+                <div class="flex space-x-4 pb-4 overflow-x-auto card-scroll-container">
+                    ${categories.fitness.map(item => `
+                        <div data-category-id="${item.id}" class="category-card card ${item.color} rounded-2xl p-6 flex-shrink-0 flex flex-col justify-end text-white relative overflow-hidden shadow-lg transform transition-transform hover:scale-105" style="min-width: 280px; max-width: 280px; height: 180px;">
+                            <div class="absolute inset-0 z-0">
+                                ${item.icon.replace(/width="24" height="24"/g, 'width="120" height="120"').replace('class="', 'class="absolute -bottom-8 -right-8 opacity-20 ')}
+                            </div>
+                            <h3 class="text-2xl font-bold relative z-10">${item.name}</h3>
+                            <p class="text-sm opacity-80 relative z-10">
+                                ${item.id === 'forca' ? 'Treinos de peso' :
+                                item.id === 'cardio' ? 'Treinos de resistência' :
+                                item.id === 'yoga' ? 'Posturas e flexibilidade' :
+                                item.id === 'corrida' ? 'Treinos de corrida' :
+                                item.id === 'mindfulness' ? 'Meditação guiada' : 'Explore'}
+                            </p>
                         </div>
                     `).join('')}
                 </div>
-            `;
-        }
 
-        function renderCategoryListPage(title, categoryType) {
-            return `
-                <div class="pt-16 md:pt-0">
-                    <h2 class="text-3xl md:text-5xl font-extrabold tracking-tight mb-6">${title}</h2>
-                    <p class="text-gray-400 mb-8">Escolha sua categoria favorita.</p>
-                    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-                        ${categories[categoryType].map(cat => `
-                            <div
-                                class="card rounded-xl p-6 shadow-lg ${cat.color} flex flex-col items-center justify-center aspect-video"
-                                data-category-id="${cat.id}"
-                            >
-                                <svg class="w-16 h-16 text-white mb-2"><use href="#${cat.icon}"></use></svg>
-                                <h4 class="font-bold text-lg leading-tight mb-1">${cat.name}</h4>
-                            </div>
-                        `).join('')}
-                    </div>
-                </div>
-            `;
-        }
-
-        function renderCategoryPage() {
-            const categoryWorkouts = workouts[selectedCategory];
-            if (!categoryWorkouts) return `<div>Categoria não encontrada.</div>`;
-
-            const categoryInfo = categories.fitness.find(c => c.id === selectedCategory) ||
-                                 categories.meditation.find(c => c.id === selectedCategory);
-            const categoryName = categoryInfo?.name;
-            const categoryColor = categoryInfo?.color;
-            const categoryIcon = categoryInfo?.icon;
-
-
-            return `
-                <div class="pt-16 md:pt-0">
-                    <button class="flex items-center text-gray-400 hover:text-white transition-colors mb-6" onclick="navigateTo('${activeTab}')">
-                        <svg class="w-6 h-6 mr-1"><use href="#icon-chevron-left"></use></svg>
-                        Voltar
-                    </button>
-                    <div class="flex items-center space-x-4 mb-8">
-                        <div class="p-4 rounded-full ${categoryColor}">
-                            <svg class="w-12 h-12 text-white"><use href="#${categoryIcon}"></use></svg>
+                <!-- NOVO: Gerador de Treinos com Gemini API -->
+                <div class="p-6 bg-gray-800 rounded-2xl shadow-md mt-8">
+                    <h3 class="text-xl font-semibold mb-4 flex items-center">
+                        ${iconSVG.sparkles}
+                        Gerador de Treino Inteligente
+                    </h3>
+                    <p class="text-sm text-gray-400 mb-4">Crie um plano de treino personalizado com o poder do Gemini.</p>
+                    <div class="space-y-4">
+                        <div>
+                            <label class="block text-sm text-gray-400">Seu objetivo:</label>
+                            <input type="text" id="goal-input" value="${workoutGoal}" placeholder="ex: ganhar massa muscular, perder peso" class="w-full p-2 mt-1 rounded-lg bg-gray-700 border border-gray-600 focus:ring focus:ring-blue-500 focus:border-blue-500">
                         </div>
                         <div>
-                            <h2 class="text-3xl md:text-5xl font-extrabold tracking-tight">${categoryName}</h2>
-                            <p class="text-gray-400 mt-2">Explore todos os treinos de ${categoryName}.</p>
+                            <label class="block text-sm text-gray-400">Duração (minutos):</label>
+                            <input type="number" id="duration-input" value="${workoutDuration}" placeholder="ex: 30" class="w-full p-2 mt-1 rounded-lg bg-gray-700 border border-gray-600 focus:ring focus:ring-blue-500 focus:border-blue-500">
                         </div>
-                    </div>
-                    
-                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-                        ${categoryWorkouts.map(item => `
-                            <div
-                                class="card rounded-xl p-4 shadow-lg bg-[#1c1c1e] flex flex-col items-start justify-center"
-                                data-program-id="${item.id}"
-                            >
-                                <svg class="w-10 h-10 text-white mb-2"><use href="#${item.icon}"></use></svg>
-                                <h4 class="font-bold text-lg leading-tight mb-1">${item.title}</h4>
-                                <p class="text-xs text-gray-300 leading-snug">${item.description}</p>
-                                ${item.trainer ? `<p class="text-xs text-gray-500 mt-1">Com ${item.trainer}</p>` : ''}
-                            </div>
-                        `).join('')}
+                        <div>
+                            <label class="block text-sm text-gray-400">Equipamentos disponíveis:</label>
+                            <input type="text" id="equipment-input" value="${workoutEquipment}" placeholder="ex: halteres, banda de resistência" class="w-full p-2 mt-1 rounded-lg bg-gray-700 border border-gray-600 focus:ring focus:ring-blue-500 focus:border-blue-500">
+                        </div>
+                        <button id="generate-button" ${isGeneratingWorkout ? 'disabled' : ''} class="w-full font-bold py-3 rounded-full transition-colors flex items-center justify-center ${
+                            isGeneratingWorkout ? 'bg-gray-600 cursor-not-allowed' : 'bg-white text-black hover:bg-gray-200'
+                        }">
+                            ${isGeneratingWorkout ? 'Gerando...' : `${iconSVG.sparkles} Criar Treino`}
+                        </button>
                     </div>
                 </div>
+        
+                <h2 class="text-xl font-bold mt-8 mb-4">Programas Populares</h2>
+                <div class="space-y-4">
+                    ${popularPrograms.map(program => `
+                        <button data-program-id="${program.id}" class="program-card w-full flex items-center p-4 bg-gray-800 rounded-xl shadow-md transition-all duration-200 transform hover:scale-105 cursor-pointer">
+                            <div class="p-3 rounded-full ${program.color} flex-shrink-0">
+                                ${program.icon.replace(/width="24" height="24"/g, 'width="24" height="24"').replace('class="', 'class="text-white ')}
+                            </div>
+                            <div class="flex-grow ml-4">
+                                <h3 class="text-lg font-semibold">${program.title}</h3>
+                                <p class="text-sm text-gray-400">${program.trainer}</p>
+                            </div>
+                            <div class="text-gray-500">${iconSVG['chevron-right']}</div>
+                        </button>
+                    `).join('')}
+                </div>
             `;
+            setupEventListeners();
+        }
+        
+        function renderCategoryPage(categoryId) {
+            const container = document.getElementById('app-container');
+            const categoryName = categories.fitness.find(cat => cat.id === categoryId)?.name ||
+                                 categories.meditation.find(cat => cat.id === categoryId)?.name;
+            const categoryWorkouts = workouts[categoryId] || [];
+        
+            container.innerHTML = `
+                <header class="flex items-center mb-8">
+                    <button data-nav-id="home" class="nav-button p-2 rounded-full bg-gray-800 mr-4">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-chevron-left"><path d="m15 18-6-6 6-6"/></svg>
+                    </button>
+                    <h2 class="text-3xl font-bold">${categoryName}</h2>
+                </header>
+                <div class="space-y-4">
+                    ${categoryWorkouts.length > 0 ? (
+                        categoryWorkouts.map(program => `
+                            <button data-program-id="${program.id}" class="program-card w-full flex items-center p-4 bg-gray-800 rounded-xl shadow-md transition-all duration-200 transform hover:scale-105 cursor-pointer">
+                                <div class="p-3 rounded-full ${program.color} flex-shrink-0">
+                                    ${program.icon.replace(/width="24" height="24"/g, 'width="24" height="24"').replace('class="', 'class="text-white ')}
+                                </div>
+                                <div class="flex-grow ml-4">
+                                    <h3 class="text-lg font-semibold">${program.title}</h3>
+                                    <p class="text-sm text-gray-400">${program.trainer}</p>
+                                </div>
+                                <div class="text-gray-500">${iconSVG['chevron-right']}</div>
+                            </button>
+                        `).join('')
+                    ) : `<p class="text-gray-400 text-center mt-8">Nenhum treino encontrado nesta categoria.</p>`}
+                </div>
+            `;
+            setupEventListeners();
+        }
+        
+        function renderProgramDetails(program) {
+            const container = document.getElementById('app-container');
+        
+            container.innerHTML = `
+                <header class="flex items-center mb-8">
+                    <button data-nav-id="home" class="nav-button p-2 rounded-full bg-gray-800 mr-4">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-chevron-left"><path d="m15 18-6-6 6-6"/></svg>
+                    </button>
+                    <h2 class="text-3xl font-bold">${program.title}</h2>
+                </header>
+        
+                <div class="p-6 bg-gray-800 rounded-2xl mb-6 shadow-md">
+                    <div class="flex items-center mb-4">
+                        <div class="p-3 rounded-full ${program.color} flex-shrink-0">
+                            ${program.icon.replace(/width="24" height="24"/g, 'width="24" height="24"').replace('class="', 'class="text-white ')}
+                        </div>
+                        <div class="ml-4">
+                            <p class="text-sm text-gray-400">Treinador(a)</p>
+                            <h3 class="font-semibold text-lg">${program.trainer}</h3>
+                        </div>
+                    </div>
+                    <p class="text-sm text-gray-400">${program.description}</p>
+                    <div class="flex justify-between mt-4 text-sm text-gray-400">
+                        <span>${program.duration} min</span>
+                        <span>~${program.caloriesBurned} kcal</span>
+                    </div>
+                </div>
+
+                <!-- NOVO: Botão para Narrador de Exercícios -->
+                <button id="speak-button" ${isSpeaking ? 'disabled' : ''} class="w-full mb-4 font-bold py-3 rounded-full transition-colors flex items-center justify-center ${
+                    isSpeaking ? 'bg-gray-600 cursor-not-allowed' : 'bg-blue-600 text-white hover:bg-blue-700'
+                }">
+                    ${isSpeaking ? 'Narrando...' : `${iconSVG.speaker} Narrar Exercícios`}
+                </button>
+        
+                <h3 class="text-2xl font-bold mb-4">Exercícios</h3>
+                <ul class="space-y-3">
+                    ${program.exercises.map(exercise => `
+                        <li class="flex items-start">
+                            <div class="text-green-500 mr-3 mt-1 flex-shrink-0">${iconSVG['check-circle']}</div>
+                            <p class="text-gray-300">${exercise}</p>
+                        </li>
+                    `).join('')}
+                </ul>
+            `;
+            setupEventListeners();
         }
         
         function renderProfilePage() {
-            return `
-                <div class="pt-16 md:pt-0">
-                    <h2 class="text-3xl md:text-5xl font-extrabold tracking-tight mb-2">Seu Perfil</h2>
-                    <p class="text-gray-400 mb-8">Suas informações e estatísticas de saúde.</p>
-
-                    <div class="bg-[#1c1c1e] rounded-xl p-6 mb-8">
-                        <h3 class="text-xl font-bold mb-4">Informações Pessoais</h3>
-                        <form id="profile-form" onsubmit="event.preventDefault(); saveUserProfile()">
-                            <div class="mb-4">
-                                <label for="user-name" class="block text-sm font-medium text-gray-400 mb-1">Nome</label>
-                                <input type="text" id="user-name" value="${userProfile.name}" placeholder="Seu nome" required class="w-full p-3 rounded-lg bg-[#2c2c2e] text-white placeholder-gray-500 border border-transparent focus:outline-none focus:ring-2 focus:ring-blue-500">
-                            </div>
-                            <div class="mb-6">
-                                <label for="user-dob" class="block text-sm font-medium text-gray-400 mb-1">Data de Nascimento</label>
-                                <input type="date" id="user-dob" value="${userProfile.dob}" class="w-full p-3 rounded-lg bg-[#2c2c2e] text-white placeholder-gray-500 border border-transparent focus:outline-none focus:ring-2 focus:ring-blue-500">
-                            </div>
-                            <button type="submit" class="w-full bg-blue-600 hover:bg-blue-700 text-white font-bold py-3 px-8 rounded-full transition-colors">
-                                Salvar Perfil (temporário)
+            const container = document.getElementById('app-container');
+        
+            container.innerHTML = `
+                <header class="flex items-center mb-8">
+                    <button data-nav-id="home" class="nav-button p-2 rounded-full bg-gray-800 mr-4">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-chevron-left"><path d="m15 18-6-6 6-6"/></svg>
+                    </button>
+                    <h2 class="text-3xl font-bold">Perfil</h2>
+                </header>
+                <div class="p-6 bg-gray-800 rounded-2xl shadow-md">
+                    <div class="flex justify-between items-center mb-4">
+                        <h3 class="text-xl font-semibold">Suas Informações</h3>
+                        <button id="edit-profile-button" class="text-gray-400 hover:text-white transition-colors p-2">
+                            ${isEditingProfile ? iconSVG.save : iconSVG.edit}
+                        </button>
+                    </div>
+                    <div class="space-y-4">
+                        <div>
+                            <label class="block text-sm text-gray-400">Nome</label>
+                            ${isEditingProfile ? `
+                                <input type="text" id="name-input" value="${tempProfile.name}" class="w-full p-2 mt-1 rounded-lg bg-gray-700 border border-gray-600 focus:ring focus:ring-blue-500 focus:border-blue-500">
+                            ` : `
+                                <p class="mt-1 text-lg font-medium">${userProfile.name}</p>
+                            `}
+                        </div>
+                        <div>
+                            <label class="block text-sm text-gray-400">Data de Nascimento</label>
+                            ${isEditingProfile ? `
+                                <input type="date" id="dob-input" value="${tempProfile.dob}" class="w-full p-2 mt-1 rounded-lg bg-gray-700 border border-gray-600 focus:ring focus:ring-blue-500 focus:border-blue-500">
+                            ` : `
+                                <p class="mt-1 text-lg font-medium">${userProfile.dob || 'Não informada'}</p>
+                            `}
+                        </div>
+                        ${isEditingProfile ? `
+                            <button id="save-profile-button" class="w-full bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 rounded-lg transition-colors">
+                                Salvar Perfil
                             </button>
-                        </form>
-                    </div>
-
-                    <div class="bg-[#1c1c1e] rounded-xl p-6 mb-8">
-                        <h3 class="text-xl font-bold mb-4">Métricas de Saúde</h3>
-                        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
-                            <div class="bg-[#2c2c2e] rounded-lg p-4">
-                                <span class="block text-sm text-gray-400">Batimentos Cardíacos</span>
-                                <span class="text-3xl font-bold text-rose-500">${healthMetrics.heartRate}</span>
-                                <span class="text-sm text-gray-400"> bpm</span>
-                            </div>
-                            <div class="bg-[#2c2c2e] rounded-lg p-4">
-                                <span class="block text-sm text-gray-400">Pressão Arterial</span>
-                                <span class="text-3xl font-bold text-green-500">${healthMetrics.bloodPressure}</span>
-                                <span class="text-sm text-gray-400"> mmHg</span>
-                            </div>
-                            <div class="bg-[#2c2c2e] rounded-lg p-4">
-                                <span class="block text-sm text-gray-400">Duração do Sono</span>
-                                <span class="text-3xl font-bold text-blue-500">${healthMetrics.sleep}</span>
-                            </div>
-                        </div>
-                        <button class="w-full mt-6 bg-blue-600 hover:bg-blue-700 text-white font-bold py-3 px-8 rounded-full" onclick="updateHealthMetrics()">
-                            Atualizar Métricas
-                        </button>
+                        ` : ''}
                     </div>
                 </div>
             `;
-        }
-
-        function renderProgramDetailsPage() {
-            if (!selectedProgram) return '<div>Programa não encontrado.</div>';
-            
-            return `
-                <div class="pt-16 md:pt-0">
-                    <button class="flex items-center text-gray-400 hover:text-white transition-colors mb-6" onclick="navigateTo('home')">
-                        <svg class="w-6 h-6 mr-1"><use href="#icon-chevron-left"></use></svg>
-                        Voltar
-                    </button>
-                    <div class="relative w-full h-64 rounded-xl overflow-hidden mb-6 ${selectedProgram.color} flex flex-col items-center justify-center">
-                         <svg class="w-24 h-24 text-white mb-4"><use href="#${selectedProgram.icon}"></use></svg>
-                        <div class="p-4 text-center">
-                            <h1 class="text-3xl md:text-4xl font-extrabold">${selectedProgram.title}</h1>
-                            <p class="text-sm text-white opacity-80 mt-1">${selectedProgram.description}</p>
-                            <p class="text-xs text-white opacity-60 mt-1">Com ${selectedProgram.trainer}</p>
-                        </div>
-                    </div>
-                    <div class="bg-[#1c1c1e] rounded-xl p-6">
-                        <h2 class="text-2xl font-bold mb-4">Exercícios</h2>
-                        <ul class="space-y-3">
-                            ${selectedProgram.exercises.map(ex => `
-                                <li class="text-gray-300">${ex}</li>
-                            `).join('')}
-                        </ul>
-                    </div>
-                    <button class="w-full mt-6 flex items-center justify-center bg-green-500 hover:bg-green-600 text-white font-bold py-4 px-6 rounded-full transition-colors" onclick="navigateTo('workout')">
-                        <svg class="w-6 h-6 mr-2"><use href="#icon-play"></use></svg>
-                        Iniciar Treino
-                    </button>
-                </div>
-            `;
-        }
-
-        function renderWorkoutPage() {
-            if (!selectedProgram) return '<div>Programa não encontrado.</div>';
-
-            const minutes = Math.floor(timerSeconds / 60);
-            const seconds = timerSeconds % 60;
-            const timeString = `${String(minutes).padStart(2, '0')}:${String(seconds).padStart(2, '0')}`;
-            
-            return `
-                <div class="pt-16 md:pt-0 text-center">
-                    <h1 class="text-4xl md:text-5xl font-extrabold mb-2">${selectedProgram.title}</h1>
-                    <p class="text-gray-400 mb-8">Tempo Total: ${Math.floor(selectedProgram.duration / 60)} min</p>
-
-                    <div class="text-7xl md:text-9xl font-extrabold text-white my-10">
-                        ${timeString}
-                    </div>
-                    
-                    <div class="flex justify-center space-x-4">
-                        ${isTimerRunning ?
-                            `<button class="p-4 rounded-full bg-yellow-500 hover:bg-yellow-600 transition-colors" onclick="pauseTimer()">
-                                <svg class="w-8 h-8 text-white"><use href="#icon-pause"></use></svg>
-                            </button>` :
-                            `<button class="p-4 rounded-full bg-green-500 hover:bg-green-600 transition-colors" onclick="startTimer()">
-                                <svg class="w-8 h-8 text-white"><use href="#icon-play"></use></svg>
-                            </button>`
-                        }
-                        <button class="p-4 rounded-full bg-red-500 hover:bg-red-600 transition-colors" onclick="stopTimer()">
-                            <svg class="w-8 h-8 text-white"><use href="#icon-square"></use></svg>
-                        </button>
-                    </div>
-
-                    <div class="mt-12 bg-[#1c1c1e] rounded-xl p-6">
-                        <h3 class="text-2xl font-bold mb-4">Próximos Passos</h3>
-                        <ul class="space-y-3 text-left">
-                            ${selectedProgram.exercises.map((ex, index) => `
-                                <li class="text-gray-300">${index + 1}. ${ex}</li>
-                            `).join('')}
-                        </ul>
-                    </div>
-                </div>
-            `;
-        }
-
-        // Reusable UI rendering functions
-        function renderHeroSection() {
-            const radius = 40;
-            const circumference = 2 * Math.PI * radius;
-            const offset = circumference - (todayStats.progress / 100) * circumference;
-
-            return `
-                <div class="bg-[#1f2937] rounded-xl p-6 mb-8 md:p-8 flex items-center justify-between">
-                    <div class="flex items-center space-x-6">
-                        <div class="relative w-20 h-20 flex-shrink-0">
-                            <svg class="absolute top-0 left-0 w-full h-full" viewBox="0 0 100 100">
-                                <circle cx="50" cy="50" r="${radius}" fill="none" stroke="#374151" stroke-width="8"/>
-                                <circle
-                                    class="circle-progress-card"
-                                    cx="50" cy="50" r="${radius}"
-                                    fill="none"
-                                    stroke="#ec4899"
-                                    stroke-width="8"
-                                    stroke-dasharray="${circumference}"
-                                    stroke-dashoffset="${offset}"
-                                />
-                            </svg>
-                            <div class="absolute inset-0 flex items-center justify-center">
-                                <span class="text-xl font-bold">${todayStats.progress}%</span>
-                            </div>
-                        </div>
-                        <div class="flex-1">
-                            <h2 class="text-lg md:text-xl font-bold">Progresso de Hoje</h2>
-                            <p class="text-sm text-gray-300 mt-1">
-                                ${todayStats.steps} passos | ${todayStats.calories} cal
-                            </p>
-                        </div>
-                    </div>
-                    <button class="bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-6 rounded-full transition-colors hidden md:block" onclick="navigateTo('fitness')">
-                        Iniciar Treino
-                    </button>
-                </div>
-            `;
+            setupEventListeners();
         }
         
-        function renderNavBar() {
-            return `
-                <nav class="fixed bottom-0 left-0 right-0 z-50 frosted-glass shadow-lg">
-                    <ul class="flex justify-around items-center h-16">
-                        ${navItems.map(item => `
-                            <li>
-                                <button
-                                    data-nav-id="${item.id}"
-                                    class="flex flex-col items-center justify-center p-2 text-sm font-medium transition-colors ${
-                                        activeTab === item.id
-                                            ? 'text-white'
-                                            : 'text-gray-400 hover:text-white'
-                                    }"
-                                >
-                                    <svg class="w-6 h-6 mb-1"><use href="#${item.icon}"></use></svg>
-                                    <span>${item.name}</span>
-                                </button>
-                            </li>
-                        `).join('')}
-                    </ul>
-                </nav>
+        function renderActivitiesPage() {
+            const container = document.getElementById('app-container');
+        
+            container.innerHTML = `
+                <header class="flex items-center mb-8">
+                    <button data-nav-id="home" class="nav-button p-2 rounded-full bg-gray-800 mr-4">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-chevron-left"><path d="m15 18-6-6 6-6"/></svg>
+                    </button>
+                    <h2 class="text-3xl font-bold">Atividades</h2>
+                </header>
+        
+                <!-- Seção de Cronômetro -->
+                <div class="p-6 bg-gray-800 rounded-2xl shadow-md mb-6">
+                    <h3 class="text-xl font-semibold mb-4">Cronômetro</h3>
+                    <div class="flex flex-col items-center">
+                        <div id="timer-display" class="text-5xl font-mono my-4">
+                            ${formatTime(timerSeconds)}
+                        </div>
+                        <div class="flex space-x-4">
+                            <button id="start-timer-button" class="p-4 rounded-full bg-green-500 hover:bg-green-600 transition-colors">
+                                ${iconSVG.play}
+                            </button>
+                            <button id="pause-timer-button" class="p-4 rounded-full bg-yellow-500 hover:bg-yellow-600 transition-colors">
+                                ${iconSVG.pause}
+                            </button>
+                            <button id="reset-timer-button" class="p-4 rounded-full bg-red-500 hover:bg-red-600 transition-colors">
+                                ${iconSVG['refresh-ccw']}
+                            </button>
+                        </div>
+                    </div>
+                </div>
+        
+                <!-- Seção de Métricas Manuais -->
+                <div class="p-6 bg-gray-800 rounded-2xl shadow-md">
+                    <h3 class="text-xl font-semibold mb-4">Registro de Métricas</h3>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        <div>
+                            <label class="block text-sm text-gray-400">Batimentos (bpm)</label>
+                            <input type="number" id="heart-rate-input" value="${todayStats.heartRate}" class="w-full p-2 mt-1 rounded-lg bg-gray-700 border border-gray-600 focus:ring focus:ring-blue-500 focus:border-blue-500">
+                        </div>
+                        <div>
+                            <label class="block text-sm text-gray-400">Passos</label>
+                            <input type="number" id="steps-input" value="${todayStats.steps}" class="w-full p-2 mt-1 rounded-lg bg-gray-700 border border-gray-600 focus:ring focus:ring-blue-500 focus:border-blue-500">
+                        </div>
+                        <div>
+                            <label class="block text-sm text-gray-400">Calorias (kcal)</label>
+                            <input type="number" id="calories-input" value="${todayStats.calories}" class="w-full p-2 mt-1 rounded-lg bg-gray-700 border border-gray-600 focus:ring focus:ring-blue-500 focus:border-blue-500">
+                        </div>
+                        <div>
+                            <label class="block text-sm text-gray-400">Distância (km)</label>
+                            <input type="number" id="distance-input" value="${todayStats.distance}" class="w-full p-2 mt-1 rounded-lg bg-gray-700 border border-gray-600 focus:ring focus:ring-blue-500 focus:border-blue-500">
+                        </div>
+                    </div>
+                </div>
             `;
+            setupEventListeners();
         }
-
-        // Add event listeners
+        
+        function navigateTo(page, data = null) {
+            currentPage = page;
+            if (page === 'category-page') {
+                selectedCategory = data;
+                renderCategoryPage(selectedCategory);
+            } else if (page === 'program-details') {
+                selectedProgram = data;
+                renderProgramDetails(selectedProgram);
+            } else if (page === 'profile') {
+                renderProfilePage();
+            } else if (page === 'activities') {
+                renderActivitiesPage();
+            } else {
+                renderHomePage();
+            }
+        
+            // Atualiza o estado da navegação
+            updateNavButtons();
+        }
+        
+        function findProgramById(id) {
+            for (const categoryId in workouts) {
+                const program = workouts[categoryId].find(p => p.id === id);
+                if (program) {
+                    return program;
+                }
+            }
+            // Busca nos programas gerados também
+            if (workouts.generated) {
+                const generatedProgram = workouts.generated.find(p => p.id === id);
+                if (generatedProgram) {
+                    return generatedProgram;
+                }
+            }
+            return null;
+        }
+        
+        function handleEditProfileClick() {
+            if (isEditingProfile) {
+                const nameInput = document.getElementById('name-input');
+                const dobInput = document.getElementById('dob-input');
+                userProfile.name = nameInput.value;
+                userProfile.dob = dobInput.value;
+            }
+            isEditingProfile = !isEditingProfile;
+            renderProfilePage();
+        }
+        
+        function handleMetricChange(event) {
+            const input = event.target;
+            if (input.id === 'heart-rate-input') {
+                todayStats.heartRate = input.value;
+            } else if (input.id === 'steps-input') {
+                todayStats.steps = input.value;
+            } else if (input.id === 'calories-input') {
+                todayStats.calories = input.value;
+            } else if (input.id === 'distance-input') {
+                todayStats.distance = input.value;
+            }
+        }
+        
+        function updateNavButtons() {
+            const navButtons = document.querySelectorAll('.nav-button');
+            navButtons.forEach(button => {
+                const icon = button.querySelector('svg');
+                const span = button.querySelector('span');
+                const navId = button.dataset.navId;
+                
+                // Reset colors
+                if (icon) icon.classList.remove('text-blue-500', 'text-gray-400');
+                if (span) span.classList.remove('text-blue-500', 'text-gray-400');
+        
+                // Set active/inactive colors
+                if (navId === 'home' && ['home', 'category-page', 'program-details'].includes(currentPage)) {
+                    if (icon) icon.classList.add('text-blue-500');
+                    if (span) span.classList.add('text-blue-500');
+                } else if (navId === currentPage) {
+                    if (icon) icon.classList.add('text-blue-500');
+                    if (span) span.classList.add('text-blue-500');
+                } else {
+                    if (icon) icon.classList.add('text-gray-400');
+                    if (span) span.classList.add('text-gray-400');
+                }
+            });
+        }
+        
         function setupEventListeners() {
             const navButtons = document.querySelectorAll('[data-nav-id]');
             navButtons.forEach(button => {
-                button.addEventListener('click', (e) => {
-                    const navId = e.currentTarget.dataset.navId;
-                    activeTab = navId;
-                    if (navId === 'profile') {
-                        navigateTo(navId);
-                    } else if (navId === 'activities') {
-                        navigateTo(navId);
-                    } else {
-                        navigateTo(navId);
-                    }
-                });
+                button.removeEventListener('click', handleNavClick);
+                button.addEventListener('click', handleNavClick);
             });
-
+        
             const categoryCards = document.querySelectorAll('[data-category-id]');
             categoryCards.forEach(card => {
-                card.addEventListener('click', (e) => {
-                    const categoryId = e.currentTarget.dataset.categoryId;
-                    navigateTo('category-page', categoryId);
-                });
+                card.removeEventListener('click', handleCategoryClick);
+                card.addEventListener('click', handleCategoryClick);
             });
-
+        
             const programCards = document.querySelectorAll('[data-program-id]');
             programCards.forEach(card => {
-                card.addEventListener('click', (e) => {
-                    const programId = e.currentTarget.dataset.programId;
-                    navigateTo('program-details', programId);
-                });
+                card.removeEventListener('click', handleProgramClick);
+                card.addEventListener('click', handleProgramClick);
             });
+        
+            const editButton = document.getElementById('edit-profile-button');
+            if (editButton) {
+                editButton.removeEventListener('click', handleEditProfileClick);
+                editButton.addEventListener('click', handleEditProfileClick);
+            }
+        
+            const saveButton = document.getElementById('save-profile-button');
+            if (saveButton) {
+                saveButton.removeEventListener('click', handleEditProfileClick);
+                saveButton.addEventListener('click', handleEditProfileClick);
+            }
+        
+            const startTimerButton = document.getElementById('start-timer-button');
+            if (startTimerButton) {
+                startTimerButton.removeEventListener('click', startTimer);
+                startTimerButton.addEventListener('click', startTimer);
+            }
+        
+            const pauseTimerButton = document.getElementById('pause-timer-button');
+            if (pauseTimerButton) {
+                pauseTimerButton.removeEventListener('click', pauseTimer);
+                pauseTimerButton.addEventListener('click', pauseTimer);
+            }
+        
+            const resetTimerButton = document.getElementById('reset-timer-button');
+            if (resetTimerButton) {
+                resetTimerButton.removeEventListener('click', resetTimer);
+                resetTimerButton.addEventListener('click', resetTimer);
+            }
+        
+            const metricInputs = document.querySelectorAll('input[type="number"]');
+            metricInputs.forEach(input => {
+                input.removeEventListener('input', handleMetricChange);
+                input.addEventListener('input', handleMetricChange);
+            });
+
+            // Event Listeners for new Gemini features
+            const generateButton = document.getElementById('generate-button');
+            if (generateButton) {
+                generateButton.removeEventListener('click', handleGenerateClick);
+                generateButton.addEventListener('click', handleGenerateClick);
+            }
+
+            const speakButton = document.getElementById('speak-button');
+            if (speakButton) {
+                speakButton.removeEventListener('click', speakInstructions);
+                speakButton.addEventListener('click', speakInstructions);
+            }
+            
+            const goalInput = document.getElementById('goal-input');
+            const durationInput = document.getElementById('duration-input');
+            const equipmentInput = document.getElementById('equipment-input');
+            if (goalInput) goalInput.addEventListener('input', (e) => { workoutGoal = e.target.value; });
+            if (durationInput) durationInput.addEventListener('input', (e) => { workoutDuration = e.target.value; });
+            if (equipmentInput) equipmentInput.addEventListener('input', (e) => { workoutEquipment = e.target.value; });
+        }
+        
+        function handleNavClick(e) {
+            const navId = e.currentTarget.dataset.navId;
+            navigateTo(navId);
+        }
+        
+        function handleCategoryClick(e) {
+            const categoryId = e.currentTarget.dataset.categoryId;
+            navigateTo('category-page', categoryId);
+        }
+        
+        function handleProgramClick(e) {
+            const programId = e.currentTarget.dataset.programId;
+            const program = findProgramById(programId);
+            if (program) {
+                navigateTo('program-details', program);
+            }
         }
 
+        function handleGenerateClick() {
+            generateWorkout();
+        }
+        
         // Start the application
-        window.onload = initializeApp;
+        window.onload = function() {
+            initializeApp();
+        };
+
+        function initializeApp() {
+            navigateTo('home');
+        }
     </script>
 </body>
 </html>
-
