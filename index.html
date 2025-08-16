@@ -10,6 +10,8 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <!-- Font Awesome para ícones -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     
     <style>
         :root {
@@ -26,381 +28,339 @@
         .container {
             max-width: 100vw;
             min-height: 100vh;
-            padding-bottom: 80px; /* Space for the fixed nav bar */
+            padding-bottom: 80px; /* Espaço para a barra de navegação */
         }
         .text-gradient {
             background-image: linear-gradient(to right, #ffffff, #aaaaaa);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
         }
+        .text-shadow {
+            text-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
+        }
+        .page {
+            display: none;
+        }
+        .page.active {
+            display: block;
+        }
         .scroll-container::-webkit-scrollbar {
             display: none;
         }
         .scroll-container {
-            -ms-overflow-style: none;  /* IE and Edge */
-            scrollbar-width: none;  /* Firefox */
+            -ms-overflow-style: none; /* IE and Edge */
+            scrollbar-width: none; /* Firefox */
         }
         .card {
             background-color: #1a1a1a;
-            border: 1px solid #2d2d2d;
-        }
-        .page-content {
-            display: none;
-        }
-        .page-content.active {
-            display: block;
-        }
-        /* Style for the alert message box */
-        .message-box {
-            position: fixed;
-            bottom: 96px; /* Above the navigation bar */
-            left: 50%;
-            transform: translateX(-50%);
-            background-color: #2d2d2d;
-            color: white;
-            padding: 12px 24px;
-            border-radius: 9999px;
-            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-            z-index: 100;
-            opacity: 0;
-            transition: opacity 0.3s ease-in-out;
-        }
-        .message-box.show {
-            opacity: 1;
-        }
-        .modal-overlay {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background-color: rgba(0, 0, 0, 0.75);
-            display: none;
-            justify-content: center;
-            align-items: center;
-            z-index: 200;
-        }
-        .modal-content {
-            background-color: #1a1a1a;
-            padding: 2rem;
             border-radius: 12px;
-            text-align: center;
-            max-width: 80%;
-            box-shadow: 0 10px 20px rgba(0,0,0,0.5);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+            transition: transform 0.2s ease-in-out;
+        }
+        .card:hover {
+            transform: translateY(-5px);
+        }
+        .workout-card-small {
+            background-color: #1a1a1a;
+            border-radius: 12px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+        }
+        .active-nav-icon {
+            color: #8A2BE2;
         }
     </style>
 </head>
-<body class="bg-black text-white font-inter">
+<body class="bg-black text-white">
 
-    <div class="container mx-auto px-4 py-8 relative">
-        <!-- Main Content Section - Home Page -->
-        <div id="home-page" data-page="home" class="page-content space-y-8 active">
-            <h1 class="text-3xl font-bold">Início</h1>
-            
-            <!-- Seu Progresso de Hoje -->
-            <section>
-                <h2 class="text-xl font-bold mb-4">Seu Progresso de Hoje</h2>
+    <div class="container mx-auto px-4 pt-6 pb-20">
+
+        <!-- Página Inicial -->
+        <div id="home-page" class="page active" data-nav-id="home">
+            <h1 class="text-3xl font-bold mb-8 text-gradient text-shadow">Bem-vindo(a) de volta!</h1>
+
+            <!-- Progresso de Hoje -->
+            <section class="mb-8">
+                <h2 class="text-2xl font-semibold mb-4">Seu Progresso de Hoje</h2>
                 <div id="progress-metrics" class="flex flex-row overflow-x-auto scroll-container gap-4 pb-4">
-                    <!-- Metrics will be dynamically generated here -->
+                    <!-- Métricas renderizadas dinamicamente aqui -->
                 </div>
             </section>
 
             <!-- Círculos de Atividade -->
-            <section>
-                <h2 class="text-xl font-bold mb-4">Círculos de Atividade</h2>
-                <div id="activity-circles" class="flex justify-around items-center space-x-4">
-                    <!-- Circles will be dynamically generated here -->
+            <section class="mb-8">
+                <h2 class="text-2xl font-semibold mb-4">Círculos de Atividade</h2>
+                <div id="activity-circles" class="flex justify-around items-center">
+                    <!-- Círculos renderizados dinamicamente aqui -->
                 </div>
             </section>
 
-            <!-- Objetivos -->
-            <section>
-                <h2 class="text-xl font-bold mb-4">Seus Objetivos</h2>
-                <div id="goals-list" class="space-y-3">
-                    <!-- Goals will be dynamically generated here -->
+            <!-- Seus Objetivos -->
+            <section class="mb-8">
+                <h2 class="text-2xl font-semibold mb-4">Seus Objetivos</h2>
+                <div id="goals-list" class="space-y-4">
+                    <!-- Objetivos renderizados dinamicamente aqui -->
                 </div>
             </section>
 
             <!-- Programas para Começar (Iniciantes) -->
-            <section>
-                <h2 class="text-xl font-bold mb-4">Programas para Começar</h2>
+            <section class="mb-8">
+                <h2 class="text-2xl font-semibold mb-4">Programas para Começar</h2>
                 <div id="beginner-workouts" class="flex flex-row overflow-x-auto scroll-container gap-4 pb-4">
-                    <!-- Beginner workouts will be dynamically generated here -->
+                    <!-- Treinos iniciantes renderizados dinamicamente aqui -->
                 </div>
             </section>
 
             <!-- Tendências -->
-            <section>
-                <h2 class="text-xl font-bold mb-4">Tendências</h2>
+            <section class="mb-8">
+                <h2 class="text-2xl font-semibold mb-4">Tendências</h2>
                 <div id="trending-workouts" class="flex flex-row overflow-x-auto scroll-container gap-4 pb-4">
-                    <!-- Trending workouts will be dynamically generated here -->
+                    <!-- Treinos em tendência renderizados dinamicamente aqui -->
                 </div>
             </section>
+        </div>
+
+        <!-- Página de Atividades (Todos os Treinos) -->
+        <div id="activities-page" class="page" data-nav-id="activities">
+            <h1 class="text-3xl font-bold mb-8 text-gradient text-shadow">Atividades</h1>
             
-            <!-- Prêmios -->
-            <section>
-                <h2 class="text-xl font-bold mb-4">Seus Prêmios</h2>
-                <div id="awards" class="flex flex-row overflow-x-auto scroll-container gap-4 pb-4">
-                    <!-- Awards will be dynamically generated here -->
+            <section id="all-workouts" class="grid grid-cols-2 sm:grid-cols-3 gap-4">
+                <!-- Todos os treinos renderizados aqui -->
+            </section>
+        </div>
+
+        <!-- Página de Prêmios e Dicas -->
+        <div id="awards-page" class="page" data-nav-id="awards">
+            <h1 class="text-3xl font-bold mb-8 text-gradient text-shadow">Prêmios & Dicas</h1>
+            
+            <section class="mb-8">
+                <h2 class="text-2xl font-semibold mb-4">Seus Prêmios</h2>
+                <div id="awards-container" class="grid grid-cols-2 sm:grid-cols-3 gap-4">
+                    <!-- Prêmios renderizados aqui -->
                 </div>
             </section>
 
-            <!-- Dicas de Treino -->
             <section>
-                <h2 class="text-xl font-bold mb-4">Dicas de Treino</h2>
-                <div id="training-tips" class="space-y-3">
-                    <!-- Tips will be dynamically generated here -->
+                <h2 class="text-2xl font-semibold mb-4">Dicas de Treino</h2>
+                <div id="training-tips-container" class="space-y-4">
+                    <!-- Dicas de treino renderizadas aqui -->
                 </div>
             </section>
         </div>
 
-        <!-- Main Content Section - Activities Page -->
-        <div id="activities-page" data-page="activities" class="page-content hidden space-y-8">
-            <h1 class="text-3xl font-bold">Atividades</h1>
-            <div id="all-workouts" class="grid grid-cols-2 sm:grid-cols-3 gap-4">
-                <!-- All workouts will be dynamically generated here -->
-            </div>
-        </div>
-
-        <!-- Main Content Section - Workout Details -->
-        <div id="workout-details-page" data-page="workout-details" class="page-content hidden">
-            <button id="back-button" class="text-blue-500 mb-4 flex items-center">
-                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="mr-2"><path d="m15 18-6-6 6-6"/></svg>
-                Voltar
+        <!-- Página de Detalhes do Treino -->
+        <div id="workout-details-page" class="page">
+            <button id="back-button-details" class="text-gray-400 text-lg mb-4 hover:text-white transition-colors duration-200 focus:outline-none">
+                <i class="fas fa-chevron-left"></i> Voltar
             </button>
-            <div id="workout-details-container" class="space-y-8">
-                <!-- Workout details will be dynamically generated here -->
+            <div id="workout-details-content" class="space-y-8">
+                <!-- Detalhes do treino específico renderizados aqui -->
             </div>
         </div>
 
-        <!-- Main Content Section - Active Workout -->
-        <div id="active-workout-page" data-page="active-workout" class="page-content hidden">
-            <div id="active-workout-container" class="flex flex-col items-center justify-center p-6 space-y-8 min-h-screen">
-                <!-- Active workout content will be dynamically generated here -->
-            </div>
-        </div>
-    </div>
-
-    <!-- Message Box for notifications -->
-    <div id="message-box" class="message-box"></div>
-
-    <!-- Modal for workout cancellation confirmation -->
-    <div id="cancel-modal-overlay" class="modal-overlay">
-        <div class="modal-content">
-            <h3 class="text-xl font-bold mb-4">Cancelar Treino?</h3>
-            <p class="text-gray-400 mb-6">Tem certeza de que deseja cancelar este treino? Todo o seu progresso será perdido.</p>
-            <div class="flex justify-center space-x-4">
-                <button id="modal-cancel-button" class="bg-red-600 rounded-lg py-2 px-4 font-bold hover:bg-red-700 transition-colors">Sim, Cancelar</button>
-                <button id="modal-resume-button" class="bg-blue-600 rounded-lg py-2 px-4 font-bold hover:bg-blue-700 transition-colors">Não, Continuar</button>
+        <!-- Página de Treino Ativo -->
+        <div id="active-workout-page" class="page">
+            <div id="active-workout-content" class="flex flex-col items-center justify-center p-6 min-h-screen">
+                <!-- Conteúdo do treino ativo e cronômetro renderizados aqui -->
             </div>
         </div>
     </div>
 
-    <!-- Fixed Bottom Navigation Bar -->
-    <nav class="fixed bottom-0 left-0 right-0 bg-black bg-opacity-90 backdrop-blur-md p-4 flex justify-around items-center rounded-t-2xl shadow-lg">
-        <button data-nav-id="home" class="nav-button flex flex-col items-center text-xs text-gray-400 transition-colors duration-200 focus:outline-none active:text-white">
-            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="mb-1"><path d="m3 9 9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
-            Início
+    <!-- Modal de Cancelamento de Treino -->
+    <div id="cancel-modal-overlay" class="fixed inset-0 bg-black bg-opacity-75 flex items-center justify-center hidden z-50">
+        <div class="card p-6 text-center w-11/12 sm:w-1/2 md:w-1/3">
+            <h3 class="text-xl font-semibold mb-4">Cancelar treino?</h3>
+            <p class="text-gray-400 mb-6">Seu progresso não será salvo.</p>
+            <div class="flex justify-center gap-4">
+                <button id="modal-resume-button" class="bg-white text-black px-6 py-2 rounded-full font-bold">Continuar</button>
+                <button id="modal-cancel-button" class="bg-red-500 text-white px-6 py-2 rounded-full font-bold">Parar</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Barra de Navegação Fixa -->
+    <nav class="fixed bottom-0 left-0 right-0 bg-[#1a1a1a] p-4 flex justify-around items-center border-t border-[#333333] z-40">
+        <button data-nav-id="home" class="nav-button flex flex-col items-center">
+            <i class="fas fa-home text-lg nav-icon"></i>
+            <span class="text-xs mt-1">Home</span>
         </button>
-        <button data-nav-id="activities" class="nav-button flex flex-col items-center text-xs text-gray-400 transition-colors duration-200 focus:outline-none active:text-white">
-            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="mb-1"><path d="M22 12h-4l-3 9L9 3l-3 9H2"/></svg>
-            Atividades
+        <button data-nav-id="activities" class="nav-button flex flex-col items-center">
+            <i class="fas fa-running text-lg nav-icon"></i>
+            <span class="text-xs mt-1">Treinos</span>
         </button>
-        <button data-nav-id="profile" class="nav-button flex flex-col items-center text-xs text-gray-400 transition-colors duration-200 focus:outline-none active:text-white">
-            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="mb-1"><path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
-            Perfil
+        <button data-nav-id="awards" class="nav-button flex flex-col items-center">
+            <i class="fas fa-trophy text-lg nav-icon"></i>
+            <span class="text-xs mt-1">Prêmios</span>
         </button>
     </nav>
-
+    
     <script>
-        // --- Inline SVGs for icons ---
-        const icons = {
-            strength: `<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><path d="M14 2v6h6"/><path d="M15 22V10M9 22V10M5 16H3M21 16h-2"/></svg>`,
-            cardio: `<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"/></svg>`,
-            yoga: `<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M7.9 20A10.5 10.5 0 0 0 19 13.9C21 11 21.6 7.7 19.3 5.4c-2.3-2.3-5.6-1.6-8.5.4A10.5 10.5 0 0 0 4 16.1"/></svg>`,
-            run: `<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-4a2 2 0 0 0-2-2H9a2 2 0 0 0-2 2v4"/><path d="M7 17a2 2 0 1 1-4 0a2 2 0 0 1 4 0z"/><path d="M17 17a2 2 0 1 1-4 0a2 2 0 0 1 4 0z"/><path d="M17 17a2 2 0 1 1-4 0a2 2 0 0 1 4 0z"/><path d="M14 11h-4l-3-8h10l-3 8z"/></svg>`,
-            swim: `<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10.29 2.5a2.09 2.09 0 0 0-2.12-.53A2.1 2.1 0 0 0 6.64 4.5a2.1 2.1 0 0 0 1.53 3.65c.57.1 1.05-.18 1.48-.6A2.12 2.12 0 0 0 12.5 5.25a2.1 2.1 0 0 0-1.48-3.66c-.57-.1-1.05.18-1.48.6A2.12 2.12 0 0 0 10.29 2.5z"/><path d="M16 12a4 4 0 0 0-8 0v2l-1 5a2 2 0 0 0 2 2h6a2 2 0 0 0 2-2l-1-5v-2z"/><path d="M9 14v4"/></svg>`,
-            soccer: `<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M12 2v20"/><path d="M12 2a10 10 0 0 1 10 10"/><path d="M12 2a10 10 0 0 0-10 10"/><path d="M12 22a10 10 0 0 0 10-10"/><path d="M12 22a10 10 0 0 1-10-10"/></svg>`,
-            boxing: `<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14.5 12.5v1.5a2 2 0 0 1-2 2h-1c-.53 0-1.25.46-2.5 1.5S6.46 22 5.5 22h-1c-.53 0-.96-.43-1-.96L.5 14.5c-.07-.38.16-.76.53-.94L6 10l6.5-2.5 2 2z"/><path d="M12.5 6a1.5 1.5 0 1 0 0-3 1.5 1.5 0 0 0 0 3z"/><path d="M16 10a2 2 0 0 1 2 2v2h4l-3-3L16 10z"/></svg>`,
-            volleyball: `<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2a10 10 0 1 0 10 10A10 10 0 0 0 12 2zm0 17c-3.86 0-7-3.14-7-7s3.14-7 7-7 7 3.14 7 7-3.14 7-7 7z"/><path d="M12 14c-1.105 0-2 .895-2 2s.895 2 2 2 2-.895 2-2-.895-2-2-2zM12 10V6M8 8l-2-2M16 8l2-2"/></svg>`,
-            bike: `<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 12a4 4 0 1 0 0-8 4 4 0 0 0 0 8z"/><path d="M4 16a4 4 0 1 0 0-8 4 4 0 0 0 0 8z"/><path d="M12 12V4h-1c-2.21 0-4 1.79-4 4s1.79 4 4 4z"/><path d="M12 12v4h1c2.21 0 4-1.79 4-4s-1.79-4-4-4z"/></svg>`,
-            rowing: `<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 20a8 8 0 1 0-8-8 8 8 0 0 0 8 8z"/><path d="M12 12V4m-2 2h4"/><path d="M18 18l-3-3m-3-3l-3-3M6 6l3 3m3 3l3 3"/></svg>`,
-            kickboxing: `<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><path d="M14 2v6h6"/><path d="M15 22V10M9 22V10M5 16H3M21 16h-2"/></svg>`,
-            walk: `<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-4a2 2 0 0 0-2-2H9a2 2 0 0 0-2 2v4"/><path d="M7 17a2 2 0 1 1-4 0a2 2 0 0 1 4 0z"/><path d="M17 17a2 2 0 1 1-4 0a2 2 0 0 1 4 0z"/><path d="M17 17a2 2 0 1 1-4 0a2 2 0 0 1 4 0z"/><path d="M14 11h-4l-3-8h10l-3 8z"/></svg>`,
-            placeholder: `<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 5.5v13"/><path d="M18 11.5v-6"/><path d="M6 11.5v-6"/><path d="M20 18v-5.5a2.5 2.5 0 0 0-5 0V18"/><path d="M4 18v-5.5a2.5 2.5 0 0 1 5 0V18"/></svg>`,
-            trophy: `<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 16V6a3 3 0 0 0-6 0v10"/><path d="M10 20v-4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v4a2 2 0 0 1-2 2h-4a2 2 0 0 1-2-2z"/><path d="M12 12a3 3 0 1 0 0-6 3 3 0 0 0 0 6z"/><path d="M22 10a10 10 0 1 0-20 0z"/></svg>`,
-            target: `<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="6"/><circle cx="12" cy="12" r="2"/></svg>`,
-        };
-
-        // --- App Data (Mock-up) ---
-        const workouts = [
-            { id: 'forca-1', name: 'Força de Corpo Inteiro', coach: 'Marcos', image: 'https://placehold.co/400x250/555555/dddddd?text=Forca+1', category: 'Força', icon: icons.strength, isBeginner: true, exercises: [
-                { name: 'Flexões', sets: 3, reps: 10, duration: null, icon: icons.placeholder },
-                { name: 'Agachamentos', sets: 3, reps: 15, duration: null, icon: icons.placeholder },
-                { name: 'Prancha', sets: 3, reps: null, duration: 60, icon: icons.placeholder },
-            ]},
-            { id: 'cardio-1', name: 'Treino Rápido de Cardio', coach: 'Ana', image: 'https://placehold.co/400x250/333333/dddddd?text=Cardio+1', category: 'Cardio', icon: icons.cardio, isBeginner: true, exercises: [
-                { name: 'Corrida Estacionária', sets: 5, reps: null, duration: 60, icon: icons.placeholder },
-                { name: 'Polichinelos', sets: 5, reps: 20, duration: null, icon: icons.placeholder },
-                { name: 'Burpees', sets: 5, reps: 10, duration: null, icon: icons.placeholder },
-            ]},
-            { id: 'yoga-1', name: 'Yoga para Iniciantes', coach: 'Leo', image: 'https://placehold.co/400x250/444444/dddddd?text=Yoga+1', category: 'Yoga', icon: icons.yoga, isBeginner: true, exercises: [
-                { name: 'Saudação ao Sol', sets: 3, reps: 10, duration: null, icon: icons.placeholder },
-                { name: 'Cão Olhando para Baixo', sets: 3, reps: null, duration: 45, icon: icons.placeholder },
-                { name: 'Postura da Árvore', sets: 3, reps: null, duration: 30, icon: icons.placeholder },
-            ]},
-            { id: 'corrida-1', name: 'Plano de Corrida - 5k', coach: 'João', image: 'https://placehold.co/400x250/666666/dddddd?text=Corrida+1', category: 'Corrida', icon: icons.run, isBeginner: false, exercises: [
-                { name: 'Aquecimento', duration: 300, icon: icons.placeholder },
-                { name: 'Corrida Lenta', duration: 600, icon: icons.placeholder },
-                { name: 'Corrida Rápida', duration: 120, icon: icons.placeholder },
-            ]},
-            { id: 'natacao-1', name: 'Treino de Natação', coach: 'Sofia', image: 'https://placehold.co/400x250/0077c2/dddddd?text=Natacao+1', category: 'Natação', icon: icons.swim, isBeginner: false, exercises: [
-                { name: 'Aquecimento', duration: 300, icon: icons.placeholder },
-                { name: '50m Livre', sets: 10, reps: null, duration: null, icon: icons.placeholder },
-                { name: '100m Medley', sets: 5, reps: null, duration: null, icon: icons.placeholder },
-            ]},
-            { id: 'futebol-1', name: 'Habilidades de Futebol', coach: 'Rodrigo', image: 'https://placehold.co/400x250/14A36B/dddddd?text=Futebol+1', category: 'Futebol', icon: icons.soccer, isBeginner: true, exercises: [
-                { name: 'Drills de Drible', sets: 3, reps: null, duration: 180, icon: icons.placeholder },
-                { name: 'Chutes a Gol', sets: 3, reps: 15, duration: null, icon: icons.placeholder },
-                { name: 'Agilidade com Cones', sets: 3, reps: null, duration: 120, icon: icons.placeholder },
-            ]},
-            { id: 'boxe-1', name: 'Fundamentos do Boxe', coach: 'Maria', image: 'https://placehold.co/400x250/800000/dddddd?text=Boxe+1', category: 'Boxe', icon: icons.boxing, isBeginner: true, exercises: [
-                { name: 'Sombra', duration: 300, icon: icons.placeholder },
-                { name: 'Saco de Pancadas', duration: 600, icon: icons.placeholder },
-                { name: 'Pular Corda', duration: 300, icon: icons.placeholder },
-            ]},
-            { id: 'volei-1', name: 'Treino de Vôlei', coach: 'Pedro', image: 'https://placehold.co/400x250/B87333/dddddd?text=Volei+1', category: 'Vôlei', icon: icons.volleyball, isBeginner: false, exercises: [
-                { name: 'Saque', sets: 5, reps: 10, duration: null, icon: icons.placeholder },
-                { name: 'Passe e Levantamento', sets: 5, reps: 15, duration: null, icon: icons.placeholder },
-                { name: 'Bloqueio na Rede', sets: 5, reps: 5, duration: null, icon: icons.placeholder },
-            ]},
-            { id: 'bicicleta-1', name: 'Passeio de Bicicleta - Iniciante', coach: 'Carlos', image: 'https://placehold.co/400x250/333333/dddddd?text=Bicicleta+1', category: 'Bicicleta', icon: icons.bike, isBeginner: true, exercises: [
-                { name: 'Aquecimento', duration: 300, icon: icons.placeholder },
-                { name: 'Percurso Plano', duration: 1800, icon: icons.placeholder },
-                { name: 'Esfriamento', duration: 300, icon: icons.placeholder },
-            ]},
-            { id: 'esteira-1', name: 'Treino de Esteira HIIT', coach: 'Juliana', image: 'https://placehold.co/400x250/222222/dddddd?text=Esteira+1', category: 'Esteira', icon: icons.run, isBeginner: false, exercises: [
-                { name: 'Aquecimento', duration: 300, icon: icons.placeholder },
-                { name: 'Sprint', duration: 60, icon: icons.placeholder },
-                { name: 'Descanso', duration: 120, icon: icons.placeholder },
-            ]},
-            { id: 'remo-1', name: 'Treino de Remo', coach: 'Daniel', image: 'https://placehold.co/400x250/000080/dddddd?text=Remo+1', category: 'Remo', icon: icons.rowing, isBeginner: false, exercises: [
-                { name: 'Aquecimento', duration: 300, icon: icons.placeholder },
-                { name: 'Remada Longa', duration: 1200, icon: icons.placeholder },
-                { name: 'Remada Curta', duration: 300, icon: icons.placeholder },
-            ]},
-            { id: 'kickboxing-1', name: 'Treino de Kickboxing', coach: 'Jessica', image: 'https://placehold.co/400x250/8B0000/dddddd?text=Kickboxing+1', category: 'Kickboxing', icon: icons.kickboxing, isBeginner: false, exercises: [
-                { name: 'Sombra', duration: 300, icon: icons.placeholder },
-                { name: 'Sequência de Chutes', duration: 600, icon: icons.placeholder },
-                { name: 'Luta Falsa', duration: 300, icon: icons.placeholder },
-            ]},
-            { id: 'caminhada-1', name: 'Caminhada Relaxante', coach: 'Luiza', image: 'https://placehold.co/400x250/4B0082/dddddd?text=Caminhada+1', category: 'Caminhada', icon: icons.walk, isBeginner: true, exercises: [
-                { name: 'Caminhada', duration: 1800, icon: icons.placeholder },
-            ]},
-            { id: 'caminhada-2', name: 'Caminhada Urbana - 10k', coach: 'Roberto', image: 'https://placehold.co/400x250/777777/dddddd?text=Caminhada+2', category: 'Caminhada', icon: icons.walk, isBeginner: false, exercises: [
-                { name: 'Caminhada Rápida', duration: 3600, icon: icons.placeholder },
-            ]},
-            { id: 'corrida-2', name: 'Maratona Treino', coach: 'João', image: 'https://placehold.co/400x250/aaaaaa/dddddd?text=Corrida+2', category: 'Corrida', icon: icons.run, isBeginner: false, exercises: [
-                { name: 'Corrida Longa', duration: 7200, icon: icons.placeholder },
-            ]},
-            { id: 'forca-2', name: 'Treino de Braços', coach: 'Carlos', image: 'https://placehold.co/400x250/666666/dddddd?text=Forca+2', category: 'Força', icon: icons.strength, isBeginner: false, exercises: [
-                { name: 'Rosca Direta', sets: 4, reps: 12, duration: null, icon: icons.placeholder },
-                { name: 'Tríceps na Polia', sets: 4, reps: 12, duration: null, icon: icons.placeholder },
-            ]},
-            { id: 'cardio-2', name: 'Cardio com Pular Corda', coach: 'Fernanda', image: 'https://placehold.co/400x250/444444/dddddd?text=Cardio+2', category: 'Cardio', icon: icons.cardio, isBeginner: true, exercises: [
-                { name: 'Pular Corda', duration: 600, icon: icons.placeholder },
-            ]},
-            { id: 'yoga-2', name: 'Vinyasa Flow', coach: 'Luiza', image: 'https://placehold.co/400x250/999999/dddddd?text=Yoga+2', category: 'Yoga', icon: icons.yoga, isBeginner: false, exercises: [
-                { name: 'Fluxo Vinyasa', duration: 1800, icon: icons.placeholder },
-            ]},
-            { id: 'futebol-2', name: 'Defesa e Marcação', coach: 'Pedro', image: 'https://placehold.co/400x250/B87333/dddddd?text=Volei+2', category: 'Futebol', icon: icons.soccer, isBeginner: false, exercises: [
-                { name: 'Marcação Individual', duration: 900, icon: icons.placeholder },
-                { name: 'Interceptação', duration: 600, icon: icons.placeholder },
-            ]},
-            { id: 'boxe-2', name: 'Combinações de Socos', coach: 'Maria', image: 'https://placehold.co/400x250/800000/dddddd?text=Boxe+2', category: 'Boxe', icon: icons.boxing, isBeginner: false, exercises: [
-                { name: 'Jab-Direto-Gancho', duration: 300, icon: icons.placeholder },
-            ]},
-        ];
-
-        // Derived data
-        const categories = [...new Set(workouts.map(w => w.category))].map(c => ({
-            name: c,
-            icon: workouts.find(w => w.category === c).icon,
-        }));
-        const trendingWorkouts = workouts.filter(w => ['forca-1', 'cardio-1', 'kickboxing-1'].includes(w.id));
-        const beginnerWorkouts = workouts.filter(w => w.isBeginner);
-        const progressData = [
-            { id: 'kcal', value: 350, unit: 'kcal', label: 'Calorias Queimadas', icon: icons.cardio, baseMultiplier: 0.1 },
-            { id: 'steps', value: 5200, unit: 'passos', label: 'Passos dados', icon: icons.run, baseMultiplier: 5 },
-            { id: 'distance', value: 4.5, unit: 'km', label: 'Distância Percorrida', icon: icons.run, baseMultiplier: 0.005 },
-        ];
-        const activityCirclesData = [
-            { color: '#EF4444', value: 75, max: 100, label: 'Movimento' },
-            { color: '#F97316', value: 60, max: 100, label: 'Exercício' },
-            { color: '#34D399', value: 90, max: 100, label: 'Repouso' },
-        ];
-        const awardsData = [
-            { name: 'Primeiros Passos', description: 'Complete seu primeiro treino.', icon: icons.trophy },
-            { name: 'Trabalho Duro', description: 'Queime mais de 1000 kcal em uma semana.', icon: icons.trophy },
-            { name: 'Maratonista', description: 'Complete o treino de 10k.', icon: icons.trophy },
-        ];
-        const goalsData = [
-            { name: 'Corra 5k', progress: 3.5, goal: 5, unit: 'km' },
-            { name: '3 treinos por semana', progress: 2, goal: 3, unit: 'treinos' },
-        ];
-        const trainingTips = [
-            'Beba bastante água durante todo o dia, especialmente antes e depois do treino.',
-            'O alongamento ajuda a prevenir lesões e melhora a flexibilidade. Não se esqueça de alongar.',
-            'Aqueça por 5-10 minutos antes de cada treino para preparar seu corpo.',
-            'Misture seus treinos para manter a rotina interessante e desafiar diferentes grupos musculares.',
-        ];
-
-        // App state
-        let state = {
+        // --- Dados da Aplicação (iniciados com valores zerados) ---
+        const appState = {
             currentPage: 'home',
-            currentWorkout: null,
-            isWorkoutActive: false,
-            timerInterval: null,
-            secondsPassed: 0,
+            currentWorkoutId: null,
+            timer: null,
+            elapsedTime: 0,
+            isPaused: false,
+            // Métricas de progresso, todas zeradas
+            progress: {
+                kcal: 0,
+                km: 0,
+                min: 0,
+            },
+            // Círculos de atividade, todas com progresso 0
+            activityCircles: {
+                move: { label: 'Movimento', value: 0, color: '#FFD700', target: 500 },
+                exercise: { label: 'Exercício', value: 0, color: '#FF6347', target: 60 },
+                stand: { label: 'Repouso', value: 0, color: '#32CD32', target: 12 }
+            },
+            // Objetivos com progresso zerado
+            goals: [
+                { id: 1, text: 'Correr 5km', progress: 0, target: 5, unit: 'km', achieved: false },
+                { id: 2, text: '3 treinos de força por semana', progress: 0, target: 3, unit: 'treinos', achieved: false },
+                { id: 3, text: '20 minutos de yoga', progress: 0, target: 20, unit: 'min', achieved: false }
+            ],
+            // Prêmios
+            awards: [
+                { id: 'primeiro-treino', title: 'Primeiro Treino', icon: 'fa-trophy', description: 'Complete seu primeiro treino.' },
+                { id: 'maratonista', title: 'Maratonista', icon: 'fa-shoe-prints', description: 'Corra um total de 42km.' },
+                { id: '10-treinos', title: '10 Treinos', icon: 'fa-star', description: 'Complete 10 treinos.' }
+            ],
+            // Dicas de treino
+            trainingTips: [
+                { id: 'tip1', title: 'A importância do aquecimento', text: 'Sempre aqueça por 5-10 minutos para preparar seu corpo.' },
+                { id: 'tip2', title: 'Hidratação é fundamental', text: 'Beba água antes, durante e depois dos exercícios.' },
+                { id: 'tip3', title: 'Recuperação é essencial', text: 'Não se esqueça de dias de descanso para a recuperação muscular.' }
+            ],
+            // Dados de todos os treinos, incluindo os novos
+            workouts: {
+                'cardio-rapido': {
+                    title: 'Cardio Rápido', category: 'Cardio', duration: '15 min', difficulty: 'Iniciante', icon: 'bolt', kcal: 150, km: 0,
+                    description: 'Um treino de cardio de alta intensidade para queimar calorias em pouco tempo.',
+                    exercises: [
+                        { name: 'Polichinelos', duration: '45s' },
+                        { name: 'Corrida Estacionária', duration: '60s' },
+                        { name: 'Burpees', duration: '30s' }
+                    ]
+                },
+                'yoga-iniciantes': {
+                    title: 'Yoga para Iniciantes', category: 'Yoga', duration: '20 min', difficulty: 'Iniciante', icon: 'om', kcal: 80, km: 0,
+                    description: 'Posturas básicas para ganhar flexibilidade e relaxar a mente.',
+                    exercises: [
+                        { name: 'Postura do Cachorro Olhando para Baixo', duration: '60s' },
+                        { name: 'Postura da Criança', duration: '60s' },
+                        { name: 'Saudação ao Sol', duration: '90s' }
+                    ]
+                },
+                'forca-corpo-inteiro': {
+                    title: 'Força de Corpo Inteiro', category: 'Força', duration: '30 min', difficulty: 'Iniciante', icon: 'dumbbell', kcal: 250, km: 0,
+                    description: 'Um treino completo para construir força muscular em todo o corpo.',
+                    exercises: [
+                        { name: 'Agachamentos', sets: '3', reps: '12' },
+                        { name: 'Flexões', sets: '3', reps: '10' },
+                        { name: 'Prancha', duration: '45s' }
+                    ]
+                },
+                'corrida-5km': {
+                    title: 'Corrida de 5km', category: 'Corrida', duration: '45 min', difficulty: 'Intermediário', icon: 'person-running', kcal: 400, km: 5.0,
+                    description: 'Um treino progressivo para te preparar para uma corrida de 5km.',
+                    exercises: [
+                        { name: 'Aquecimento', duration: '5 min' },
+                        { name: 'Corrida Rápida', duration: '30 min' },
+                        { name: 'Desaceleração', duration: '10 min' }
+                    ]
+                },
+                'natacao-livre': {
+                    title: 'Natação Estilo Livre', category: 'Natação', duration: '40 min', difficulty: 'Intermediário', icon: 'swimmer', kcal: 350, km: 1.5,
+                    description: 'Melhore sua resistência e técnica com um treino de natação estilo livre.',
+                    exercises: [
+                        { name: 'Aquecimento (400m)', duration: '5 min' },
+                        { name: 'Série de Velocidade (8x50m)', duration: '20 min' },
+                        { name: 'Desaquecimento', duration: '5 min' }
+                    ]
+                },
+                'futebol-agilidade': {
+                    title: 'Futebol: Treino de Agilidade', category: 'Futebol', duration: '50 min', difficulty: 'Avançado', icon: 'futbol', kcal: 500, km: 3.5,
+                    description: 'Sessão focada em dribles, passes e agilidade para o campo.',
+                    exercises: [
+                        { name: 'Drill de cones', duration: '10 min' },
+                        { name: 'Controle de bola', duration: '15 min' },
+                        { name: 'Mini-jogo', duration: '20 min' }
+                    ]
+                },
+                'boxe-sombras': {
+                    title: 'Boxe de Sombras', category: 'Boxe', duration: '25 min', difficulty: 'Intermediário', icon: 'hand-fist', kcal: 280, km: 0,
+                    description: 'Treino de boxe de sombras para cardio e coordenação.',
+                    exercises: [
+                        { name: 'Aquecimento', duration: '5 min' },
+                        { name: 'Combinações básicas', duration: '15 min' },
+                        { name: 'Força do Core', duration: '5 min' }
+                    ]
+                },
+                'corrida-esteira': {
+                    title: 'Corrida na Esteira', category: 'Esteira', duration: '30 min', difficulty: 'Iniciante', icon: 'walking', kcal: 250, km: 3,
+                    description: 'Treino de 30 minutos na esteira, ótimo para cardio em ambiente fechado.',
+                    exercises: [
+                        { name: 'Aquecimento (5 min)', duration: '5 min' },
+                        { name: 'Corrida constante', duration: '20 min' },
+                        { name: 'Desaceleração', duration: '5 min' }
+                    ]
+                }
+            }
         };
 
-        // --- DOM Elements ---
-        const pages = document.querySelectorAll('.page-content');
+        // --- Mapeamento para os containers das seções ---
+        const sections = {
+            'beginner-workouts': ['cardio-rapido', 'yoga-iniciantes', 'forca-corpo-inteiro'],
+            'trending-workouts': ['corrida-5km', 'natacao-livre', 'boxe-sombras'],
+            'all-workouts': Object.keys(appState.workouts)
+        };
+
+        // --- Elementos DOM ---
+        const pages = document.querySelectorAll('.page');
         const navButtons = document.querySelectorAll('.nav-button');
-        const backButton = document.getElementById('back-button');
-        const messageBox = document.getElementById('message-box');
-        const cancelModalOverlay = document.getElementById('cancel-modal-overlay');
+        const modalOverlay = document.getElementById('cancel-modal-overlay');
         const modalCancelButton = document.getElementById('modal-cancel-button');
         const modalResumeButton = document.getElementById('modal-resume-button');
+        const backButtonDetails = document.getElementById('back-button-details');
 
-        // --- Render Functions ---
+        // --- Funções de Renderização ---
         function renderProgressMetrics() {
             const container = document.getElementById('progress-metrics');
-            container.innerHTML = progressData.map(metric => `
-                <div class="card p-4 rounded-xl flex-shrink-0 w-40 text-center shadow-lg">
-                    <div class="text-3xl font-bold mb-2 text-blue-400">${metric.value}</div>
-                    <div class="text-sm font-medium text-gray-300">${metric.unit}</div>
-                    <div class="text-xs text-gray-500">${metric.label}</div>
+            container.innerHTML = `
+                <div class="card p-4 flex-shrink-0 w-40 text-center">
+                    <i class="fas fa-fire text-2xl text-red-500 mb-2"></i>
+                    <p class="text-xl font-bold">${appState.progress.kcal}</p>
+                    <p class="text-sm text-gray-400">kcal</p>
                 </div>
-            `).join('');
+                <div class="card p-4 flex-shrink-0 w-40 text-center">
+                    <i class="fas fa-route text-2xl text-blue-500 mb-2"></i>
+                    <p class="text-xl font-bold">${appState.progress.km.toFixed(1)}</p>
+                    <p class="text-sm text-gray-400">km</p>
+                </div>
+                <div class="card p-4 flex-shrink-0 w-40 text-center">
+                    <i class="fas fa-clock text-2xl text-green-500 mb-2"></i>
+                    <p class="text-xl font-bold">${appState.progress.min}</p>
+                    <p class="text-sm text-gray-400">min</p>
+                </div>
+            `;
         }
-        
+
         function renderActivityCircles() {
             const container = document.getElementById('activity-circles');
-            container.innerHTML = activityCirclesData.map(circle => {
-                const percentage = (circle.value / circle.max) * 100;
+            container.innerHTML = Object.values(appState.activityCircles).map(circle => {
+                const circumference = 2 * Math.PI * 42;
+                const progressPercentage = (circle.value / circle.target);
+                const offset = circumference - progressPercentage * circumference;
                 return `
-                    <div class="relative w-24 h-24">
-                        <svg class="w-full h-full transform -rotate-90">
-                            <circle class="text-gray-700" stroke-width="8" stroke="currentColor" fill="transparent" r="40" cx="48" cy="48"/>
-                            <circle class="text-white" stroke-width="8" stroke-linecap="round" stroke-linejoin="round"
-                                stroke="${circle.color}" fill="transparent" r="40" cx="48" cy="48"
-                                style="stroke-dasharray: 251.2; stroke-dashoffset: ${251.2 - (percentage / 100) * 251.2}px;"/>
+                    <div class="relative w-28 h-28">
+                        <svg class="w-full h-full transform -rotate-90" viewBox="0 0 100 100">
+                            <circle class="text-gray-700 stroke-current" stroke-width="8" cx="50" cy="50" r="42" fill="transparent"></circle>
+                            <circle class="stroke-current" stroke-width="8" stroke="${circle.color}" stroke-linecap="round" cx="50" cy="50" r="42" fill="transparent" style="stroke-dasharray: ${circumference}; stroke-dashoffset: ${offset};"></circle>
                         </svg>
-                        <div class="absolute inset-0 flex flex-col items-center justify-center">
-                            <span class="text-lg font-bold">${circle.value}%</span>
-                            <span class="text-xs text-gray-400">${circle.label}</span>
+                        <div class="absolute inset-0 flex items-center justify-center">
+                            <span class="text-xl font-bold">${Math.round(progressPercentage * 100)}%</span>
                         </div>
+                        <p class="absolute bottom-1 w-full text-center text-xs text-gray-400">${circle.label}</p>
                     </div>
                 `;
             }).join('');
@@ -408,324 +368,296 @@
 
         function renderGoals() {
             const container = document.getElementById('goals-list');
-            container.innerHTML = goalsData.map(goal => `
-                <div class="card p-4 rounded-xl flex items-center shadow-lg">
-                    <div class="w-10 h-10 flex items-center justify-center rounded-full bg-yellow-600/20 text-yellow-400 mr-4">
-                        ${icons.target}
-                    </div>
+            container.innerHTML = appState.goals.map(goal => `
+                <div class="card p-4 flex items-center justify-between">
                     <div>
-                        <h3 class="font-bold">${goal.name}</h3>
-                        <div class="flex items-center text-sm text-gray-400">
-                            <p>${goal.progress} de ${goal.goal} ${goal.unit}</p>
-                            <div class="w-24 h-2 bg-gray-600 rounded-full ml-2">
-                                <div class="h-full bg-yellow-400 rounded-full" style="width: ${(goal.progress/goal.goal)*100}%"></div>
-                            </div>
+                        <p class="text-sm font-medium">${goal.text}</p>
+                        <div class="w-full h-2 bg-gray-700 rounded-full mt-2">
+                            <div class="h-full bg-blue-500 rounded-full" style="width: ${Math.min(100, (goal.progress / goal.target) * 100)}%;"></div>
                         </div>
                     </div>
+                    <span class="text-xs text-gray-400">${goal.progress} / ${goal.target} ${goal.unit}</span>
                 </div>
             `).join('');
         }
 
-        function renderWorkoutCards(containerId, workoutsToRender) {
+        function renderWorkoutCards(containerId, workoutIds) {
             const container = document.getElementById(containerId);
-            container.innerHTML = workoutsToRender.map(workout => `
-                <div data-workout-id="${workout.id}" class="workout-card card rounded-xl overflow-hidden flex-shrink-0 w-64 cursor-pointer hover:bg-gray-800 transition duration-200">
-                    <img src="${workout.image}" alt="${workout.name}" class="w-full h-32 object-cover">
-                    <div class="p-4">
-                        <div class="text-purple-400 mx-auto w-8 h-8 mb-2">${workout.icon}</div>
-                        <h3 class="font-bold text-lg">${workout.name}</h3>
-                        <p class="text-xs text-gray-400">Com ${workout.coach}</p>
+            container.innerHTML = workoutIds.map(id => {
+                const workout = appState.workouts[id];
+                return `
+                    <div class="workout-card card flex-shrink-0 w-64 p-4 cursor-pointer" data-workout-id="${id}">
+                        <div class="flex items-center space-x-2 mb-2">
+                            <i class="fas fa-${workout.icon} text-lg text-white"></i>
+                            <h3 class="font-bold">${workout.title}</h3>
+                        </div>
+                        <p class="text-xs text-gray-400">${workout.duration} • ${workout.difficulty}</p>
                     </div>
-                </div>
-            `).join('');
-            document.querySelectorAll(`#${containerId} .workout-card`).forEach(card => {
-                card.addEventListener('click', handleWorkoutClick);
-            });
+                `;
+            }).join('');
         }
-        
+
         function renderAwards() {
-            const container = document.getElementById('awards');
-            container.innerHTML = awardsData.map(award => `
-                <div class="card p-4 rounded-xl flex-shrink-0 w-40 text-center shadow-lg">
-                    <div class="text-yellow-400 mx-auto w-12 h-12 mb-2">${award.icon}</div>
-                    <h3 class="font-bold text-sm">${award.name}</h3>
-                    <p class="text-xs text-gray-400">${award.description}</p>
+            const container = document.getElementById('awards-container');
+            container.innerHTML = appState.awards.map(award => `
+                <div class="workout-card-small card flex flex-col items-center justify-center text-center p-4">
+                    <i class="fas ${award.icon} text-3xl mb-2 text-yellow-400"></i>
+                    <h3 class="font-bold text-sm">${award.title}</h3>
+                    <p class="text-xs text-gray-400 mt-1">${award.description}</p>
                 </div>
             `).join('');
         }
-        
+
         function renderTrainingTips() {
-            const container = document.getElementById('training-tips');
-            container.innerHTML = trainingTips.map(tip => `
-                <div class="card p-4 rounded-xl shadow-lg">
-                    <p class="text-sm text-gray-300">${tip}</p>
+            const container = document.getElementById('training-tips-container');
+            container.innerHTML = appState.trainingTips.map(tip => `
+                <div class="card p-4">
+                    <h3 class="font-semibold text-sm mb-1">${tip.title}</h3>
+                    <p class="text-xs text-gray-400">${tip.text}</p>
                 </div>
             `).join('');
         }
-        
-        function renderAllWorkouts() {
-            const container = document.getElementById('all-workouts');
-            container.innerHTML = workouts.map(workout => `
-                <div data-workout-id="${workout.id}" class="workout-card card rounded-xl overflow-hidden cursor-pointer hover:bg-gray-800 transition duration-200">
-                    <img src="${workout.image}" alt="${workout.name}" class="w-full h-32 object-cover">
-                    <div class="p-4">
-                        <div class="text-purple-400 mx-auto w-8 h-8 mb-2">${workout.icon}</div>
-                        <h3 class="font-bold text-lg">${workout.name}</h3>
-                        <p class="text-xs text-gray-400">Com ${workout.coach}</p>
+
+        function renderWorkoutDetails(workoutId) {
+            const workout = appState.workouts[workoutId];
+            if (!workout) return;
+
+            const content = document.getElementById('workout-details-content');
+            content.innerHTML = `
+                <div class="card p-6">
+                    <div class="flex items-center space-x-4 mb-4">
+                        <i class="fas fa-${workout.icon} text-4xl text-white"></i>
+                        <div>
+                            <h2 class="text-2xl font-bold">${workout.title}</h2>
+                            <p class="text-gray-400 text-sm">${workout.duration} • ${workout.difficulty}</p>
+                        </div>
                     </div>
-                </div>
-            `).join('');
-            document.querySelectorAll('.workout-card').forEach(card => {
-                card.addEventListener('click', handleWorkoutClick);
-            });
-        }
-        
-        function renderWorkoutDetails(workout) {
-            const container = document.getElementById('workout-details-container');
-            if (!workout) {
-                console.error("Workout data is missing.");
-                return;
-            }
-            container.innerHTML = `
-                <h1 class="text-3xl font-bold">${workout.name}</h1>
-                <p class="text-gray-400">Com ${workout.coach}</p>
-                <img src="${workout.image}" alt="${workout.name}" class="w-full rounded-xl mt-4">
-                <div class="mt-4">
-                    <h2 class="text-xl font-bold mb-2">Exercícios</h2>
-                    <ul class="space-y-4">
-                        ${workout.exercises.map(ex => `
-                            <li class="card p-4 rounded-xl flex items-center">
-                                <div class="w-10 h-10 flex items-center justify-center rounded-full bg-blue-600/20 text-blue-400 mr-4">
-                                    ${ex.icon}
-                                </div>
-                                <div>
-                                    <h3 class="font-bold">${ex.name}</h3>
-                                    <p class="text-sm text-gray-400">${ex.sets ? `${ex.sets} séries de ${ex.reps} repetições` : `${ex.duration} segundos`}</p>
-                                </div>
+                    <p class="text-gray-300 mt-4">${workout.description}</p>
+                    
+                    <h3 class="text-xl font-semibold mt-6 mb-3">Exercícios</h3>
+                    <ul class="space-y-3">
+                        ${(workout.exercises || []).map(ex => `
+                            <li class="flex justify-between items-center text-gray-200 bg-[#222] p-3 rounded-lg">
+                                <span>${ex.name}</span>
+                                <span class="text-gray-400">${ex.duration || `${ex.sets}x${ex.reps}`}</span>
                             </li>
                         `).join('')}
                     </ul>
+                    
+                    <button id="start-workout-button" class="w-full bg-purple-600 hover:bg-purple-700 text-white font-bold py-3 px-6 rounded-full mt-8 transition-colors">
+                        Iniciar Treino
+                    </button>
                 </div>
-                <button id="start-workout-button" class="w-full bg-green-600 rounded-xl py-3 mt-8 font-bold text-white hover:bg-green-700 transition-colors">
-                    Iniciar Treino
-                </button>
             `;
+            
             document.getElementById('start-workout-button').addEventListener('click', () => {
-                state.currentWorkout = workout;
-                navigateTo('active-workout-page');
-                showNotification(`Você começou o treino de "${workout.name}".`);
+                appState.currentWorkoutId = workoutId;
+                navigateTo('active-workout');
             });
         }
 
-        function renderActiveWorkoutPage() {
-            const container = document.getElementById('active-workout-container');
-            if (!state.currentWorkout) {
-                console.error("No active workout to render.");
+        function renderActiveWorkout() {
+            const workout = appState.workouts[appState.currentWorkoutId];
+            if (!workout) {
+                navigateTo('home');
                 return;
             }
 
-            container.innerHTML = `
-                <h1 class="text-3xl font-bold text-center">${state.currentWorkout.name}</h1>
-                <p class="text-sm text-gray-400 mb-4">Com ${state.currentWorkout.coach}</p>
-                <div class="text-center">
-                    <p class="text-sm text-gray-400">Tempo Decorrido</p>
-                    <p id="timer-display" class="text-6xl font-bold mt-2">0:00</p>
+            const content = document.getElementById('active-workout-content');
+            content.innerHTML = `
+                <div class="text-center space-y-4">
+                    <h2 class="text-3xl font-bold">${workout.title}</h2>
+                    <p class="text-gray-400 text-sm">Próximo: ${workout.exercises[0].name}</p>
                 </div>
-                <div class="flex justify-around w-full max-w-sm">
-                    <div class="flex flex-col items-center">
-                        <span id="steps-icon" class="text-blue-400 w-8 h-8">${icons.run}</span>
-                        <span id="steps-display" class="text-lg font-bold">0</span>
-                        <span class="text-xs text-gray-400">Passos</span>
-                    </div>
-                    <div class="flex flex-col items-center">
-                        <span id="kcal-icon" class="text-red-400 w-8 h-8">${icons.cardio}</span>
-                        <span id="kcal-display" class="text-lg font-bold">0.00</span>
-                        <span class="text-xs text-gray-400">Kcal</span>
-                    </div>
-                    <div class="flex flex-col items-center">
-                        <span id="distance-icon" class="text-green-400 w-8 h-8">${icons.run}</span>
-                        <span id="distance-display" class="text-lg font-bold">0.00</span>
-                        <span class="text-xs text-gray-400">Km</span>
+                <div class="relative w-64 h-64 my-12">
+                    <svg class="w-full h-full transform -rotate-90" viewBox="0 0 100 100">
+                        <circle class="text-gray-700 stroke-current" stroke-width="8" cx="50" cy="50" r="42" fill="transparent"></circle>
+                        <circle id="progress-circle" class="stroke-current" stroke-width="8" stroke="#8A2BE2" stroke-linecap="round" cx="50" cy="50" r="42" fill="transparent" style="transition: stroke-dashoffset 1s linear;"></circle>
+                    </svg>
+                    <div class="absolute inset-0 flex items-center justify-center">
+                        <span id="workout-timer" class="text-5xl font-bold">00:00</span>
                     </div>
                 </div>
-                
-                <!-- List of exercises -->
-                <div class="w-full max-w-sm overflow-y-auto max-h-48 scroll-container space-y-3 p-2">
-                    <h2 class="text-lg font-bold">Próximos Exercícios</h2>
-                    <ul id="exercise-list">
-                        ${state.currentWorkout.exercises.map(ex => `
-                            <li class="card p-4 rounded-xl flex items-center">
-                                <div class="w-8 h-8 flex items-center justify-center rounded-full bg-blue-600/20 text-blue-400 mr-4">
-                                    ${ex.icon}
-                                </div>
-                                <div>
-                                    <h3 class="font-bold">${ex.name}</h3>
-                                    <p class="text-sm text-gray-400">${ex.sets ? `${ex.sets} séries de ${ex.reps} reps` : `${ex.duration} segundos`}</p>
-                                </div>
-                            </li>
-                        `).join('')}
-                    </ul>
-                </div>
-
-                <div class="flex space-x-4 mt-8">
-                    <button id="pause-continue-button" class="bg-blue-600 rounded-full p-4 hover:bg-blue-700 transition-colors">
-                        <svg id="play-icon" xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="hidden"><polygon points="5 3 19 12 5 21 5 3"></polygon></svg>
-                        <svg id="pause-icon" xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="block"><rect x="6" y="4" width="4" height="16"></rect><rect x="14" y="4" width="4" height="16"></rect></svg>
+                <div class="flex justify-center space-x-4">
+                    <button id="pause-continue-button" class="bg-gray-700 text-white p-4 rounded-full w-16 h-16 flex items-center justify-center text-lg hover:bg-gray-600 transition-colors">
+                        <i class="fas fa-pause"></i>
                     </button>
-                    <button id="cancel-button" class="bg-red-600 rounded-full p-4 hover:bg-red-700 transition-colors">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
+                    <button id="cancel-button" class="bg-red-500 text-white p-4 rounded-full w-16 h-16 flex items-center justify-center text-lg hover:bg-red-600 transition-colors">
+                        <i class="fas fa-times"></i>
                     </button>
                 </div>
             `;
-            state.isWorkoutActive = true;
-            startWorkoutTimer();
-            // Attach event listeners to the newly created buttons
+
             document.getElementById('pause-continue-button').addEventListener('click', handlePauseContinue);
-            document.getElementById('cancel-button').addEventListener('click', () => cancelModalOverlay.style.display = 'flex');
+            document.getElementById('cancel-button').addEventListener('click', () => {
+                modalOverlay.classList.remove('hidden');
+            });
         }
 
-        function startWorkoutTimer() {
-            if (state.timerInterval) clearInterval(state.timerInterval);
-            state.timerInterval = setInterval(() => {
-                state.secondsPassed++;
-                updateTimerDisplay();
-                updateWorkoutMetrics();
-            }, 1000);
-        }
+        // --- Lógica do Cronômetro e Treino ---
+        function startWorkout() {
+            appState.elapsedTime = 0;
+            appState.isPaused = false;
+            clearInterval(appState.timer);
 
-        function updateTimerDisplay() {
-            const minutes = Math.floor(state.secondsPassed / 60);
-            const seconds = state.secondsPassed % 60;
-            const timerDisplay = document.getElementById('timer-display');
-            if (timerDisplay) {
-                timerDisplay.textContent = `${minutes}:${seconds < 10 ? '0' : ''}${seconds}`;
-            }
-        }
+            const workout = appState.workouts[appState.currentWorkoutId];
+            const totalDurationInSeconds = parseInt(workout.duration.split(' ')[0]) * 60;
+            const timerDisplay = document.getElementById('workout-timer');
+            const progressCircle = document.getElementById('progress-circle');
+            const circumference = 2 * Math.PI * 42;
+            
+            progressCircle.style.strokeDasharray = circumference;
 
-        function updateWorkoutMetrics() {
-            const stepsDisplay = document.getElementById('steps-display');
-            const kcalDisplay = document.getElementById('kcal-display');
-            const distanceDisplay = document.getElementById('distance-display');
+            const updateTimer = () => {
+                if (appState.isPaused) return;
 
-            if (stepsDisplay) {
-                stepsDisplay.textContent = Math.floor(state.secondsPassed * progressData[1].baseMultiplier);
-            }
-            if (kcalDisplay) {
-                kcalDisplay.textContent = (state.secondsPassed * progressData[0].baseMultiplier).toFixed(2);
-            }
-            if (distanceDisplay) {
-                distanceDisplay.textContent = (state.secondsPassed * progressData[2].baseMultiplier).toFixed(2);
-            }
+                appState.elapsedTime++;
+                const minutes = Math.floor(appState.elapsedTime / 60);
+                const seconds = appState.elapsedTime % 60;
+                
+                timerDisplay.textContent = `${String(minutes).padStart(2, '0')}:${String(seconds).padStart(2, '0')}`;
+                
+                const progressPercentage = appState.elapsedTime / totalDurationInSeconds;
+                const offset = circumference - progressPercentage * circumference;
+                progressCircle.style.strokeDashoffset = offset;
+
+                if (appState.elapsedTime >= totalDurationInSeconds) {
+                    handleWorkoutComplete();
+                }
+            };
+            
+            appState.timer = setInterval(updateTimer, 1000);
         }
 
         function handlePauseContinue() {
-            const playIcon = document.getElementById('play-icon');
-            const pauseIcon = document.getElementById('pause-icon');
-            if (state.timerInterval) {
-                clearInterval(state.timerInterval);
-                state.timerInterval = null;
-                playIcon.classList.remove('hidden');
-                pauseIcon.classList.add('hidden');
-                showNotification("Treino pausado.");
+            const button = document.getElementById('pause-continue-button');
+            appState.isPaused = !appState.isPaused;
+            if (appState.isPaused) {
+                button.innerHTML = '<i class="fas fa-play"></i>';
+                clearInterval(appState.timer);
             } else {
-                startWorkoutTimer();
-                playIcon.classList.add('hidden');
-                pauseIcon.classList.remove('hidden');
-                showNotification("Treino retomado.");
+                button.innerHTML = '<i class="fas fa-pause"></i>';
+                startWorkout();
             }
+        }
+
+        function handleWorkoutComplete() {
+            clearInterval(appState.timer);
+            const workout = appState.workouts[appState.currentWorkoutId];
+            
+            // Atualizar métricas de progresso com base no treino concluído
+            appState.progress.kcal += workout.kcal;
+            appState.progress.km += workout.km;
+            appState.progress.min += parseInt(workout.duration.split(' ')[0]);
+
+            // Atualizar círculos de atividade
+            appState.activityCircles.move.value = Math.min(appState.activityCircles.move.target, appState.progress.kcal);
+            appState.activityCircles.exercise.value = Math.min(appState.activityCircles.exercise.target, appState.progress.min);
+
+            // Atualizar objetivos
+            appState.goals.forEach(goal => {
+                if (goal.unit === 'km') {
+                    goal.progress = Math.min(goal.target, appState.progress.km);
+                } else if (goal.unit === 'min') {
+                    goal.progress = Math.min(goal.target, appState.progress.min);
+                }
+            });
+            
+            // Re-renderizar as seções de progresso e voltar para a home
+            renderProgressMetrics();
+            renderActivityCircles();
+            renderGoals();
+
+            // Resetar o estado do treino
+            appState.isPaused = false;
+            appState.elapsedTime = 0;
+            appState.currentWorkoutId = null;
+
+            alert('Parabéns! Treino completo!'); // Usando alert apenas para feedback visual
+            navigateTo('home');
         }
 
         function handleCancelWorkout() {
-            clearInterval(state.timerInterval);
-            state.timerInterval = null;
-            state.isWorkoutActive = false;
-            state.currentWorkout = null;
-            state.secondsPassed = 0;
-            cancelModalOverlay.style.display = 'none';
+            clearInterval(appState.timer);
+            appState.isPaused = false;
+            appState.elapsedTime = 0;
+            appState.currentWorkoutId = null;
+            modalOverlay.classList.add('hidden');
             navigateTo('home');
-            showNotification("Treino cancelado.");
         }
 
-        function showNotification(message) {
-            messageBox.textContent = message;
-            messageBox.classList.add('show');
-            setTimeout(() => {
-                messageBox.classList.remove('show');
-            }, 3000);
-        }
-
-        // --- Navigation and Event Handlers ---
+        // --- Funções de Navegação e Lógica Geral ---
         function navigateTo(pageId) {
-            state.currentPage = pageId;
-            pages.forEach(page => {
-                page.classList.remove('active');
-                page.classList.add('hidden');
-            });
-            document.getElementById(`${pageId}-page`).classList.remove('hidden');
-            document.getElementById(`${pageId}-page`).classList.add('active');
-
-            navButtons.forEach(btn => btn.classList.remove('text-white'));
-            const activeNavBtn = document.querySelector(`[data-nav-id="${pageId}"]`);
-            if (activeNavBtn) {
-                activeNavBtn.classList.add('text-white');
-            }
-        }
-
-        function handleNavClick(e) {
-            if (state.isWorkoutActive) {
-                showNotification("Você precisa cancelar ou pausar o treino ativo primeiro.");
-                return;
-            }
-            const pageId = e.currentTarget.dataset.navId;
-            navigateTo(pageId);
-        }
-
-        function handleWorkoutClick(e) {
-            const workoutId = e.currentTarget.dataset.workoutId;
-            state.currentWorkout = workouts.find(w => w.id === workoutId);
-            if (state.currentWorkout) {
-                renderWorkoutDetails(state.currentWorkout);
-                navigateTo('workout-details');
-            }
-        }
-        
-        // Setup initial event listeners
-        document.addEventListener('DOMContentLoaded', () => {
-            // Navigation button handlers
+            pages.forEach(page => page.classList.remove('active'));
+            document.getElementById(pageId + '-page').classList.add('active');
+            
             navButtons.forEach(button => {
-                button.addEventListener('click', handleNavClick);
+                const navId = button.dataset.navId;
+                const icon = button.querySelector('.nav-icon');
+                if (navId === pageId) {
+                    icon.classList.add('active-nav-icon');
+                    button.classList.add('text-white');
+                } else {
+                    icon.classList.remove('active-nav-icon');
+                    button.classList.remove('text-white');
+                }
             });
-
-            // Back button handler for details page
-            if (backButton) {
-                backButton.addEventListener('click', () => {
-                    navigateTo('activities');
-                    state.currentWorkout = null;
-                });
+            
+            // Esconder/Mostrar a barra de navegação dependendo da página
+            const navBar = document.querySelector('nav');
+            if (pageId === 'workout-details' || pageId === 'active-workout') {
+                navBar.classList.add('hidden');
+            } else {
+                navBar.classList.remove('hidden');
             }
+            
+            appState.currentPage = pageId;
 
-            // Modal button handlers
-            modalCancelButton.addEventListener('click', handleCancelWorkout);
-            modalResumeButton.addEventListener('click', () => cancelModalOverlay.style.display = 'none');
-
-            initializeApp();
-        });
-
-        function initializeApp() {
-            try {
-                renderProgressMetrics();
-                renderActivityCircles();
-                renderGoals();
-                renderWorkoutCards('beginner-workouts', beginnerWorkouts);
-                renderWorkoutCards('trending-workouts', trendingWorkouts);
-                renderAwards();
-                renderTrainingTips();
-                renderAllWorkouts();
-                navigateTo('home');
-            } catch (error) {
-                console.error("Initialization failed:", error);
+            // --- CORREÇÃO: Renderiza a página do cronômetro após a navegação ---
+            if (pageId === 'active-workout') {
+                renderActiveWorkout();
+                startWorkout();
             }
         }
+
+        // --- Inicialização ---
+        document.addEventListener('DOMContentLoaded', () => {
+            // Ouvintes para os botões de navegação
+            navButtons.forEach(button => {
+                button.addEventListener('click', (e) => {
+                    const pageId = e.currentTarget.dataset.navId;
+                    navigateTo(pageId);
+                });
+            });
+
+            // Ouvintes para o modal de cancelamento
+            modalCancelButton.addEventListener('click', handleCancelWorkout);
+            modalResumeButton.addEventListener('click', () => modalOverlay.classList.add('hidden'));
+
+            // Ouvinte para o botão de voltar na página de detalhes
+            backButtonDetails.addEventListener('click', () => navigateTo('activities'));
+
+            // Ouvinte para os cards de treino (para ir para a página de detalhes)
+            document.addEventListener('click', (e) => {
+                const workoutCard = e.target.closest('.workout-card');
+                if (workoutCard) {
+                    renderWorkoutDetails(workoutCard.dataset.workoutId);
+                    navigateTo('workout-details');
+                }
+            });
+
+            // Renderizar o conteúdo inicial
+            renderProgressMetrics();
+            renderActivityCircles();
+            renderGoals();
+            renderWorkoutCards('beginner-workouts', sections['beginner-workouts']);
+            renderWorkoutCards('trending-workouts', sections['trending-workouts']);
+            renderWorkoutCards('all-workouts', sections['all-workouts']);
+            renderAwards();
+            renderTrainingTips();
+
+            navigateTo('home');
+        });
     </script>
 </body>
 </html>
