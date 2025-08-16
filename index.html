@@ -160,7 +160,7 @@
         <!-- Página de Treino Ativo -->
         <div id="active-workout-page" class="page">
             <div id="active-workout-content" class="flex flex-col items-center justify-center p-6 min-h-screen">
-                <!-- Conteúdo do treino ativo e cronômetro renderizados aqui -->
+                <!-- Conteúdo do treino ativo e contador renderizados aqui -->
             </div>
         </div>
     </div>
@@ -194,10 +194,10 @@
     </nav>
     
     <script>
-        // --- Dados da Aplicação (iniciados com valores zerados) ---
+        // --- Dados da Aplicação ---
         const appState = {
             currentPage: 'home',
-            currentWorkoutId: null,
+            currentWorkout: null, // Pode ser um treino ou um objetivo
             timer: null,
             elapsedTime: 0,
             isPaused: false,
@@ -215,9 +215,9 @@
             },
             // Objetivos com progresso zerado
             goals: [
-                { id: 1, text: 'Correr 5km', progress: 0, target: 5, unit: 'km', achieved: false },
-                { id: 2, text: '3 treinos de força por semana', progress: 0, target: 3, unit: 'treinos', achieved: false },
-                { id: 3, text: '20 minutos de yoga', progress: 0, target: 20, unit: 'min', achieved: false }
+                { id: 1, text: 'Correr 5km', progress: 0, target: 5, unit: 'km', timeBased: false },
+                { id: 2, text: '3 treinos de força por semana', progress: 0, target: 3, unit: 'treinos', timeBased: false },
+                { id: 3, text: '20 minutos de yoga', progress: 0, target: 20, unit: 'min', timeBased: true }
             ],
             // Prêmios
             awards: [
@@ -231,7 +231,7 @@
                 { id: 'tip2', title: 'Hidratação é fundamental', text: 'Beba água antes, durante e depois dos exercícios.' },
                 { id: 'tip3', title: 'Recuperação é essencial', text: 'Não se esqueça de dias de descanso para a recuperação muscular.' }
             ],
-            // Dados de todos os treinos, incluindo os novos
+            // Dados de todos os treinos
             workouts: {
                 'cardio-rapido': {
                     title: 'Cardio Rápido', category: 'Cardio', duration: '15 min', difficulty: 'Iniciante', icon: 'bolt', kcal: 150, km: 0,
@@ -369,7 +369,7 @@
         function renderGoals() {
             const container = document.getElementById('goals-list');
             container.innerHTML = appState.goals.map(goal => `
-                <div class="card p-4 flex items-center justify-between">
+                <div class="goal-item card p-4 flex items-center justify-between cursor-pointer" data-goal-id="${goal.id}">
                     <div>
                         <p class="text-sm font-medium">${goal.text}</p>
                         <div class="w-full h-2 bg-gray-700 rounded-full mt-2">
@@ -451,23 +451,26 @@
             `;
             
             document.getElementById('start-workout-button').addEventListener('click', () => {
-                appState.currentWorkoutId = workoutId;
+                appState.currentWorkout = workout;
                 navigateTo('active-workout');
             });
         }
 
         function renderActiveWorkout() {
-            const workout = appState.workouts[appState.currentWorkoutId];
-            if (!workout) {
+            const currentItem = appState.currentWorkout;
+            if (!currentItem) {
                 navigateTo('home');
                 return;
             }
 
+            const titleText = currentItem.timeBased ? currentItem.title : currentItem.title;
+            const subtitleText = currentItem.timeBased ? `Tempo Restante` : `Tempo de Treino`;
+
             const content = document.getElementById('active-workout-content');
             content.innerHTML = `
                 <div class="text-center space-y-4">
-                    <h2 class="text-3xl font-bold">${workout.title}</h2>
-                    <p class="text-gray-400 text-sm">Próximo: ${workout.exercises[0].name}</p>
+                    <h2 class="text-3xl font-bold">${titleText}</h2>
+                    <p class="text-gray-400 text-sm">${subtitleText}</p>
                 </div>
                 <div class="relative w-64 h-64 my-12">
                     <svg class="w-full h-full transform -rotate-90" viewBox="0 0 100 100">
@@ -494,14 +497,17 @@
             });
         }
 
-        // --- Lógica do Cronômetro e Treino ---
+        // --- Lógica do Cronômetro/Contador e Treino ---
         function startWorkout() {
-            appState.elapsedTime = 0;
-            appState.isPaused = false;
+            const currentItem = appState.currentWorkout;
+            if (!currentItem) return;
+            
             clearInterval(appState.timer);
-
-            const workout = appState.workouts[appState.currentWorkoutId];
-            const totalDurationInSeconds = parseInt(workout.duration.split(' ')[0]) * 60;
+            
+            const totalDurationInSeconds = currentItem.timeBased ? currentItem.target * 60 : parseInt(currentItem.duration.split(' ')[0]) * 60;
+            appState.elapsedTime = currentItem.timeBased ? totalDurationInSeconds : 0;
+            appState.isPaused = false;
+            
             const timerDisplay = document.getElementById('workout-timer');
             const progressCircle = document.getElementById('progress-circle');
             const circumference = 2 * Math.PI * 42;
@@ -511,21 +517,32 @@
             const updateTimer = () => {
                 if (appState.isPaused) return;
 
-                appState.elapsedTime++;
-                const minutes = Math.floor(appState.elapsedTime / 60);
-                const seconds = appState.elapsedTime % 60;
+                if (currentItem.timeBased) {
+                    appState.elapsedTime--;
+                } else {
+                    appState.elapsedTime++;
+                }
+
+                const minutes = Math.floor(Math.abs(appState.elapsedTime) / 60);
+                const seconds = Math.abs(appState.elapsedTime) % 60;
                 
                 timerDisplay.textContent = `${String(minutes).padStart(2, '0')}:${String(seconds).padStart(2, '0')}`;
                 
-                const progressPercentage = appState.elapsedTime / totalDurationInSeconds;
+                const progressPercentage = currentItem.timeBased
+                    ? (totalDurationInSeconds - appState.elapsedTime) / totalDurationInSeconds
+                    : appState.elapsedTime / totalDurationInSeconds;
+                
                 const offset = circumference - progressPercentage * circumference;
                 progressCircle.style.strokeDashoffset = offset;
 
-                if (appState.elapsedTime >= totalDurationInSeconds) {
+                if (currentItem.timeBased && appState.elapsedTime <= 0) {
+                    handleWorkoutComplete();
+                } else if (!currentItem.timeBased && appState.elapsedTime >= totalDurationInSeconds) {
                     handleWorkoutComplete();
                 }
             };
             
+            updateTimer(); // Chama a função imediatamente para evitar delay inicial
             appState.timer = setInterval(updateTimer, 1000);
         }
 
@@ -543,37 +560,37 @@
 
         function handleWorkoutComplete() {
             clearInterval(appState.timer);
-            const workout = appState.workouts[appState.currentWorkoutId];
+            const currentItem = appState.currentWorkout;
             
-            // Atualizar métricas de progresso com base no treino concluído
-            appState.progress.kcal += workout.kcal;
-            appState.progress.km += workout.km;
-            appState.progress.min += parseInt(workout.duration.split(' ')[0]);
-
+            if (currentItem.timeBased) {
+                // Se for um objetivo, atualiza o progresso diretamente
+                const goal = appState.goals.find(g => g.text === currentItem.title);
+                if (goal) {
+                    goal.progress = goal.target;
+                    appState.progress.min += goal.target;
+                }
+            } else {
+                // Se for um treino, atualiza as métricas de treino
+                appState.progress.kcal += currentItem.kcal;
+                appState.progress.km += currentItem.km;
+                appState.progress.min += parseInt(currentItem.duration.split(' ')[0]);
+            }
+            
             // Atualizar círculos de atividade
             appState.activityCircles.move.value = Math.min(appState.activityCircles.move.target, appState.progress.kcal);
             appState.activityCircles.exercise.value = Math.min(appState.activityCircles.exercise.target, appState.progress.min);
 
-            // Atualizar objetivos
-            appState.goals.forEach(goal => {
-                if (goal.unit === 'km') {
-                    goal.progress = Math.min(goal.target, appState.progress.km);
-                } else if (goal.unit === 'min') {
-                    goal.progress = Math.min(goal.target, appState.progress.min);
-                }
-            });
-            
             // Re-renderizar as seções de progresso e voltar para a home
             renderProgressMetrics();
             renderActivityCircles();
             renderGoals();
 
-            // Resetar o estado do treino
+            // Resetar o estado
             appState.isPaused = false;
             appState.elapsedTime = 0;
-            appState.currentWorkoutId = null;
+            appState.currentWorkout = null;
 
-            alert('Parabéns! Treino completo!'); // Usando alert apenas para feedback visual
+            console.log('Parabéns! Atividade completa!');
             navigateTo('home');
         }
 
@@ -581,7 +598,7 @@
             clearInterval(appState.timer);
             appState.isPaused = false;
             appState.elapsedTime = 0;
-            appState.currentWorkoutId = null;
+            appState.currentWorkout = null;
             modalOverlay.classList.add('hidden');
             navigateTo('home');
         }
@@ -613,7 +630,7 @@
             
             appState.currentPage = pageId;
 
-            // --- CORREÇÃO: Renderiza a página do cronômetro após a navegação ---
+            // Inicia o contador se for a página de treino ativo
             if (pageId === 'active-workout') {
                 renderActiveWorkout();
                 startWorkout();
@@ -643,6 +660,24 @@
                 if (workoutCard) {
                     renderWorkoutDetails(workoutCard.dataset.workoutId);
                     navigateTo('workout-details');
+                }
+            });
+            
+            // Ouvinte para os objetivos
+            document.getElementById('goals-list').addEventListener('click', (e) => {
+                const goalItem = e.target.closest('.goal-item');
+                if (goalItem) {
+                    const goalId = parseInt(goalItem.dataset.goalId);
+                    const goal = appState.goals.find(g => g.id === goalId);
+                    
+                    if (goal && goal.timeBased) {
+                        appState.currentWorkout = {
+                            title: goal.text,
+                            target: goal.target,
+                            timeBased: true,
+                        };
+                        navigateTo('active-workout');
+                    }
                 }
             });
 
