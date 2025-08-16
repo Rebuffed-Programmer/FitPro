@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>FitPro V3 | Apple TV+</title>
+    <title>FitPro V3</title>
     <!-- Tailwind CSS CDN -->
     <script src="https://cdn.tailwindcss.com"></script>
     <!-- Google Fonts - Inter -->
@@ -12,7 +12,6 @@
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
     
     <style>
-        /* General styles and color scheme */
         :root {
             color-scheme: dark;
         }
@@ -21,412 +20,502 @@
             background-color: #000000;
             color: #ffffff;
             overflow-x: hidden;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
         }
         .container {
             max-width: 100vw;
             min-height: 100vh;
-            padding-bottom: 80px; /* Space for the fixed nav bar */
+            padding-bottom: 80px; /* Espaço para a nav bar fixa */
         }
-
-        /* Gradient for hero text */
         .text-gradient {
             background-image: linear-gradient(to right, #ffffff, #aaaaaa);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
         }
-
-        /* Nav bar button styles with active state */
-        .nav-button {
-            transition: transform 0.2s ease-in-out;
-        }
-        .nav-button.active {
-            transform: scale(1.1);
-        }
-
-        /* Card and content block styles */
-        .card {
-            background-color: #1a1a1a;
-            transition: transform 0.2s;
-        }
-        .card:hover {
-            transform: scale(1.03);
-        }
-        .hero-banner {
-            background-color: #1a1a1a;
-            background-image: linear-gradient(to bottom, #1a1a1a, #000000);
-        }
-
-        /* Horizontal scrolling container for sections */
-        .scroll-container {
-            -webkit-overflow-scrolling: touch;
-            scrollbar-width: none;
-            -ms-overflow-style: none;
-            scroll-snap-type: x mandatory;
-        }
         .scroll-container::-webkit-scrollbar {
             display: none;
         }
-        .scroll-container > * {
-            scroll-snap-align: start;
+        .scroll-container {
+            -ms-overflow-style: none;  /* IE and Edge */
+            scrollbar-width: none;  /* Firefox */
         }
-
-        /* Specific card sizes for horizontal scrolling */
-        .horizontal-card {
-            width: 180px; /* fixed width for horizontal scroll */
-            flex-shrink: 0;
-            cursor: pointer;
-            margin-right: 12px;
-        }
-
-        /* Message box for alerts */
-        .message-box {
-            position: fixed;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            background-color: #262626;
-            padding: 2rem;
-            border-radius: 0.75rem;
-            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-            z-index: 100;
-            max-width: 90%;
-            text-align: center;
-        }
-
-        /* SVG icon styles from Phosphor Icons */
-        .ph-icon {
-            display: inline-block;
-            vertical-align: middle;
-            fill: currentColor;
+        .card {
+            background-color: #1a1a1a;
+            border: 1px solid #2d2d2d;
         }
     </style>
 </head>
 <body class="bg-black text-white font-inter">
 
-    <div id="app-container" class="container mx-auto px-4 py-8">
-        <!-- The content will be rendered here by JavaScript -->
+    <div class="container mx-auto px-4 py-8 relative">
+        <!-- Main Content Section - Home Page -->
+        <div id="home-page" data-page="home" class="space-y-8">
+            <h1 class="text-3xl font-bold">Início</h1>
+            
+            <!-- Seu Progresso de Hoje -->
+            <section>
+                <h2 class="text-xl font-bold mb-4">Seu Progresso de Hoje</h2>
+                <div id="progress-metrics" class="flex flex-row overflow-x-auto scroll-container gap-4 pb-4">
+                    <!-- Metrics will be dynamically generated here -->
+                </div>
+            </section>
+
+            <!-- Círculos de Atividade -->
+            <section>
+                <h2 class="text-xl font-bold mb-4">Círculos de Atividade</h2>
+                <div id="activity-circles" class="flex justify-around items-center space-x-4">
+                    <!-- Circles will be dynamically generated here -->
+                </div>
+            </section>
+
+            <!-- Programas em Destaque (Categorias) -->
+            <section>
+                <h2 class="text-xl font-bold mb-4">Treinos em Destaque</h2>
+                <div id="workout-categories" class="flex flex-row overflow-x-auto scroll-container gap-4 pb-4">
+                    <!-- Categories will be dynamically generated here -->
+                </div>
+            </section>
+
+            <!-- Programas Populares -->
+            <section>
+                <h2 class="text-xl font-bold mb-4">Programas Populares</h2>
+                <div id="popular-workouts" class="flex flex-row overflow-x-auto scroll-container gap-4 pb-4">
+                    <!-- Workouts will be dynamically generated here -->
+                </div>
+            </section>
+            
+            <!-- Prêmios -->
+            <section>
+                <h2 class="text-xl font-bold mb-4">Seus Prêmios</h2>
+                <div id="awards" class="flex flex-row overflow-x-auto scroll-container gap-4 pb-4">
+                    <!-- Awards will be dynamically generated here -->
+                </div>
+            </section>
+
+            <!-- Dicas de Treino -->
+            <section>
+                <h2 class="text-xl font-bold mb-4">Dicas de Treino</h2>
+                <div id="training-tips" class="space-y-3">
+                    <!-- Tips will be dynamically generated here -->
+                </div>
+            </section>
+        </div>
+
+        <!-- NEW: Main Content Section - Activities Page -->
+        <div id="activities-page" data-page="activities" class="hidden space-y-8">
+            <h1 class="text-3xl font-bold">Atividades</h1>
+            <div id="all-workouts" class="grid grid-cols-2 sm:grid-cols-3 gap-4">
+                <!-- All workouts will be dynamically generated here -->
+            </div>
+        </div>
+
+        <!-- Main Content Section - Workout Details -->
+        <div id="workout-details-page" data-page="workout-details" class="hidden">
+            <button id="back-button" class="text-blue-500 mb-4 flex items-center">
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="mr-2"><path d="m15 18-6-6 6-6"/></svg>
+                Voltar
+            </button>
+            <div id="workout-details-container" class="space-y-8">
+                <!-- Details will be dynamically generated here -->
+            </div>
+        </div>
+
+        <!-- Main Content Section - Active Workout -->
+        <div id="active-workout-page" data-page="active-workout" class="hidden">
+            <div class="flex flex-col items-center justify-center p-6 space-y-8 min-h-screen">
+                <h1 class="text-3xl font-bold text-center">Treino em Andamento</h1>
+                <div class="text-center">
+                    <p class="text-sm text-gray-400">Tempo Decorrido</p>
+                    <p id="timer-display" class="text-6xl font-bold mt-2">0:00</p>
+                </div>
+                <div class="flex justify-around w-full max-w-sm">
+                    <div class="flex flex-col items-center">
+                        <span id="steps-icon"></span>
+                        <span id="steps-display" class="text-lg font-bold">0</span>
+                        <span class="text-xs text-gray-400">Passos</span>
+                    </div>
+                    <div class="flex flex-col items-center">
+                        <span id="kcal-icon"></span>
+                        <span id="kcal-display" class="text-lg font-bold">0.00</span>
+                        <span class="text-xs text-gray-400">Kcal</span>
+                    </div>
+                    <div class="flex flex-col items-center">
+                        <span id="distance-icon"></span>
+                        <span id="distance-display" class="text-lg font-bold">0.000</span>
+                        <span class="text-xs text-gray-400">Km</span>
+                    </div>
+                </div>
+                <div class="flex space-x-4 mt-8">
+                    <button id="pause-continue-button" class="bg-blue-600 rounded-full p-4 hover:bg-blue-700 transition-colors">
+                        <svg id="play-icon" xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="block"><polygon points="5 3 19 12 5 21 5 3"></polygon></svg>
+                        <svg id="pause-icon" xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="hidden"><rect x="6" y="4" width="4" height="16"></rect><rect x="14" y="4" width="4" height="16"></rect></svg>
+                    </button>
+                    <button id="cancel-button" class="bg-red-600 rounded-full p-4 hover:bg-red-700 transition-colors">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
+                    </button>
+                </div>
+            </div>
+        </div>
     </div>
 
     <!-- Fixed Bottom Navigation Bar -->
     <nav class="fixed bottom-0 left-0 right-0 bg-black bg-opacity-90 backdrop-blur-md p-4 flex justify-around items-center rounded-t-2xl shadow-lg">
-        <button id="nav-home" data-nav-id="home" class="nav-button flex flex-col items-center text-xs text-gray-400 transition-colors duration-200 focus:outline-none">
-            <svg class="w-6 h-6 mb-1" fill="currentColor" viewBox="0 0 24 24">
-                <path d="M10 20v-6h4v6h5v-8h3L12 3L2 12h3v8h5z"></path>
-            </svg>
+        <button data-nav-id="home" class="nav-button flex flex-col items-center text-xs text-gray-400 transition-colors duration-200 focus:outline-none active:text-white">
+            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="mb-1"><path d="m3 9 9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
             Início
         </button>
-        <button id="nav-activities" data-nav-id="activities" class="nav-button flex flex-col items-center text-xs text-gray-400 transition-colors duration-200 focus:outline-none">
-            <svg class="w-6 h-6 mb-1" fill="currentColor" viewBox="0 0 24 24">
-                <path d="M13 13.999l-3.23 3.743c-0.347 0.402-0.841 0.638-1.378 0.638h-4.392l0.002 0.001c-1.381 0-2.5-1.119-2.5-2.5 0-0.908 0.485-1.708 1.216-2.148l4.318-2.585-1.847-2.152c-0.346-0.403-0.841-0.638-1.378-0.638h-4.393l0.002 0.001c-1.381 0-2.5-1.119-2.5-2.5s1.119-2.5 2.5-2.5h16.037c1.381 0 2.5 1.119 2.5 2.5s-1.119 2.5-2.5 2.5h-4.392c-0.537 0-1.032-0.236-1.378 0.638l-1.847 2.152 4.318 2.585c0.731 0.44 1.216 1.24 1.216 2.148 0 1.381-1.119 2.5-2.5 2.5h-4.393c-0.537 0-1.032-0.236-1.378-0.638l-3.23-3.743z"></path>
-            </svg>
+        <button data-nav-id="activities" class="nav-button flex flex-col items-center text-xs text-gray-400 transition-colors duration-200 focus:outline-none active:text-white">
+            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="mb-1"><path d="M22 12h-4l-3 9L9 3l-3 9H2"/></svg>
             Atividades
         </button>
-        <button id="nav-profile" data-nav-id="profile" class="nav-button flex flex-col items-center text-xs text-gray-400 transition-colors duration-200 focus:outline-none">
-            <svg class="w-6 h-6 mb-1" fill="currentColor" viewBox="0 0 24 24">
-                <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 3c1.94 0 3.5 1.56 3.5 3.5S13.94 12 12 12s-3.5-1.56-3.5-3.5S10.06 5 12 5zm0 14.1c-2.73 0-5.2-1.72-7.14-4.59C6.48 12.59 9.3 11 12 11s5.52 1.59 7.14 3.51c-1.94 2.87-4.41 4.59-7.14 4.59z"></path>
-            </svg>
+        <button data-nav-id="profile" class="nav-button flex flex-col items-center text-xs text-gray-400 transition-colors duration-200 focus:outline-none active:text-white">
+            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="mb-1"><path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
             Perfil
         </button>
     </nav>
 
     <script>
-        // App state variables
-        let activeTab = 'home';
-        let currentProgram;
-
-        // --- Data Mock-up to support the new layout ---
-        const progressMetrics = [
-            { id: 'timer', label: 'Cronômetro', value: 'ativar', icon: `<svg class="ph-icon w-6 h-6" viewBox="0 0 256 256"><path d="M128 24a104 104 0 1 0 104 104A104.117 104.117 0 0 0 128 24Zm0 192a88 88 0 1 1 88-88A88.099 88.099 0 0 1 128 216ZM176 128a8 8 0 0 1-8 8h-36a8 8 0 0 1-8-8V80a8 8 0 0 1 16 0v40h28a8 8 0 0 1 8 8Z"></path></svg>` },
-            { id: 'heart', label: 'Batimentos', value: '0', unit: 'bpm', icon: `<svg class="ph-icon w-6 h-6" viewBox="0 0 256 256"><path d="M224 96a64 64 0 0 1-128 0v-40a8 8 0 0 0-16 0v40a64 64 0 0 1-128 0v-40a8 8 0 0 0-16 0v40a80 80 0 0 0 160 0V56a8 8 0 0 0-16 0v40a64 64 0 0 1 128 0v40a8 8 0 0 0 16 0v-40a80 80 0 0 0-160 0v40Z"></path></svg>` },
-            { id: 'steps', label: 'Passos', value: '0', icon: `<svg class="ph-icon w-6 h-6" viewBox="0 0 256 256"><path d="M120 176a4 4 0 0 1-4 4H72a4 4 0 0 1-4-4V80a4 4 0 0 1 4-4h44a4 4 0 0 1 4 4v96Zm76-88h-48a4 4 0 0 0-4 4v96a4 4 0 0 0 4 4h48a4 4 0 0 0 4-4V88a4 4 0 0 0-4-4Zm0 100a4 4 0 0 1-4 4h-48a4 4 0 0 1-4-4V88a4 4 0 0 1 4-4h48a4 4 0 0 1 4 4v96Z"></path></svg>` },
-            { id: 'calories', label: 'Calorias', value: '0', unit: 'kcal', icon: `<svg class="ph-icon w-6 h-6" viewBox="0 0 256 256"><path d="M128 24a104 104 0 1 0 104 104A104.117 104.117 0 0 0 128 24Zm0 192a88 88 0 1 1 88-88A88.099 88.099 0 0 1 128 216ZM128 128a8 8 0 0 1-8-8v-40a8 8 0 0 1 16 0v40a8 8 0 0 1-8 8Z"></path></svg>` },
-            { id: 'distance', label: 'Distância', value: '0', unit: 'km', icon: `<svg class="ph-icon w-6 h-6" viewBox="0 0 256 256"><path d="M224 128a96 96 0 1 0-96 96 96.108 96.108 0 0 0 96-96Zm-96 80a80 80 0 1 1 80-80A80.091 80.091 0 0 1 128 208Zm-32-48a8 8 0 0 1-8-8v-40a8 8 0 0 1 16 0v40a8 8 0 0 1-8 8Z"></path></svg>` }
+        // --- App Data (Mock-up) ---
+        const workouts = [
+            { id: 'forca-1', name: 'Força de Corpo Inteiro', coach: 'Marcos', image: 'https://placehold.co/400x250/555555/dddddd?text=Forca+1', category: 'Força', icon: `<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><path d="M14 2v6h6"/><path d="M15 22V10M9 22V10M5 16H3M21 16h-2"/></svg>`, exercises: [
+                { name: 'Flexões', sets: 3, reps: 10, duration: null, icon: `<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><path d="M14 2v6h6"/><path d="M15 22V10M9 22V10M5 16H3M21 16h-2"/></svg>` },
+                { name: 'Agachamentos', sets: 3, reps: 15, duration: null, icon: `<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><path d="M14 2v6h6"/><path d="M15 22V10M9 22V10M5 16H3M21 16h-2"/></svg>` },
+                { name: 'Prancha', sets: 3, reps: null, duration: 60, icon: `<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 5.5v13"/><path d="M18 11.5v-6"/><path d="M6 11.5v-6"/><path d="M20 18v-5.5a2.5 2.5 0 0 0-5 0V18"/><path d="M4 18v-5.5a2.5 2.5 0 0 1 5 0V18"/></svg>` },
+            ]},
+            { id: 'cardio-1', name: 'Treino Rápido de Cardio', coach: 'Ana', image: 'https://placehold.co/400x250/333333/dddddd?text=Cardio+1', category: 'Cardio', icon: `<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"/></svg>`, exercises: [
+                { name: 'Corrida Estacionária', sets: 5, reps: null, duration: 60, icon: `<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 5.5v13"/><path d="M18 11.5v-6"/><path d="M6 11.5v-6"/><path d="M20 18v-5.5a2.5 2.5 0 0 0-5 0V18"/><path d="M4 18v-5.5a2.5 2.5 0 0 1 5 0V18"/></svg>` },
+                { name: 'Polichinelos', sets: 5, reps: 20, duration: null, icon: `<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 5.5v13"/><path d="M18 11.5v-6"/><path d="M6 11.5v-6"/><path d="M20 18v-5.5a2.5 2.5 0 0 0-5 0V18"/><path d="M4 18v-5.5a2.5 2.5 0 0 1 5 0V18"/></svg>` },
+                { name: 'Burpees', sets: 5, reps: 10, duration: null, icon: `<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 5.5v13"/><path d="M18 11.5v-6"/><path d="M6 11.5v-6"/><path d="M20 18v-5.5a2.5 2.5 0 0 0-5 0V18"/><path d="M4 18v-5.5a2.5 2.5 0 0 1 5 0V18"/></svg>` },
+            ]},
+            { id: 'yoga-1', name: 'Yoga para Iniciantes', coach: 'Leo', image: 'https://placehold.co/400x250/444444/dddddd?text=Yoga+1', category: 'Yoga', icon: `<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M7.9 20A10.5 10.5 0 0 0 19 13.9C21 11 21.6 7.7 19.3 5.4c-2.3-2.3-5.6-1.6-8.5.4A10.5 10.5 0 0 0 4 16.1"/></svg>`, exercises: [
+                { name: 'Saudação ao Sol', sets: 3, reps: 10, duration: null, icon: `<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 5.5v13"/><path d="M18 11.5v-6"/><path d="M6 11.5v-6"/><path d="M20 18v-5.5a2.5 2.5 0 0 0-5 0V18"/><path d="M4 18v-5.5a2.5 2.5 0 0 1 5 0V18"/></svg>` },
+                { name: 'Cão Olhando para Baixo', sets: 3, reps: null, duration: 45, icon: `<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 5.5v13"/><path d="M18 11.5v-6"/><path d="M6 11.5v-6"/><path d="M20 18v-5.5a2.5 2.5 0 0 0-5 0V18"/><path d="M4 18v-5.5a2.5 2.5 0 0 1 5 0V18"/></svg>` },
+                { name: 'Postura da Árvore', sets: 3, reps: null, duration: 30, icon: `<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 5.5v13"/><path d="M18 11.5v-6"/><path d="M6 11.5v-6"/><path d="M20 18v-5.5a2.5 2.5 0 0 0-5 0V18"/><path d="M4 18v-5.5a2.5 2.5 0 0 1 5 0V18"/></svg>` },
+            ]},
+            { id: 'corrida-1', name: 'Corrida de 5km', coach: 'Leo', image: 'https://placehold.co/400x250/666666/dddddd?text=5K+1', category: 'Corrida', icon: `<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 18l6-4l-6-4l-3 4l-4 4"/></svg>`, exercises: [
+                { name: 'Aquecimento (Caminhada)', sets: 1, reps: null, duration: 300, icon: `<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 18l6-4l-6-4l-3 4l-4 4"/></svg>` },
+                { name: 'Corrida Moderada', sets: 1, reps: null, duration: 1800, icon: `<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 18l6-4l-6-4l-3 4l-4 4"/></svg>` },
+                { name: 'Resfriamento (Caminhada)', sets: 1, reps: null, duration: 300, icon: `<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 18l6-4l-6-4l-3 4l-4 4"/></svg>` },
+            ]},
+            { id: 'natacao-1', name: 'Natação para Resistência', coach: 'Sofia', image: 'https://placehold.co/400x250/1a1a1a/cccccc?text=Natação+1', category: 'Natação', icon: `<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 16.2c-1-.7-2-1.2-3.2-1.5-1.9-.5-4-.2-5.7.5-1.5.6-2.9 1.4-4.5 2.1-2.9 1.3-5.2 1.1-7.1-.6"/><path d="M12.9 7.7a6.8 6.8 0 0 0-4.4 2.3c-.9 1-1.4 2.2-1.7 3.6"/><path d="M17.8 15.3c-2-.3-4.1-.6-6.3-1.6-2.5-1.1-4.5-2.6-6.7-4.4"/><path d="M12 12c.7-2.6 1.7-5 4-7"/><path d="M18 10c.8-1 1.2-2.1 1.4-3.4"/></svg>`, exercises: [
+                { name: '200m Livre', sets: 5, reps: null, duration: null, icon: `<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 16.2c-1-.7-2-1.2-3.2-1.5-1.9-.5-4-.2-5.7.5-1.5.6-2.9 1.4-4.5 2.1-2.9 1.3-5.2 1.1-7.1-.6"/><path d="M12.9 7.7a6.8 6.8 0 0 0-4.4 2.3c-.9 1-1.4 2.2-1.7 3.6"/><path d="M17.8 15.3c-2-.3-4.1-.6-6.3-1.6-2.5-1.1-4.5-2.6-6.7-4.4"/><path d="M12 12c.7-2.6 1.7-5 4-7"/><path d="M18 10c.8-1 1.2-2.1 1.4-3.4"/></svg>` },
+                { name: '100m Costas', sets: 5, reps: null, duration: null, icon: `<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 16.2c-1-.7-2-1.2-3.2-1.5-1.9-.5-4-.2-5.7.5-1.5.6-2.9 1.4-4.5 2.1-2.9 1.3-5.2 1.1-7.1-.6"/><path d="M12.9 7.7a6.8 6.8 0 0 0-4.4 2.3c-.9 1-1.4 2.2-1.7 3.6"/><path d="M17.8 15.3c-2-.3-4.1-.6-6.3-1.6-2.5-1.1-4.5-2.6-6.7-4.4"/><path d="M12 12c.7-2.6 1.7-5 4-7"/><path d="M18 10c.8-1 1.2-2.1 1.4-3.4"/></svg>` },
+            ]},
+            { id: 'futebol-1', name: 'Treino de Habilidade', coach: 'João', image: 'https://placehold.co/400x250/1a1a1a/cccccc?text=Futebol+1', category: 'Futebol', icon: `<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M12 2a10 10 0 0 1 10 10"/><path d="M2 12a10 10 0 0 1 10-10"/><path d="M12 2v20"/><path d="M22 12c0 2.5-2.5 5-5 5s-5-2.5-5-5"/><path d="M12 12c0-2.5 2.5-5 5-5s5 2.5 5 5"/><path d="M12 12c0-2.5-2.5-5-5-5s-5 2.5-5 5"/></svg>`, exercises: [
+                { name: 'Dribles em Cone', sets: 10, reps: null, duration: null, icon: `<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M12 2a10 10 0 0 1 10 10"/><path d="M2 12a10 10 0 0 1 10-10"/><path d="M12 2v20"/><path d="M22 12c0 2.5-2.5 5-5 5s-5-2.5-5-5"/><path d="M12 12c0-2.5 2.5-5 5-5s5 2.5 5 5"/><path d="M12 12c0-2.5-2.5-5-5-5s-5 2.5-5 5"/></svg>` },
+                { name: 'Chutes a Gol', sets: 5, reps: null, duration: null, icon: `<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M12 2a10 10 0 0 1 10 10"/><path d="M2 12a10 10 0 0 1 10-10"/><path d="M12 2v20"/><path d="M22 12c0 2.5-2.5 5-5 5s-5-2.5-5-5"/><path d="M12 12c0-2.5 2.5-5 5-5s5 2.5 5 5"/><path d="M12 12c0-2.5-2.5-5-5-5s-5 2.5-5 5"/></svg>` },
+            ]},
+            { id: 'boxe-1', name: 'Boxe Básico', coach: 'Ricardo', image: 'https://placehold.co/400x250/1a1a1a/cccccc?text=Boxe+1', category: 'Boxe', icon: `<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 11a7 7 0 0 1 14 0v1a3 3 0 0 0 3 3v2a2 2 0 0 1-2 2h-1c-.8-.3-2.6-1.5-4-2.5C10.5 13.9 10 13 8.5 13H5a2 2 0 0 1-2-2v0Z"/><path d="M13 14.5c2.3-1.6 4-2.4 5-3.2"/></svg>`, exercises: [
+                { name: 'Sombra de Boxe', sets: 3, reps: null, duration: 60, icon: `<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 11a7 7 0 0 1 14 0v1a3 3 0 0 0 3 3v2a2 2 0 0 1-2 2h-1c-.8-.3-2.6-1.5-4-2.5C10.5 13.9 10 13 8.5 13H5a2 2 0 0 1-2-2v0Z"/><path d="M13 14.5c2.3-1.6 4-2.4 5-3.2"/></svg>` },
+                { name: 'Combinação de Socos', sets: 5, reps: null, duration: 60, icon: `<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 11a7 7 0 0 1 14 0v1a3 3 0 0 0 3 3v2a2 2 0 0 1-2 2h-1c-.8-.3-2.6-1.5-4-2.5C10.5 13.9 10 13 8.5 13H5a2 2 0 0 1-2-2v0Z"/><path d="M13 14.5c2.3-1.6 4-2.4 5-3.2"/></svg>` },
+            ]},
+            { id: 'volei-1', name: 'Treino de Vôlei', coach: 'Beatriz', image: 'https://placehold.co/400x250/1a1a1a/cccccc?text=Vôlei+1', category: 'Vôlei', icon: `<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M12 2v20"/><path d="M22 12c0 2.5-2.5 5-5 5s-5-2.5-5-5"/><path d="M12 12c0-2.5 2.5-5 5-5s5 2.5 5 5"/><path d="M12 12c0-2.5-2.5-5-5-5s-5 2.5-5 5"/></svg>`, exercises: [
+                { name: 'Saque', sets: 10, reps: null, duration: null, icon: `<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M12 2v20"/><path d="M22 12c0 2.5-2.5 5-5 5s-5-2.5-5-5"/><path d="M12 12c0-2.5 2.5-5 5-5s5 2.5 5 5"/><path d="M12 12c0-2.5-2.5-5-5-5s-5 2.5-5 5"/></svg>` },
+                { name: 'Manchete', sets: 10, reps: null, duration: null, icon: `<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M12 2v20"/><path d="M22 12c0 2.5-2.5 5-5 5s-5-2.5-5-5"/><path d="M12 12c0-2.5 2.5-5 5-5s5 2.5 5 5"/><path d="M12 12c0-2.5-2.5-5-5-5s-5 2.5-5 5"/></svg>` },
+            ]},
         ];
 
         const categories = [
-            { id: 'forca', name: 'Força', description: 'Treinos de peso', image: `https://placehold.co/400x250/1a1a1a/cccccc?text=Força` },
-            { id: 'cardio', name: 'Cardio', description: 'Treinos de resistência', image: `https://placehold.co/400x250/1a1a1a/cccccc?text=Cardio` },
-            { id: 'yoga', name: 'Yoga', description: 'Posturas e flexibilidade', image: `https://placehold.co/400x250/1a1a1a/cccccc?text=Yoga` },
-            { id: 'corrida', name: 'Corrida', description: 'Treinos de corrida', image: `https://placehold.co/400x250/1a1a1a/cccccc?text=Corrida` },
-            { id: 'natacao', name: 'Natação', description: 'Explore', image: `https://placehold.co/400x250/1a1a1a/cccccc?text=Natação` },
-            { id: 'futebol', name: 'Futebol', description: 'Exercícios com a bola', image: `https://placehold.co/400x250/1a1a1a/cccccc?text=Futebol` },
-            { id: 'boxe', name: 'Boxe', description: 'Treino de impacto', image: `https://placehold.co/400x250/1a1a1a/cccccc?text=Boxe` },
+            { id: 'forca', name: 'Força', description: 'Treinos de peso', icon: `<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><path d="M14 2v6h6"/><path d="M15 22V10M9 22V10M5 16H3M21 16h-2"/></svg>` },
+            { id: 'cardio', name: 'Cardio', description: 'Treinos de resistência', icon: `<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"/></svg>` },
+            { id: 'yoga', name: 'Yoga', description: 'Posturas e flexibilidade', icon: `<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M7.9 20A10.5 10.5 0 0 0 19 13.9C21 11 21.6 7.7 19.3 5.4c-2.3-2.3-5.6-1.6-8.5.4A10.5 10.5 0 0 0 4 16.1"/></svg>` },
+            { id: 'corrida', name: 'Corrida', description: 'Treinos de corrida', icon: `<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 18l6-4l-6-4l-3 4l-4 4"/></svg>` },
+            { id: 'natacao', name: 'Natação', description: 'Explore', icon: `<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 16.2c-1-.7-2-1.2-3.2-1.5-1.9-.5-4-.2-5.7.5-1.5.6-2.9 1.4-4.5 2.1-2.9 1.3-5.2 1.1-7.1-.6"/><path d="M12.9 7.7a6.8 6.8 0 0 0-4.4 2.3c-.9 1-1.4 2.2-1.7 3.6"/><path d="M17.8 15.3c-2-.3-4.1-.6-6.3-1.6-2.5-1.1-4.5-2.6-6.7-4.4"/><path d="M12 12c.7-2.6 1.7-5 4-7"/><path d="M18 10c.8-1 1.2-2.1 1.4-3.4"/></svg>` },
+            { id: 'futebol', name: 'Futebol', description: 'Exercícios com a bola', icon: `<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M12 2a10 10 0 0 1 10 10"/><path d="M2 12a10 10 0 0 1 10-10"/><path d="M12 2v20"/><path d="M22 12c0 2.5-2.5 5-5 5s-5-2.5-5-5"/><path d="M12 12c0-2.5 2.5-5 5-5s5 2.5 5 5"/><path d="M12 12c0-2.5-2.5-5-5-5s-5 2.5-5 5"/></svg>` },
+            { id: 'boxe', name: 'Boxe', description: 'Treino de impacto', icon: `<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 11a7 7 0 0 1 14 0v1a3 3 0 0 0 3 3v2a2 2 0 0 1-2 2h-1c-.8-.3-2.6-1.5-4-2.5C10.5 13.9 10 13 8.5 13H5a2 2 0 0 1-2-2v0Z"/><path d="M13 14.5c2.3-1.6 4-2.4 5-3.2"/></svg>` },
+            { id: 'volei', name: 'Vôlei', description: 'Habilidades de Vôlei', icon: `<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M12 2v20"/><path d="M22 12c0 2.5-2.5 5-5 5s-5-2.5-5-5"/><path d="M12 12c0-2.5 2.5-5 5-5s5 2.5 5 5"/><path d="M12 12c0-2.5-2.5-5-5-5s-5 2.5-5 5"/></svg>` },
+        ];
+
+        const awards = [
+            { id: 'award-1', name: 'Início', description: 'Seu primeiro treino completo.', icon: `<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m10 13 2 2 4-4"/><path d="M5 20a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h12.5L12 12l5.5 6H19a2 2 0 0 0 2-2v-2"/></svg>` },
+            { id: 'award-2', name: '5K', description: 'Primeira corrida de 5km.', icon: `<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m10 13 2 2 4-4"/><path d="M5 20a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h12.5L12 12l5.5 6H19a2 2 0 0 0 2-2v-2"/></svg>` },
+        ];
+
+        const trainingTips = [
+            'Aqueça por 5 minutos antes de cada treino.',
+            'Beba bastante água para se manter hidratado.',
+            'Escute seu corpo e não exagere.',
+            'Mantenha a consistência, mesmo em dias de preguiça.'
         ];
         
-        const popularPrograms = [
-            { id: 'cardio-rapido', name: 'Treino Rápido de Cardio', coach: 'Coach Ana', image: 'https://placehold.co/400x250/333333/dddddd?text=Cardio' },
-            { id: 'yoga-iniciantes', name: 'Yoga para Iniciantes', coach: 'Instrutor Leo', image: 'https://placehold.co/400x250/444444/dddddd?text=Yoga' },
-            { id: 'forca-corpo-inteiro', name: 'Força de Corpo Inteiro', coach: 'Treinador Marcos', image: 'https://placehold.co/400x250/555555/dddddd?text=Força' },
-            { id: 'corrida-5k', name: 'Corrida de 5km', coach: 'Treinador Leo', image: 'https://placehold.co/400x250/666666/dddddd?text=5K' },
-            { id: 'hit-avancado', name: 'HIIT Avançado', coach: 'Coach Ana', image: 'https://placehold.co/400x250/777777/dddddd?text=HIIT' },
-            { id: 'pilates-core', name: 'Pilates para o Core', coach: 'Instrutor Leo', image: 'https://placehold.co/400x250/888888/dddddd?text=Pilates' },
-        ];
+        // Use an object to map icons to their SVG string to avoid repetition.
+        const iconMap = {
+            'HeartPulse': `<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19.5 12.572 12 20l-7.5-7.428A5 5 0 1 1 12 6.006a5 5 1 1 1 7.5 6.572"/></svg>`,
+            'Footprints': `<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3.5 12.5a.5.5 0 0 1 .5-.5h2a.5.5 0 0 1 .5.5v3.5l-2.5 4.5"/><path d="M12.5 14.5a.5.5 0 0 1 .5-.5h2a.5.5 0 0 1 .5.5v3.5l-2.5 4.5"/><path d="M8 13.5a.5.5 0 0 1 .5-.5h2a.5.5 0 0 1 .5.5v3.5l-2.5 4.5"/><path d="M17 12.5a.5.5 0 0 1 .5-.5h2a.5.5 0 0 1 .5.5v3.5l-2.5 4.5"/></svg>`,
+            'Flame': `<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M8.5 14.5A2.5 2.5 0 0 0 9 12.2c-.3-.8-1-1.3-1.9-1.3-.7 0-1.4.5-1.7 1.2-.3.6-.2 1.2.2 1.7"/><path d="M21 16c-2 2-3.8 2.2-5.7 1-1.7-1.2-2-3-1.6-4.5"/><path d="M20.1 7.4c-2.4 2.8-5.6 4-7.9 3.2-2.3-.8-4.4-3.1-4.7-5.4"/><path d="M12 2c-.6 1.8-1 3.5-1 5.3 0 1.2.6 2.3 1.5 3"/><path d="M12 2c.6 1.8 1 3.5 1 5.3 0 1.2-.6 2.3-1.5 3"/><path d="M15 15c-1.2 2-3 3-5 3"/><path d="M9 19c2 0 4-1 5-2"/><path d="M9 19c2 0 4-1 5-2"/></svg>`,
+            'Ruler': `<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16.5 16.5 21 12 16.5 7.5"/><path d="M16 12H3"/><path d="M21 12H16"/><path d="M13 3.5v3"/><path d="M13 18.5v3"/><path d="M18 12.5v1"/><path d="M18 10.5v1"/><path d="M18 14.5v1"/><path d="M18 8.5v1"/><path d="M18 16.5v1"/><path d="M18 6.5v1"/><path d="M18 18.5v1"/><path d="M18 4.5v1"/></svg>`,
+            'Timer': `<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 2a2 2 0 0 1 2 2v2"/><path d="M14 2a2 2 0 0 1-2 2v2"/><path d="M12 11v6"/><path d="M12 18a6 6 0 1 1 0-12a6 6 0 0 1 0 12z"/></svg>`
+        };
         
-        // --- Core UI & Navigation Logic ---
-        const appContainer = document.getElementById('app-container');
-        const navButtons = document.querySelectorAll('[data-nav-id]');
+        let currentPage = 'home';
+        let currentWorkout = null;
+        let isWorkoutActive = false;
+        let isPaused = false;
+        let timer = 0;
+        let timerInterval = null;
+        let metrics = { steps: 0, kcal: 0, distance: 0 };
+        
+        // --- Helper Functions ---
+        const findWorkoutById = (id) => workouts.find(w => w.id === id);
+        
+        const formatTime = (totalSeconds) => {
+            const minutes = Math.floor(totalSeconds / 60);
+            const seconds = totalSeconds % 60;
+            return `${minutes}:${seconds < 10 ? '0' : ''}${seconds}`;
+        };
 
-        function showMessage(message) {
-            const messageBox = document.createElement('div');
-            messageBox.className = 'message-box bg-gray-800 text-white p-4 rounded-lg shadow-xl';
-            messageBox.innerHTML = `
-                <p>${message}</p>
-                <button class="mt-4 px-4 py-2 bg-blue-600 rounded-lg text-sm" onclick="this.parentNode.remove()">OK</button>
-            `;
-            document.body.appendChild(messageBox);
-        }
-
-        function navigateTo(pageId, data = null) {
-            appContainer.innerHTML = '';
-            // Clear any old listeners
-            navButtons.forEach(btn => btn.classList.remove('active', 'text-white'));
+        const navigateTo = (page, data = null) => {
+            currentPage = page;
+            currentWorkout = data;
             
-            let navBtn = document.querySelector(`[data-nav-id="${pageId}"]`);
-            if (navBtn) {
-                navBtn.classList.add('active', 'text-white');
-            } else if (pageId === 'category-page' || pageId === 'program-details') {
-                navBtn = document.querySelector(`[data-nav-id="${activeTab}"]`);
-                if (navBtn) navBtn.classList.add('active', 'text-white');
+            document.querySelectorAll('[data-page]').forEach(el => {
+                el.classList.add('hidden');
+            });
+            document.querySelector(`[data-page="${page}"]`).classList.remove('hidden');
+
+            if (page === 'home') {
+                renderHomePage();
+            } else if (page === 'activities') {
+                renderActivitiesPage();
+            } else if (page === 'workout-details' && data) {
+                renderWorkoutDetails(data);
             }
+        };
 
-            activeTab = pageId;
+        const updateMetrics = () => {
+            timer++;
+            metrics.steps += Math.floor(Math.random() * 1.5) + 1;
+            metrics.kcal += (Math.random() * 0.1);
+            metrics.distance += (Math.random() * 0.001);
 
-            switch (pageId) {
-                case 'home':
-                    renderHomePage();
-                    break;
-                case 'activities':
-                    renderActivitiesPage();
-                    break;
-                case 'profile':
-                    renderProfilePage();
-                    break;
-                case 'category-page':
-                    renderCategoryPage(data);
-                    break;
-                case 'program-details':
-                    renderProgramDetails(data);
-                    break;
-                default:
-                    renderHomePage();
+            document.getElementById('timer-display').innerText = formatTime(timer);
+            document.getElementById('steps-display').innerText = metrics.steps;
+            document.getElementById('kcal-display').innerText = metrics.kcal.toFixed(2);
+            document.getElementById('distance-display').innerText = metrics.distance.toFixed(3);
+        };
+
+        const startTimer = () => {
+            if (timerInterval) clearInterval(timerInterval);
+            timerInterval = setInterval(updateMetrics, 1000);
+        };
+
+        const pauseTimer = () => {
+            if (timerInterval) clearInterval(timerInterval);
+        };
+
+        const handleStartWorkout = () => {
+            isWorkoutActive = true;
+            isPaused = false;
+            timer = 0;
+            metrics = { steps: 0, kcal: 0, distance: 0 };
+            document.getElementById('pause-continue-button').classList.remove('bg-blue-600');
+            document.getElementById('pause-continue-button').classList.add('bg-gray-700');
+            document.getElementById('play-icon').classList.add('hidden');
+            document.getElementById('pause-icon').classList.remove('hidden');
+            navigateTo('active-workout');
+            startTimer();
+        };
+        
+        const handlePauseContinue = () => {
+            if (isPaused) {
+                isPaused = false;
+                startTimer();
+                document.getElementById('pause-continue-button').classList.remove('bg-blue-600');
+                document.getElementById('pause-continue-button').classList.add('bg-gray-700');
+                document.getElementById('play-icon').classList.add('hidden');
+                document.getElementById('pause-icon').classList.remove('hidden');
+            } else {
+                isPaused = true;
+                pauseTimer();
+                document.getElementById('pause-continue-button').classList.remove('bg-gray-700');
+                document.getElementById('pause-continue-button').classList.add('bg-blue-600');
+                document.getElementById('play-icon').classList.remove('hidden');
+                document.getElementById('pause-icon').classList.add('hidden');
             }
-        }
-        
-        // --- Page Render Functions ---
-        function renderHomePage() {
-            appContainer.innerHTML = `
-                <div class="space-y-8">
-                    <!-- Your Progress Section -->
-                    <section>
-                        <h2 class="text-xl font-bold mb-4">Seu Progresso de Hoje</h2>
-                        <div class="flex flex-row overflow-x-auto scroll-container gap-4 pb-4">
-                            ${progressMetrics.map(metric => `
-                                <div class="horizontal-card card rounded-2xl p-4 text-center border border-gray-800 flex flex-col justify-center items-center">
-                                    <span class="text-2xl mb-2">${metric.icon}</span>
-                                    <p class="text-sm font-semibold">${metric.value} ${metric.unit || ''}</p>
-                                    <p class="text-xs text-gray-400">${metric.label}</p>
-                                </div>
-                            `).join('')}
-                        </div>
-                    </section>
-                    
-                    <!-- Smart Workout Generator Hero Banner -->
-                    <section class="hero-banner p-6 rounded-3xl text-center space-y-4 shadow-xl">
-                        <h1 class="text-3xl font-bold text-gradient">Gerador de Treino Inteligente</h1>
-                        <p class="text-gray-400 text-sm">Crie seu treino ideal em segundos.</p>
-                        <button id="generate-workout-btn" class="w-full px-6 py-3 bg-blue-600 rounded-lg font-semibold shadow-md hover:bg-blue-700 transition-colors">
-                            Gerar Treino
-                        </button>
-                    </section>
+        };
 
-                    <!-- Featured Workouts Section (Categories) -->
-                    <section>
-                        <h2 class="text-xl font-bold mb-4">Treinos em Destaque</h2>
-                        <div class="flex flex-row overflow-x-auto scroll-container gap-4 pb-4">
-                            ${categories.map(cat => `
-                                <div data-category-id="${cat.id}" class="horizontal-card rounded-2xl p-4 cursor-pointer shadow-md border border-gray-800">
-                                    <img src="${cat.image}" alt="${cat.name}" class="rounded-xl w-full h-24 object-cover mb-2">
-                                    <h3 class="font-semibold text-sm">${cat.name}</h3>
-                                    <p class="text-gray-400 text-xs">${cat.description}</p>
-                                </div>
-                            `).join('')}
-                        </div>
-                    </section>
+        const handleCancelWorkout = () => {
+            pauseTimer();
+            isWorkoutActive = false;
+            navigateTo('home');
+        };
 
-                    <!-- Popular Programs Section -->
-                    <section>
-                        <h2 class="text-xl font-bold mb-4">Programas Populares</h2>
-                        <div class="flex flex-row overflow-x-auto scroll-container gap-4 pb-4">
-                            ${popularPrograms.map(prog => `
-                                <div data-program-id="${prog.id}" class="horizontal-card rounded-2xl p-4 cursor-pointer shadow-md border border-gray-800">
-                                    <img src="${prog.image}" alt="${prog.name}" class="rounded-xl w-full h-24 object-cover mb-2">
-                                    <h3 class="font-semibold text-sm">${prog.name}</h3>
-                                    <p class="text-gray-400 text-xs">${prog.coach}</p>
-                                </div>
-                            `).join('')}
-                        </div>
-                    </section>
+        // --- Render Functions ---
+        const renderHomePage = () => {
+            const progressContainer = document.getElementById('progress-metrics');
+            progressContainer.innerHTML = `
+                <div class="w-32 flex-shrink-0 card rounded-2xl p-4 text-center border border-gray-800 flex flex-col justify-center items-center">
+                    <span class="text-2xl mb-2">${iconMap.Timer}</span>
+                    <p class="text-sm font-semibold">Ativar</p>
+                    <p class="text-xs text-gray-400">Cronômetro</p>
+                </div>
+                <div class="w-32 flex-shrink-0 card rounded-2xl p-4 text-center border border-gray-800 flex flex-col justify-center items-center">
+                    <span class="text-2xl mb-2">${iconMap.HeartPulse}</span>
+                    <p class="text-sm font-semibold">0 bpm</p>
+                    <p class="text-xs text-gray-400">Batimentos</p>
+                </div>
+                <div class="w-32 flex-shrink-0 card rounded-2xl p-4 text-center border border-gray-800 flex flex-col justify-center items-center">
+                    <span class="text-2xl mb-2">${iconMap.Footprints}</span>
+                    <p class="text-sm font-semibold">0</p>
+                    <p class="text-xs text-gray-400">Passos</p>
+                </div>
+                <div class="w-32 flex-shrink-0 card rounded-2xl p-4 text-center border border-gray-800 flex flex-col justify-center items-center">
+                    <span class="text-2xl mb-2">${iconMap.Flame}</span>
+                    <p class="text-sm font-semibold">0 kcal</p>
+                    <p class="text-xs text-gray-400">Calorias</p>
+                </div>
+                <div class="w-32 flex-shrink-0 card rounded-2xl p-4 text-center border border-gray-800 flex flex-col justify-center items-center">
+                    <span class="text-2xl mb-2">${iconMap.Ruler}</span>
+                    <p class="text-sm font-semibold">0 km</p>
+                    <p class="text-xs text-gray-400">Distância</p>
                 </div>
             `;
-            setupEventListeners();
-        }
-        
-        function renderActivitiesPage() {
-            appContainer.innerHTML = `
-                <h1 class="text-2xl font-bold mb-6">Atividades</h1>
-                <p class="text-gray-400 mb-6">Descubra novas formas de se exercitar e divirta-se!</p>
-                <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
-                    <!-- Example cards, you can expand this section -->
-                    ${categories.map(cat => `
-                         <div data-category-id="${cat.id}" class="card rounded-2xl p-6 text-center cursor-pointer shadow-md border border-gray-800">
-                             <h3 class="text-lg font-semibold">${cat.name}</h3>
-                         </div>
-                    `).join('')}
-                </div>
-            `;
-            setupEventListeners();
-        }
-        
-        function renderProfilePage() {
-            appContainer.innerHTML = `
-                <h1 class="text-2xl font-bold mb-6">Perfil</h1>
-                <div class="flex flex-col items-center">
-                    <div class="w-24 h-24 rounded-full bg-gray-700 flex items-center justify-center text-4xl font-bold mb-4">
-                        A
-                    </div>
-                    <h2 class="text-xl font-bold">Usuário Anônimo</h2>
-                    <div class="bg-gray-800 p-6 rounded-2xl w-full max-w-md space-y-4 mt-6">
-                        <div class="flex justify-between items-center">
-                            <span class="text-gray-400">Total de Treinos:</span>
-                            <span class="font-semibold">25</span>
-                        </div>
-                        <div class="flex justify-between items-center">
-                            <span class="text-gray-400">Tempo Total:</span>
-                            <span class="font-semibold">1200 min</span>
-                        </div>
-                        <div class="flex justify-between items-center">
-                            <span class="text-gray-400">Treino Favorito:</span>
-                            <span class="font-semibold">Treino de Força 5</span>
-                        </div>
-                    </div>
-                </div>
-            `;
-        }
-        
-        function renderCategoryPage(categoryId) {
-            const category = categories.find(cat => cat.id === categoryId);
-            const programs = popularPrograms.filter(p => p.id.includes(categoryId)); // Simple filter for demo
-            
-            appContainer.innerHTML = `
-                <h1 class="text-2xl font-bold mb-6">${category ? category.name : 'Categoria'}</h1>
-                <button id="back-btn" class="text-blue-500 mb-4 flex items-center">
-                    <svg class="w-4 h-4 mr-2" fill="currentColor" viewBox="0 0 24 24">
-                        <path d="M15.41 7.41L14 6l-6 6 6 6 1.41-1.41L10.83 12z"></path>
-                    </svg>
-                    Voltar
-                </button>
-                <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
-                    ${programs.map(prog => `
-                        <div data-program-id="${prog.id}" class="card rounded-2xl p-4 cursor-pointer shadow-md border border-gray-800">
-                            <img src="${prog.image}" alt="${prog.name}" class="rounded-xl w-full h-36 object-cover mb-3">
-                            <h3 class="font-semibold">${prog.name}</h3>
-                            <p class="text-gray-400 text-sm">${prog.coach}</p>
-                        </div>
-                    `).join('')}
-                </div>
-            `;
-            
-            document.getElementById('back-btn').addEventListener('click', () => navigateTo('home'));
-            setupEventListeners();
-        }
 
-        function renderProgramDetails(programId) {
-            const program = popularPrograms.find(p => p.id === programId);
-            currentProgram = program;
+            const activityCirclesContainer = document.getElementById('activity-circles');
+            activityCirclesContainer.innerHTML = `
+                <div class="relative w-20 h-20">
+                    <div class="absolute inset-0 rounded-full bg-gray-800"></div>
+                    <div class="absolute inset-0 rounded-full flex items-center justify-center font-bold text-xs text-red-500">75%</div>
+                    <div class="absolute top-full left-1/2 -translate-x-1/2 mt-2 text-center text-xs text-gray-400">Movimento</div>
+                </div>
+                <div class="relative w-20 h-20">
+                    <div class="absolute inset-0 rounded-full bg-gray-800"></div>
+                    <div class="absolute inset-0 rounded-full flex items-center justify-center font-bold text-xs text-green-500">50%</div>
+                    <div class="absolute top-full left-1/2 -translate-x-1/2 mt-2 text-center text-xs text-gray-400">Exercício</div>
+                </div>
+                <div class="relative w-20 h-20">
+                    <div class="absolute inset-0 rounded-full bg-gray-800"></div>
+                    <div class="absolute inset-0 rounded-full flex items-center justify-center font-bold text-xs text-blue-500">90%</div>
+                    <div class="absolute top-full left-1/2 -translate-x-1/2 mt-2 text-center text-xs text-gray-400">Ficar de Pé</div>
+                </div>
+            `;
 
-            if (!program) {
-                appContainer.innerHTML = '<p class="text-red-500 text-center">Treino não encontrado.</p>';
+            const categoriesContainer = document.getElementById('workout-categories');
+            categoriesContainer.innerHTML = categories.map(cat => `
+                <div class="w-40 flex-shrink-0 rounded-2xl p-4 cursor-pointer shadow-md card text-center" onclick="navigateTo('workout-details', findWorkoutById('${cat.id}'))">
+                    <div class="text-5xl flex justify-center mb-2">${cat.icon}</div>
+                    <h3 class="font-semibold text-sm">${cat.name}</h3>
+                    <p class="text-gray-400 text-xs">${cat.description}</p>
+                </div>
+            `).join('');
+
+            const popularWorkoutsContainer = document.getElementById('popular-workouts');
+            popularWorkoutsContainer.innerHTML = workouts.slice(0, 3).map(prog => `
+                <div class="w-40 flex-shrink-0 rounded-2xl p-4 cursor-pointer shadow-md card" onclick="navigateTo('workout-details', findWorkoutById('${prog.id}'))">
+                    <img src="${prog.image}" alt="${prog.name}" class="rounded-xl w-full h-24 object-cover mb-2" />
+                    <h3 class="font-semibold text-sm">${prog.name}</h3>
+                    <p class="text-gray-400 text-xs">${prog.coach}</p>
+                </div>
+            `).join('');
+
+            const awardsContainer = document.getElementById('awards');
+            awardsContainer.innerHTML = awards.map(award => `
+                <div class="w-36 flex-shrink-0 card rounded-2xl p-4 text-center border border-gray-800 flex flex-col items-center justify-center">
+                    <div class="text-4xl text-yellow-500 mb-2">${award.icon}</div>
+                    <h3 class="font-semibold text-sm">${award.name}</h3>
+                    <p class="text-gray-400 text-xs mt-1">${award.description}</p>
+                </div>
+            `).join('');
+
+            const tipsContainer = document.getElementById('training-tips');
+            tipsContainer.innerHTML = trainingTips.map(tip => `
+                <div class="card rounded-lg p-3 border border-gray-800">
+                    <p class="text-sm">${tip}</p>
+                </div>
+            `).join('');
+        };
+        
+        // NEW: Function to render the Activities page with all workouts
+        const renderActivitiesPage = () => {
+            const container = document.getElementById('all-workouts');
+            container.innerHTML = workouts.map(prog => `
+                <div class="w-full rounded-2xl p-4 cursor-pointer shadow-md card" onclick="navigateTo('workout-details', findWorkoutById('${prog.id}'))">
+                    <img src="${prog.image}" alt="${prog.name}" class="rounded-xl w-full h-32 object-cover mb-2" />
+                    <h3 class="font-semibold text-base">${prog.name}</h3>
+                    <p class="text-gray-400 text-sm">${prog.coach}</p>
+                </div>
+            `).join('');
+        };
+
+        const renderWorkoutDetails = (workout) => {
+            const container = document.getElementById('workout-details-container');
+            if (!workout) {
+                container.innerHTML = `<p class="text-red-500 text-center">Treino não encontrado.</p>`;
                 return;
             }
 
-            appContainer.innerHTML = `
-                <button id="back-btn" class="text-blue-500 mb-4 flex items-center">
-                    <svg class="w-4 h-4 mr-2" fill="currentColor" viewBox="0 0 24 24">
-                        <path d="M15.41 7.41L14 6l-6 6 6 6 1.41-1.41L10.83 12z"></path>
-                    </svg>
-                    Voltar
-                </button>
+            container.innerHTML = `
                 <div class="card rounded-2xl p-6 shadow-md border border-gray-800 space-y-4">
-                    <img src="${program.image}" alt="${program.name}" class="rounded-xl w-full h-48 object-cover">
-                    <h1 class="text-2xl font-bold">${program.name}</h1>
-                    <p class="text-gray-400">Um programa de treino completo com ${program.coach}.</p>
+                    <img src="${workout.image}" alt="${workout.name}" class="rounded-xl w-full h-48 object-cover" />
+                    <h1 class="text-2xl font-bold">${workout.name}</h1>
+                    <p class="text-gray-400">Um programa completo com ${workout.coach}.</p>
                     <div class="flex justify-between text-sm text-gray-400">
-                        <span>Coach: <span class="text-white">${program.coach}</span></span>
-                        <span>Duração: <span class="text-white">30 min</span></span>
+                        <span>Coach: <span class="text-white">${workout.coach}</span></span>
                         <span>Dificuldade: <span class="text-white">Médio</span></span>
                     </div>
-                    <div id="workout-content" class="text-gray-400 space-y-2 mt-4">
-                        <p>Conteúdo do treino...</p>
-                        <p>Exercício 1: Flexões (3x10)</p>
-                        <p>Exercício 2: Agachamentos (3x15)</p>
-                        <p>Exercício 3: Prancha (60s)</p>
+                    <div class="mt-4">
+                        <h2 class="text-lg font-bold mb-2">Exercícios</h2>
+                        <ul class="space-y-2">
+                            ${workout.exercises.map(exercise => `
+                                <li class="flex items-center space-x-3 text-gray-300">
+                                    ${exercise.icon}
+                                    <span>${exercise.name}</span>
+                                    ${exercise.sets ? `<span class="text-xs text-gray-500 ml-auto">${exercise.sets} séries</span>` : ''}
+                                    ${exercise.reps ? `<span class="text-xs text-gray-500">${exercise.reps} repetições</span>` : ''}
+                                    ${exercise.duration ? `<span class="text-xs text-gray-500">${exercise.duration}s</span>` : ''}
+                                </li>
+                            `).join('')}
+                        </ul>
                     </div>
-                    <button id="start-workout-btn" class="w-full mt-6 px-6 py-3 bg-blue-600 rounded-lg font-semibold shadow-md hover:bg-blue-700 transition-colors">
+                    <button id="start-workout-button" class="w-full mt-6 px-6 py-3 bg-blue-600 rounded-lg font-semibold shadow-md hover:bg-blue-700 transition-colors">
                         Começar Treino
                     </button>
                 </div>
             `;
-            document.getElementById('back-btn').addEventListener('click', () => navigateTo('home'));
-            
-            document.getElementById('start-workout-btn').addEventListener('click', () => {
-                showMessage(`Você começou o treino de "${program.name}".`);
-            });
-        }
+
+            document.getElementById('start-workout-button').addEventListener('click', handleStartWorkout);
+        };
 
         // --- Event Listeners and App Initialization ---
-        function setupEventListeners() {
-            // Add listeners for navigation buttons
-            navButtons.forEach(button => {
+        document.addEventListener('DOMContentLoaded', () => {
+            // Initial render
+            navigateTo('home');
+
+            // Set up main navigation handlers
+            document.querySelectorAll('.nav-button').forEach(button => {
                 button.addEventListener('click', (e) => {
-                    const navId = e.currentTarget.dataset.navId;
-                    navigateTo(navId);
+                    const pageId = e.currentTarget.dataset.navId;
+                    navigateTo(pageId);
                 });
             });
 
-            // Add listeners for category cards
-            const categoryCards = document.querySelectorAll('[data-category-id]');
-            categoryCards.forEach(card => {
-                card.addEventListener('click', (e) => {
-                    const categoryId = e.currentTarget.dataset.categoryId;
-                    navigateTo('category-page', categoryId);
-                });
-            });
+            // Set up active workout button handlers
+            const pauseContinueButton = document.getElementById('pause-continue-button');
+            if (pauseContinueButton) {
+                pauseContinueButton.addEventListener('click', handlePauseContinue);
+            }
 
-            // Add listeners for program cards
-            const programCards = document.querySelectorAll('[data-program-id]');
-            programCards.forEach(card => {
-                card.addEventListener('click', (e) => {
-                    const programId = e.currentTarget.dataset.programId;
-                    navigateTo('program-details', programId);
-                });
-            });
-
-            // Add listener for the workout generator button
-            const generateWorkoutBtn = document.getElementById('generate-workout-btn');
-            if (generateWorkoutBtn) {
-                generateWorkoutBtn.addEventListener('click', () => {
-                    showMessage('O gerador de treinos é uma funcionalidade futura!');
+            const cancelButton = document.getElementById('cancel-button');
+            if (cancelButton) {
+                cancelButton.addEventListener('click', handleCancelWorkout);
+            }
+            
+            const backButton = document.getElementById('back-button');
+            if (backButton) {
+                backButton.addEventListener('click', () => {
+                    // Check if coming from workout details or from active workout
+                    if (isWorkoutActive) {
+                        navigateTo('home');
+                        isWorkoutActive = false; // Reset state
+                    } else if (currentWorkout) {
+                        navigateTo('activities'); // Go back to the list of all workouts
+                    } else {
+                        navigateTo('home'); // Go back to home page
+                    }
                 });
             }
-        }
-        
-        // Start the application when the window loads
-        window.onload = initializeApp;
-
-        function initializeApp() {
-            navigateTo('home');
-            setupEventListeners();
-        }
+        });
     </script>
 </body>
 </html>
